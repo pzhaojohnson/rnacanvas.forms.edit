@@ -1,0 +1,43 @@
+.editing-form {
+  width: 399px;
+  height: 535px;
+
+  border-radius: 16px;
+
+  border: 1px solid #220536;
+
+  padding: 24px 32px 50px 36px;
+
+  background-color: #f4f5ff;
+
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+
+  box-shadow: 0 0 14px rgba(219, 219, 238, 0.09);
+}
+
+.header {
+  margin: 0px;
+  padding: 0px;
+
+  font-family: "Open Sans", sans-serif;
+  font-size: 34px;
+  font-weight: 700;
+  font-style: normal;
+  color: black;
+
+  user-select: none;
+  -webkit-user-select: none;
+
+  pointer-events: none;
+}
+
+.content-container {
+  margin: 24px 0px 0px 22px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+
+  pointer-events: none;
+}

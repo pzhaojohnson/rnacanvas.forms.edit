@@ -1,0 +1,56 @@
+.num-bases-selected {
+  font-family: "Open Sans", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  font-style: normal;
+  color: black;
+
+  user-select: none;
+  -webkit-user-select: none;
+
+  pointer-events: none;
+}
+
+.text-input {
+  border: 1px solid #75758c;
+  border-radius: 2px;
+
+  outline: none;
+
+  width: 81px;
+
+  padding: 3px 6px;
+
+  font-family: "Open Sans", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  font-style: normal;
+  color: black;
+
+  pointer-events: auto;
+}
+
+.text-input:hover {
+  border-color: #0a0a0b;
+}
+
+.text-input:focus {
+  border-color: #0a0a0b;
+
+  outline: none;
+}
+
+.text-input-field {
+  font-family: "Open Sans", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  font-style: normal;
+  color: black;
+
+  user-select: none;
+  -webkit-user-select: none;
+
+  cursor: text;
+
+  pointer-events: auto;
+}
