@@ -79,6 +79,9 @@ class TextContentField {
 
     this.#input.type = 'text';
     this.#input.classList.add(styles['text-input']);
+    this.#input.style.marginRight = '8px';
+
+    this.domNode.append(this.#input, 'Text Content');
 
     // only refresh when necessary
     let drawingObserver = new MutationObserver(() => document.body.contains(this.domNode) ? this.refresh() : {});
