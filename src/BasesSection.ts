@@ -132,7 +132,7 @@ class TextContentField {
 
     this.#targetApp.pushUndoStack();
 
-    selectedBases.forEach(b => b.textContent = textContent);
+    selectedBases.forEach(b => b.maintainingCenterPoint(() => b.textContent = textContent));
 
     this.refresh();
   }
