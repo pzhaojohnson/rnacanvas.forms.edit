@@ -15,6 +15,8 @@ export class BasesSection {
   #textContentField;
 
   constructor(targetApp: App) {
+    this.domNode.classList.add(styles['bases-section']);
+
     this.#numBasesSelected = new NumBasesSelected(targetApp);
     this.domNode.append(this.#numBasesSelected.domNode);
 
@@ -75,7 +77,7 @@ class TextContentField {
     this.#targetApp = targetApp;
 
     this.domNode.classList.add(styles['text-input-field']);
-    this.domNode.style.marginTop = '12px';
+    this.domNode.style.marginTop = '15px';
 
     this.#input.type = 'text';
     this.#input.classList.add(styles['text-input']);

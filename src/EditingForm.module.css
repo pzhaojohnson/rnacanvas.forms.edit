@@ -1,6 +1,6 @@
 .editing-form {
-  width: 354px;
-  height: 529px;
+  width: 349px;
+  height: 528px;
 
   border-radius: 16px;
 
@@ -21,7 +21,7 @@
   padding: 0px;
 
   font-family: "Open Sans", sans-serif;
-  font-size: 36px;
+  font-size: 35px;
   font-weight: 700;
   font-style: normal;
   color: black;
@@ -33,7 +33,7 @@
 }
 
 .content-container {
-  margin: 22px 0px 0px 24px;
+  margin: 25px 0px 0px 25px;
 
   display: flex;
   flex-direction: column;
