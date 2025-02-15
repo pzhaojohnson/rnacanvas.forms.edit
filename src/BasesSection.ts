@@ -102,14 +102,14 @@ class TextContentField {
     let selectedBases = [...this.#targetApp.selectedBases];
 
     try {
-      this.#input.textContent = consensusValue(selectedBases.map(b => b.textContent ?? ''));
+      this.#input.value = consensusValue(selectedBases.map(b => b.textContent ?? ''));
     } catch {
-      this.#input.textContent = '';
+      this.#input.value = '';
     }
   }
 
   #submit(): void {
-    let textContent = this.#input.textContent ?? '';
+    let textContent = this.#input.value ?? '';
 
     // don't forget to trim leading and trailing whitespace
     textContent = textContent.trim();
