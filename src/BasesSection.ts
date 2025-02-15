@@ -84,6 +84,9 @@ class TextContentField {
     this.domNode.append(this.#input, 'Text Content');
 
     // only refresh when necessary
+    this.#targetApp.selectedBases.addEventListener('change', () => document.body.contains(this.domNode) ? this.refresh() : {});
+
+    // only refresh when necessary
     let drawingObserver = new MutationObserver(() => document.body.contains(this.domNode) ? this.refresh() : {});
     drawingObserver.observe(this.#targetApp.drawing.domNode, { characterData: true, subtree: true });
 
