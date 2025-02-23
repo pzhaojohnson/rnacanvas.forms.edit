@@ -2,6 +2,10 @@ import type { App } from './App';
 
 import * as styles from './BasesSection.module.css';
 
+import { TextInput } from './TextInput';
+
+import { Field } from './Field';
+
 import { consensusValue } from '@rnacanvas/consensize';
 
 /**
@@ -69,21 +73,16 @@ class NumBasesSelected {
 class TextContentField {
   #targetApp;
 
-  readonly domNode = document.createElement('label');
+  #input = new TextInput({ onSubmit: () => this.#submit() });
 
-  #input = document.createElement('input');
+  #field;
 
   constructor(targetApp: App) {
     this.#targetApp = targetApp;
 
-    this.domNode.classList.add(styles['text-input-field']);
+    this.#field = new Field('Text Content', this.#input.domNode);
+
     this.domNode.style.marginTop = '15px';
-
-    this.#input.type = 'text';
-    this.#input.classList.add(styles['text-input']);
-    this.#input.style.marginRight = '8px';
-
-    this.domNode.append(this.#input, 'Text Content');
 
     // only refresh when necessary
     this.#targetApp.selectedBases.addEventListener('change', () => document.body.contains(this.domNode) ? this.refresh() : {});
@@ -93,28 +92,24 @@ class TextContentField {
     drawingObserver.observe(this.#targetApp.drawing.domNode, { characterData: true, subtree: true });
 
     this.refresh();
+  }
 
-    this.#input.addEventListener('blur', () => this.#submit());
-
-    this.#input.addEventListener('keydown', event => {
-      if (event.key.toLowerCase() == 'enter') {
-        this.#submit();
-      }
-    });
+  get domNode() {
+    return this.#field.domNode;
   }
 
   refresh(): void {
     let selectedBases = [...this.#targetApp.selectedBases];
 
     try {
-      this.#input.value = consensusValue(selectedBases.map(b => b.textContent ?? ''));
+      this.#input.domNode.value = consensusValue(selectedBases.map(b => b.textContent ?? ''));
     } catch {
-      this.#input.value = '';
+      this.#input.domNode.value = '';
     }
   }
 
   #submit(): void {
-    let textContent = this.#input.value ?? '';
+    let textContent = this.#input.domNode.value ?? '';
 
     // don't forget to trim leading and trailing whitespace
     textContent = textContent.trim();
