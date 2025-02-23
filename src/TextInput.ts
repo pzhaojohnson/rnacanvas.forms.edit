@@ -12,7 +12,7 @@ export class TextInput {
 
     this.domNode.addEventListener('keydown', event => {
       if (event.key.toLowerCase() == 'enter') {
-        this.#submit();
+        this.domNode.blur();
       }
     });
   }
