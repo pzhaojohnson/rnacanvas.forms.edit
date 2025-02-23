@@ -17,6 +17,7 @@ export class BasesSection {
   #numBasesSelected;
 
   #textContentField;
+  #fontSizeField;
 
   constructor(targetApp: App) {
     this.domNode.classList.add(styles['bases-section']);
@@ -26,11 +27,21 @@ export class BasesSection {
 
     this.#textContentField = new TextContentField(targetApp);
     this.domNode.append(this.#textContentField.domNode);
+
+    this.#fontSizeField = new FontSizeField(targetApp);
+    this.domNode.append(this.#fontSizeField.domNode);
+  }
+
+  get #refreshableComponents() {
+    return [
+      this.#numBasesSelected,
+      this.#textContentField,
+      this.#fontSizeField,
+    ];
   }
 
   refresh(): void {
-    this.#numBasesSelected.refresh();
-    this.#textContentField.refresh();
+    this.#refreshableComponents.forEach(comp => comp.refresh());
   }
 }
 
@@ -130,6 +141,62 @@ class TextContentField {
     this.#targetApp.pushUndoStack();
 
     selectedBases.forEach(b => b.maintainingCenterPoint(() => b.textContent = textContent));
+
+    this.refresh();
+  }
+}
+
+class FontSizeField {
+  #targetApp;
+
+  #input = new TextInput({ onSubmit: () => this.#submit() });
+
+  #field;
+
+  constructor(targetApp: App) {
+    this.#targetApp = targetApp;
+
+    this.#field = new Field('Font Size', this.#input.domNode);
+
+    this.domNode.style.marginTop = '15px';
+
+    // only refresh when necessary
+    this.#targetApp.selectedBases.addEventListener('change', () => document.body.contains(this.domNode) ? this.refresh() : {});
+
+    // only refresh when necessary
+    let drawingObserver = new MutationObserver(() => document.body.contains(this.domNode) ? this.refresh() : {});
+    drawingObserver.observe(this.#targetApp.drawing.domNode, { attributes: true, subtree: true });
+
+    this.refresh();
+  }
+
+  get domNode() {
+    return this.#field.domNode;
+  }
+
+  refresh(): void {
+    let selectedBases = [...this.#targetApp.selectedBases];
+
+    try {
+      this.#input.domNode.value = consensusValue(selectedBases.map(b => b.getAttribute('font-size') ?? ''));
+    } catch {
+      this.#input.domNode.value = '';
+    }
+  }
+
+  #submit() {
+    let value = this.#input.domNode.value;
+
+    let selectedBases = [...this.#targetApp.selectedBases];
+
+    if (selectedBases.length == 0 || selectedBases.every(b => b.getAttribute('font-size') === value)) {
+      this.refresh();
+      return;
+    }
+
+    this.#targetApp.pushUndoStack();
+
+    selectedBases.forEach(b => b.maintainingCenterPoint(() => b.setAttribute('font-size', value)));
 
     this.refresh();
   }

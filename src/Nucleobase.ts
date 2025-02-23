@@ -2,6 +2,10 @@
  * The nucleobase interface used by the Editing form.
  */
 export interface Nucleobase {
+  getAttribute(name: string): string | null;
+
+  setAttribute(name: string, value: string): void;
+
   textContent: string | null;
 
   /**
