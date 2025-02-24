@@ -18,6 +18,7 @@ export class BasesSection {
 
   #textContentField;
   #fontSizeField;
+  #fontWeightField;
 
   constructor(targetApp: App) {
     this.domNode.classList.add(styles['bases-section']);
@@ -30,6 +31,9 @@ export class BasesSection {
 
     this.#fontSizeField = new FontSizeField(targetApp);
     this.domNode.append(this.#fontSizeField.domNode);
+
+    this.#fontWeightField = new FontWeightField(targetApp);
+    this.domNode.append(this.#fontWeightField.domNode);
   }
 
   get #refreshableComponents() {
@@ -37,6 +41,7 @@ export class BasesSection {
       this.#numBasesSelected,
       this.#textContentField,
       this.#fontSizeField,
+      this.#fontWeightField,
     ];
   }
 
@@ -149,16 +154,70 @@ class TextContentField {
 class FontSizeField {
   #targetApp;
 
-  #input = new TextInput({ onSubmit: () => this.#submit() });
+  #input;
 
   #field;
 
   constructor(targetApp: App) {
     this.#targetApp = targetApp;
 
+    this.#input = new AttributeInput(targetApp, 'font-size');
+
     this.#field = new Field('Font Size', this.#input.domNode);
 
     this.domNode.style.marginTop = '15px';
+
+    this.refresh();
+  }
+
+  get domNode() {
+    return this.#field.domNode;
+  }
+
+  refresh(): void {
+    this.#input.refresh();
+  }
+}
+
+class FontWeightField {
+  #targetApp;
+
+  #input;
+
+  #field;
+
+  constructor(targetApp: App) {
+    this.#targetApp = targetApp;
+
+    this.#input = new AttributeInput(targetApp, 'font-weight');
+
+    this.#field = new Field('Font Weight', this.#input.domNode);
+
+    this.domNode.style.marginTop = '15px';
+
+    this.refresh();
+  }
+
+  get domNode() {
+    return this.#field.domNode;
+  }
+
+  refresh(): void {
+    this.#input.refresh();
+  }
+}
+
+class AttributeInput {
+  #targetApp;
+
+  #attributeName;
+
+  #input = new TextInput({ onSubmit: () => this.#submit() });
+
+  constructor(targetApp: App, attributeName: string) {
+    this.#targetApp = targetApp;
+
+    this.#attributeName = attributeName;
 
     // only refresh when necessary
     this.#targetApp.selectedBases.addEventListener('change', () => document.body.contains(this.domNode) ? this.refresh() : {});
@@ -171,14 +230,14 @@ class FontSizeField {
   }
 
   get domNode() {
-    return this.#field.domNode;
+    return this.#input.domNode;
   }
 
   refresh(): void {
     let selectedBases = [...this.#targetApp.selectedBases];
 
     try {
-      this.#input.domNode.value = consensusValue(selectedBases.map(b => b.getAttribute('font-size') ?? ''));
+      this.#input.domNode.value = consensusValue(selectedBases.map(b => b.getAttribute(this.#attributeName) ?? ''));
     } catch {
       this.#input.domNode.value = '';
     }
@@ -189,14 +248,14 @@ class FontSizeField {
 
     let selectedBases = [...this.#targetApp.selectedBases];
 
-    if (selectedBases.length == 0 || selectedBases.every(b => b.getAttribute('font-size') === value)) {
+    if (selectedBases.length == 0 || selectedBases.every(b => b.getAttribute(this.#attributeName) === value)) {
       this.refresh();
       return;
     }
 
     this.#targetApp.pushUndoStack();
 
-    selectedBases.forEach(b => b.maintainingCenterPoint(() => b.setAttribute('font-size', value)));
+    selectedBases.forEach(b => b.maintainingCenterPoint(() => b.setAttribute(this.#attributeName, value)));
 
     this.refresh();
   }
