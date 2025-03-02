@@ -396,6 +396,9 @@ class BoldField {
     });
 
     this.refresh();
+
+    // release focus so that key bindings for the app can work
+    this.#input.domNode.blur();
   }
 }
 
