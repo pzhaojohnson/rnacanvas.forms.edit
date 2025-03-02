@@ -181,7 +181,7 @@ class FillField {
 
     this.#field = new Field('Fill', this.#input.domNode);
 
-    this.domNode.style.marginTop = '15px';
+    this.domNode.style.marginTop = '12px';
 
     this.refresh();
   }
@@ -209,7 +209,7 @@ class FontFamilyField {
 
     this.#field = new Field('Font Family', this.#input.domNode);
 
-    this.domNode.style.marginTop = '15px';
+    this.domNode.style.marginTop = '12px';
 
     this.refresh();
   }
@@ -237,7 +237,7 @@ class FontSizeField {
 
     this.#field = new Field('Font Size', this.#input.domNode);
 
-    this.domNode.style.marginTop = '15px';
+    this.domNode.style.marginTop = '12px';
 
     this.refresh();
   }
@@ -265,7 +265,7 @@ class FontWeightField {
 
     this.#field = new Field('Font Weight', this.#input.domNode);
 
-    this.domNode.style.marginTop = '15px';
+    this.domNode.style.marginTop = '12px';
 
     this.refresh();
   }
@@ -293,7 +293,7 @@ class FontStyleField {
 
     this.#field = new Field('Font Style', this.#input.domNode);
 
-    this.domNode.style.marginTop = '15px';
+    this.domNode.style.marginTop = '12px';
 
     this.refresh();
   }
@@ -321,7 +321,7 @@ class TextDecorationField {
 
     this.#field = new Field('Text Decoration', this.#input.domNode);
 
-    this.domNode.style.marginTop = '15px';
+    this.domNode.style.marginTop = '12px';
 
     this.refresh();
   }
