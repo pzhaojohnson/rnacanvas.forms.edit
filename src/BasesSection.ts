@@ -114,6 +114,8 @@ class TextContentField {
 
     this.#field = new Field('Text Content', this.#input.domNode);
 
+    this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent';
+
     this.domNode.style.marginTop = '15px';
 
     // only refresh when necessary
@@ -181,6 +183,8 @@ class FillField {
 
     this.#field = new Field('Fill', this.#input.domNode);
 
+    this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill';
+
     this.domNode.style.marginTop = '12px';
 
     this.refresh();
@@ -208,6 +212,8 @@ class FontFamilyField {
     this.#input = new AttributeInput(targetApp, 'font-family');
 
     this.#field = new Field('Font Family', this.#input.domNode);
+
+    this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/font-family';
 
     this.domNode.style.marginTop = '12px';
 
@@ -237,6 +243,8 @@ class FontSizeField {
 
     this.#field = new Field('Font Size', this.#input.domNode);
 
+    this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/font-size';
+
     this.domNode.style.marginTop = '12px';
 
     this.refresh();
@@ -264,6 +272,8 @@ class FontWeightField {
     this.#input = new AttributeInput(targetApp, 'font-weight');
 
     this.#field = new Field('Font Weight', this.#input.domNode);
+
+    this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/font-weight';
 
     this.domNode.style.marginTop = '12px';
 
@@ -293,6 +303,8 @@ class FontStyleField {
 
     this.#field = new Field('Font Style', this.#input.domNode);
 
+    this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/font-style';
+
     this.domNode.style.marginTop = '12px';
 
     this.refresh();
@@ -320,6 +332,8 @@ class TextDecorationField {
     this.#input = new AttributeInput(targetApp, 'text-decoration');
 
     this.#field = new Field('Text Decoration', this.#input.domNode);
+
+    this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/text-decoration';
 
     this.domNode.style.marginTop = '12px';
 

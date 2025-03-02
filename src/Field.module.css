@@ -12,3 +12,15 @@
 
   pointer-events: auto;
 }
+
+.info-link {
+  color: black;
+
+  cursor: pointer;
+
+  text-decoration: none;
+}
+
+.info-link:hover {
+  text-decoration: underline;
+}
