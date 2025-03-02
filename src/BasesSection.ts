@@ -360,7 +360,11 @@ class BoldField {
   refresh(): void {
     let selectedBases = [...this.#targetApp.selectedBases];
 
-    this.#input.domNode.checked = selectedBases.every(isBold);
+    if (selectedBases.length == 0) {
+      this.#input.domNode.checked = false;
+    } else {
+      this.#input.domNode.checked = selectedBases.every(isBold);
+    }
   }
 
   #handleChange() {
