@@ -354,7 +354,7 @@ class BoldField {
 
     this.#field = new Field('Bold', this.#input.domNode);
 
-    $(this.domNode).css({ marginTop: '12px', alignSelf: 'start' });
+    $(this.domNode).css({ marginTop: '12px', alignSelf: 'start', cursor: 'pointer' });
 
     // only refresh when necessary
     this.#targetApp.selectedBases.addEventListener('change', () => document.body.contains(this.domNode) ? this.refresh() : {});
