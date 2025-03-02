@@ -17,8 +17,12 @@ export class BasesSection {
   #numBasesSelected;
 
   #textContentField;
+  #fillField;
+  #fontFamilyField;
   #fontSizeField;
   #fontWeightField;
+  #fontStyleField;
+  #textDecorationField;
 
   constructor(targetApp: App) {
     this.domNode.classList.add(styles['bases-section']);
@@ -29,11 +33,23 @@ export class BasesSection {
     this.#textContentField = new TextContentField(targetApp);
     this.domNode.append(this.#textContentField.domNode);
 
+    this.#fillField = new FillField(targetApp);
+    this.domNode.append(this.#fillField.domNode);
+
+    this.#fontFamilyField = new FontFamilyField(targetApp);
+    this.domNode.append(this.#fontFamilyField.domNode);
+
     this.#fontSizeField = new FontSizeField(targetApp);
     this.domNode.append(this.#fontSizeField.domNode);
 
     this.#fontWeightField = new FontWeightField(targetApp);
     this.domNode.append(this.#fontWeightField.domNode);
+
+    this.#fontStyleField = new FontStyleField(targetApp);
+    this.domNode.append(this.#fontStyleField.domNode);
+
+    this.#textDecorationField = new TextDecorationField(targetApp);
+    this.domNode.append(this.#textDecorationField.domNode);
   }
 
   get #refreshableComponents() {
@@ -151,6 +167,62 @@ class TextContentField {
   }
 }
 
+class FillField {
+  #targetApp;
+
+  #input;
+
+  #field;
+
+  constructor(targetApp: App) {
+    this.#targetApp = targetApp;
+
+    this.#input = new AttributeInput(targetApp, 'fill');
+
+    this.#field = new Field('Fill', this.#input.domNode);
+
+    this.domNode.style.marginTop = '15px';
+
+    this.refresh();
+  }
+
+  get domNode() {
+    return this.#field.domNode;
+  }
+
+  refresh(): void {
+    this.#input.refresh();
+  }
+}
+
+class FontFamilyField {
+  #targetApp;
+
+  #input;
+
+  #field;
+
+  constructor(targetApp: App) {
+    this.#targetApp = targetApp;
+
+    this.#input = new AttributeInput(targetApp, 'font-family');
+
+    this.#field = new Field('Font Family', this.#input.domNode);
+
+    this.domNode.style.marginTop = '15px';
+
+    this.refresh();
+  }
+
+  get domNode() {
+    return this.#field.domNode;
+  }
+
+  refresh(): void {
+    this.#input.refresh();
+  }
+}
+
 class FontSizeField {
   #targetApp;
 
@@ -192,6 +264,62 @@ class FontWeightField {
     this.#input = new AttributeInput(targetApp, 'font-weight');
 
     this.#field = new Field('Font Weight', this.#input.domNode);
+
+    this.domNode.style.marginTop = '15px';
+
+    this.refresh();
+  }
+
+  get domNode() {
+    return this.#field.domNode;
+  }
+
+  refresh(): void {
+    this.#input.refresh();
+  }
+}
+
+class FontStyleField {
+  #targetApp;
+
+  #input;
+
+  #field;
+
+  constructor(targetApp: App) {
+    this.#targetApp = targetApp;
+
+    this.#input = new AttributeInput(targetApp, 'font-style');
+
+    this.#field = new Field('Font Style', this.#input.domNode);
+
+    this.domNode.style.marginTop = '15px';
+
+    this.refresh();
+  }
+
+  get domNode() {
+    return this.#field.domNode;
+  }
+
+  refresh(): void {
+    this.#input.refresh();
+  }
+}
+
+class TextDecorationField {
+  #targetApp;
+
+  #input;
+
+  #field;
+
+  constructor(targetApp: App) {
+    this.#targetApp = targetApp;
+
+    this.#input = new AttributeInput(targetApp, 'text-decoration');
+
+    this.#field = new Field('Text Decoration', this.#input.domNode);
 
     this.domNode.style.marginTop = '15px';
 
