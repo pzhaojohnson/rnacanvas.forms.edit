@@ -71,8 +71,14 @@ export class BasesSection {
     return [
       this.#numBasesSelected,
       this.#textContentField,
+      this.#fillField,
+      this.#fillOpacityField,
+      this.#fontFamilyField,
       this.#fontSizeField,
       this.#fontWeightField,
+      this.#boldField,
+      this.#fontStyleField,
+      this.#textDecorationField,
     ];
   }
 
