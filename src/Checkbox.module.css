@@ -1,0 +1,32 @@
+.checkbox {
+  appearance: none;
+
+  margin: 0px;
+  padding: 0px;
+
+  border: 2px solid hsl(240, 10%, 76%);
+  border-radius: 2px;
+
+  width: 14px;
+  height: 14px;
+
+  cursor: pointer;
+}
+
+.checkbox:checked {
+  border-color: #2b2b2f;
+
+  background-color: #2b2b2f;
+
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgOTYgOTYiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIGlkPSJJY29uc19DaGVja21hcmsiIG92ZXJmbG93PSJoaWRkZW4iPjxwYXRoIGQ9Ik04Ni4xIDE1LjggMzQuOSA2NC4yIDEwLjMgMzkgMS44IDQ3LjEgMzQuNSA4MC43IDQzLjEgNzIuNyA5NC4yIDI0LjJaIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMy42NjY2NyIgZmlsbD0iI0ZGRkZGRiIvPjwvc3ZnPg==);
+}
+
+.checkbox:hover {
+  transform: scale(1.1);
+  transition: transform 0.1s;
+}
+
+.custom-checkbox:active {
+  transform: scale(1);
+  transition: transform 0s;
+}

@@ -1,14 +1,19 @@
 import type { App } from './App';
 
+import type  { Nucleobase } from './Nucleobase';
+
 import * as styles from './BasesSection.module.css';
 
 import { TextInput } from './TextInput';
+
+import { Checkbox } from './Checkbox';
 
 import { Field } from './Field';
 
 import { consensusValue } from '@rnacanvas/consensize';
 
 import * as $ from 'jquery';
+
 
 /**
  * The section for editing bases.
@@ -24,6 +29,7 @@ export class BasesSection {
   #fontFamilyField;
   #fontSizeField;
   #fontWeightField;
+  #boldField;
   #fontStyleField;
   #textDecorationField;
 
@@ -50,6 +56,9 @@ export class BasesSection {
 
     this.#fontWeightField = new FontWeightField(targetApp);
     this.domNode.append(this.#fontWeightField.domNode);
+
+    this.#boldField = new BoldField(targetApp);
+    this.domNode.append(this.#boldField.domNode);
 
     this.#fontStyleField = new FontStyleField(targetApp);
     this.domNode.append(this.#fontStyleField.domNode);
@@ -323,6 +332,87 @@ class FontWeightField {
   refresh(): void {
     this.#input.refresh();
   }
+}
+
+class BoldField {
+  #targetApp;
+
+  #input = new Checkbox();
+
+  #field;
+
+  constructor(targetApp: App) {
+    this.#targetApp = targetApp;
+
+    this.#input.domNode.addEventListener('change', () => this.#handleChange());
+
+    this.#field = new Field('Bold', this.#input.domNode);
+
+    $(this.domNode).css({ marginTop: '12px', alignSelf: 'start' });
+
+    this.refresh();
+  }
+
+  get domNode() {
+    return this.#field.domNode;
+  }
+
+  refresh(): void {
+    let selectedBases = [...this.#targetApp.selectedBases];
+
+    this.#input.domNode.checked = selectedBases.every(isBold);
+  }
+
+  #handleChange() {
+    let selectedBases = [...this.#targetApp.selectedBases];
+
+    if (selectedBases.length == 0) {
+      this.refresh();
+      return;
+    }
+
+    if (this.#input.domNode.checked && selectedBases.every(isBold)) {
+      this.refresh();
+      return;
+    } else if (!this.#input.domNode.checked && selectedBases.every(isNotBold)) {
+      this.refresh();
+      return;
+    }
+
+    this.#targetApp.pushUndoStack();
+
+    selectedBases.forEach(b => {
+      b.maintainingCenterPoint(() => {
+        if (this.#input.domNode.checked && isNotBold(b)) {
+          b.setAttribute('font-weight', '700');
+        } else if (!this.#input.domNode.checked && isBold(b)) {
+          b.setAttribute('font-weight', '400');
+        }
+      });
+    });
+
+    this.refresh();
+  }
+}
+
+function isBold(b: Nucleobase): boolean {
+  let fontWeight = b.getAttribute('font-weight');
+
+  if (fontWeight === null) {
+    return false;
+  }
+
+  let n = Number.parseFloat(fontWeight);
+
+  if (!Number.isNaN(n)) {
+    return n >= 700;
+  }
+
+  return fontWeight.toLowerCase() === 'bold';
+}
+
+function isNotBold(b: Nucleobase): boolean {
+  return !isBold(b);
 }
 
 class FontStyleField {
