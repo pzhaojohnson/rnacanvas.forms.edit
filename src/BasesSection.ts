@@ -356,6 +356,13 @@ class BoldField {
 
     $(this.domNode).css({ marginTop: '12px', alignSelf: 'start' });
 
+    // only refresh when necessary
+    this.#targetApp.selectedBases.addEventListener('change', () => document.body.contains(this.domNode) ? this.refresh() : {});
+
+    // only refresh when necessary
+    let drawingObserver = new MutationObserver(() => document.body.contains(this.domNode) ? this.refresh() : {});
+    drawingObserver.observe(this.#targetApp.drawing.domNode, { attributes: true, attributeFilter: ['font-weight'], subtree: true });
+
     this.refresh();
   }
 
