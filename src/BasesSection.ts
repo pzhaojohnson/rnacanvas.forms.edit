@@ -8,6 +8,8 @@ import { Field } from './Field';
 
 import { consensusValue } from '@rnacanvas/consensize';
 
+import * as $ from 'jquery';
+
 /**
  * The section for editing bases.
  */
@@ -120,7 +122,7 @@ class TextContentField {
 
     this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent';
 
-    this.domNode.style.marginTop = '15px';
+    $(this.domNode).css({ marginTop: '15px', alignSelf: 'start' });
 
     // only refresh when necessary
     this.#targetApp.selectedBases.addEventListener('change', () => document.body.contains(this.domNode) ? this.refresh() : {});
@@ -189,7 +191,7 @@ class FillField {
 
     this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill';
 
-    this.domNode.style.marginTop = '12px';
+    $(this.domNode).css({ marginTop: '12px', alignSelf: 'start' });
 
     this.refresh();
   }
@@ -219,7 +221,7 @@ class FillOpacityField {
 
     this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill-opacity';
 
-    this.domNode.style.marginTop = '12px';
+    $(this.domNode).css({ marginTop: '12px', alignSelf: 'start' });
 
     this.refresh();
   }
@@ -249,7 +251,7 @@ class FontFamilyField {
 
     this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/font-family';
 
-    this.domNode.style.marginTop = '12px';
+    $(this.domNode).css({ marginTop: '12px', alignSelf: 'start' });
 
     this.refresh();
   }
@@ -279,7 +281,7 @@ class FontSizeField {
 
     this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/font-size';
 
-    this.domNode.style.marginTop = '12px';
+    $(this.domNode).css({ marginTop: '12px', alignSelf: 'start' });
 
     this.refresh();
   }
@@ -309,7 +311,7 @@ class FontWeightField {
 
     this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/font-weight';
 
-    this.domNode.style.marginTop = '12px';
+    $(this.domNode).css({ marginTop: '12px', alignSelf: 'start' });
 
     this.refresh();
   }
@@ -339,7 +341,7 @@ class FontStyleField {
 
     this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/font-style';
 
-    this.domNode.style.marginTop = '12px';
+    $(this.domNode).css({ marginTop: '12px', alignSelf: 'start' });
 
     this.refresh();
   }
@@ -369,7 +371,7 @@ class TextDecorationField {
 
     this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/text-decoration';
 
-    this.domNode.style.marginTop = '12px';
+    $(this.domNode).css({ marginTop: '12px', alignSelf: 'start' });
 
     this.refresh();
   }
