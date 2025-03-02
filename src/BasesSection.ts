@@ -18,6 +18,7 @@ export class BasesSection {
 
   #textContentField;
   #fillField;
+  #fillOpacityField;
   #fontFamilyField;
   #fontSizeField;
   #fontWeightField;
@@ -35,6 +36,9 @@ export class BasesSection {
 
     this.#fillField = new FillField(targetApp);
     this.domNode.append(this.#fillField.domNode);
+
+    this.#fillOpacityField = new FillOpacityField(targetApp);
+    this.domNode.append(this.#fillOpacityField.domNode);
 
     this.#fontFamilyField = new FontFamilyField(targetApp);
     this.domNode.append(this.#fontFamilyField.domNode);
@@ -184,6 +188,36 @@ class FillField {
     this.#field = new Field('Fill', this.#input.domNode);
 
     this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill';
+
+    this.domNode.style.marginTop = '12px';
+
+    this.refresh();
+  }
+
+  get domNode() {
+    return this.#field.domNode;
+  }
+
+  refresh(): void {
+    this.#input.refresh();
+  }
+}
+
+class FillOpacityField {
+  #targetApp;
+
+  #input;
+
+  #field;
+
+  constructor(targetApp: App) {
+    this.#targetApp = targetApp;
+
+    this.#input = new AttributeInput(targetApp, 'fill-opacity');
+
+    this.#field = new Field('Fill Opacity', this.#input.domNode);
+
+    this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill-opacity';
 
     this.domNode.style.marginTop = '12px';
 
