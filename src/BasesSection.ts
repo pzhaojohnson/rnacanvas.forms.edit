@@ -34,6 +34,7 @@ export class BasesSection {
   #boldField;
   #fontStyleField;
   #textDecorationField;
+  #underlinedField;
 
   constructor(targetApp: App) {
     this.domNode.classList.add(styles['bases-section']);
@@ -67,6 +68,9 @@ export class BasesSection {
 
     this.#textDecorationField = new TextDecorationField(targetApp);
     this.domNode.append(this.#textDecorationField.domNode);
+
+    this.#underlinedField = new UnderlinedField(targetApp);
+    this.domNode.append(this.#underlinedField.domNode);
   }
 
   get #refreshableComponents() {
@@ -81,6 +85,7 @@ export class BasesSection {
       this.#boldField,
       this.#fontStyleField,
       this.#textDecorationField,
+      this.#underlinedField,
     ];
   }
 
@@ -356,7 +361,7 @@ class BoldField {
 
     this.#field = new CheckboxField('Bold', this.#input.domNode);
 
-    $(this.domNode).css({ marginTop: '12px', alignSelf: 'start', cursor: 'pointer' });
+    $(this.domNode).css({ marginTop: '12px', alignSelf: 'start' });
 
     // only refresh when necessary
     this.#targetApp.selectedBases.addEventListener('change', () => document.body.contains(this.domNode) ? this.refresh() : {});
