@@ -6,9 +6,11 @@ import * as styles from './BasesSection.module.css';
 
 import { TextInput } from './TextInput';
 
+import { TextInputField } from './TextInputField';
+
 import { Checkbox } from './Checkbox';
 
-import { Field } from './Field';
+import { CheckboxField } from './CheckboxField';
 
 import { consensusValue } from '@rnacanvas/consensize';
 
@@ -133,7 +135,7 @@ class TextContentField {
   constructor(targetApp: App) {
     this.#targetApp = targetApp;
 
-    this.#field = new Field('Text Content', this.#input.domNode);
+    this.#field = new TextInputField('Text Content', this.#input.domNode);
 
     this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent';
 
@@ -202,7 +204,7 @@ class FillField {
 
     this.#input = new AttributeInput(targetApp, 'fill');
 
-    this.#field = new Field('Fill', this.#input.domNode);
+    this.#field = new TextInputField('Fill', this.#input.domNode);
 
     this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill';
 
@@ -232,7 +234,7 @@ class FillOpacityField {
 
     this.#input = new AttributeInput(targetApp, 'fill-opacity');
 
-    this.#field = new Field('Fill Opacity', this.#input.domNode);
+    this.#field = new TextInputField('Fill Opacity', this.#input.domNode);
 
     this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill-opacity';
 
@@ -262,7 +264,7 @@ class FontFamilyField {
 
     this.#input = new AttributeInput(targetApp, 'font-family');
 
-    this.#field = new Field('Font Family', this.#input.domNode);
+    this.#field = new TextInputField('Font Family', this.#input.domNode);
 
     this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/font-family';
 
@@ -292,7 +294,7 @@ class FontSizeField {
 
     this.#input = new AttributeInput(targetApp, 'font-size');
 
-    this.#field = new Field('Font Size', this.#input.domNode);
+    this.#field = new TextInputField('Font Size', this.#input.domNode);
 
     this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/font-size';
 
@@ -322,7 +324,7 @@ class FontWeightField {
 
     this.#input = new AttributeInput(targetApp, 'font-weight');
 
-    this.#field = new Field('Font Weight', this.#input.domNode);
+    this.#field = new TextInputField('Font Weight', this.#input.domNode);
 
     this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/font-weight';
 
@@ -352,7 +354,7 @@ class BoldField {
 
     this.#input.domNode.addEventListener('change', () => this.#handleChange());
 
-    this.#field = new Field('Bold', this.#input.domNode);
+    this.#field = new CheckboxField('Bold', this.#input.domNode);
 
     $(this.domNode).css({ marginTop: '12px', alignSelf: 'start', cursor: 'pointer' });
 
@@ -447,7 +449,7 @@ class FontStyleField {
 
     this.#input = new AttributeInput(targetApp, 'font-style');
 
-    this.#field = new Field('Font Style', this.#input.domNode);
+    this.#field = new TextInputField('Font Style', this.#input.domNode);
 
     this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/font-style';
 
@@ -477,7 +479,7 @@ class TextDecorationField {
 
     this.#input = new AttributeInput(targetApp, 'text-decoration');
 
-    this.#field = new Field('Text Decoration', this.#input.domNode);
+    this.#field = new TextInputField('Text Decoration', this.#input.domNode);
 
     this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/text-decoration';
 
