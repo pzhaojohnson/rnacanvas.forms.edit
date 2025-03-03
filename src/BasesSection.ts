@@ -497,6 +497,97 @@ class TextDecorationField {
   }
 }
 
+class UnderlinedField {
+  #targetApp;
+
+  #input = new Checkbox();
+
+  #field;
+
+  constructor(targetApp: App) {
+    this.#targetApp = targetApp;
+
+    this.#input.domNode.addEventListener('change', () => this.#handleChange());
+
+    this.#field = new CheckboxField('Underlined', this.#input.domNode);
+
+    $(this.domNode).css({ marginTop: '12px', alignSelf: 'start' });
+
+    // only refresh when necessary
+    this.#targetApp.selectedBases.addEventListener('change', () => document.body.contains(this.domNode) ? this.refresh() : {});
+
+    // only refresh when necessary
+    let drawingObserver = new MutationObserver(() => document.body.contains(this.domNode) ? this.refresh() : {});
+    drawingObserver.observe(this.#targetApp.drawing.domNode, { attributes: true, attributeFilter: ['text-decoration'], subtree: true });
+
+    this.refresh();
+  }
+
+  get domNode() {
+    return this.#field.domNode;
+  }
+
+  refresh(): void {
+    let selectedBases = [...this.#targetApp.selectedBases];
+
+    if (selectedBases.length == 0) {
+      this.#input.domNode.checked = false;
+    } else {
+      this.#input.domNode.checked = selectedBases.every(isUnderlined);
+    }
+  }
+
+  #handleChange() {
+    let selectedBases = [...this.#targetApp.selectedBases];
+
+    if (selectedBases.length == 0) {
+      this.refresh();
+      return;
+    }
+
+    if (this.#input.domNode.checked && selectedBases.every(isUnderlined)) {
+      this.refresh();
+      return;
+    } else if (!this.#input.domNode.checked && selectedBases.every(isNotUnderlined)) {
+      this.refresh();
+      return;
+    }
+
+    this.#targetApp.pushUndoStack();
+
+    selectedBases.forEach(b => {
+      b.maintainingCenterPoint(() => {
+        if (this.#input.domNode.checked && isNotUnderlined(b)) {
+          b.setAttribute('text-decoration', 'underline');
+        } else if (!this.#input.domNode.checked && isUnderlined(b)) {
+          b.setAttribute('text-decoration', '');
+        }
+      });
+    });
+
+    this.refresh();
+
+    // release focus so that key bindings for the app can work
+    this.#input.domNode.blur();
+  }
+}
+
+function isUnderlined(b: Nucleobase): boolean {
+  let textDecoration = b.getAttribute('text-decoration');
+
+  if (textDecoration === null) {
+    return false;
+  }
+
+  let items = textDecoration.split('\s');
+
+  return items.map(item => item.toLowerCase()).includes('underline');
+}
+
+function isNotUnderlined(b: Nucleobase): boolean {
+  return !isUnderlined(b);
+}
+
 class AttributeInput {
   #targetApp;
 
