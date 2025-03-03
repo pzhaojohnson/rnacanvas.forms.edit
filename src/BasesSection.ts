@@ -584,7 +584,7 @@ function isUnderlined(b: Nucleobase): boolean {
     return false;
   }
 
-  let items = textDecoration.split('\s');
+  let items = textDecoration.split(/\s/);
 
   return items.map(item => item.toLowerCase()).includes('underline');
 }
