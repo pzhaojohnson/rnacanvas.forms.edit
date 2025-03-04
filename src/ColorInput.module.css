@@ -1,0 +1,34 @@
+.color-input {
+  border-radius: 50%;
+
+  width: 28px;
+  height: 28px;
+
+  padding: 3.5px;
+
+  background-color: white;
+
+  border: solid 1px #aeaeae;
+
+  cursor: pointer;
+}
+
+.color-input:hover {
+  border-color: black;
+}
+
+.color-input::-webkit-color-swatch {
+  border-radius: 50%;
+
+  border-width: 0px;
+}
+
+.color-input::-moz-color-swatch {
+  border-radius: 50%;
+
+  border: solid 1px white;
+}
+
+.color-input::-webkit-color-swatch-wrapper {
+  padding: 1px;
+}
