@@ -12,7 +12,15 @@ import { Checkbox } from './Checkbox';
 
 import { CheckboxField } from './CheckboxField';
 
+import { ColorInput } from './ColorInput';
+
+import { ColorField } from './ColorField';
+
+import { Color } from '@svgdotjs/svg.js';
+
 import { consensusValue } from '@rnacanvas/consensize';
+
+import { isStringsArray } from '@rnacanvas/value-check';
 
 import * as $ from 'jquery';
 
@@ -27,6 +35,7 @@ export class BasesSection {
 
   #textContentField;
   #fillField;
+  #fillColorField;
   #fillOpacityField;
   #fontFamilyField;
   #fontSizeField;
@@ -47,6 +56,9 @@ export class BasesSection {
 
     this.#fillField = new FillField(targetApp);
     this.domNode.append(this.#fillField.domNode);
+
+    this.#fillColorField = new FillColorField(targetApp);
+    this.domNode.append(this.#fillColorField.domNode);
 
     this.#fillOpacityField = new FillOpacityField(targetApp);
     this.domNode.append(this.#fillOpacityField.domNode);
@@ -78,6 +90,7 @@ export class BasesSection {
       this.#numBasesSelected,
       this.#textContentField,
       this.#fillField,
+      this.#fillColorField,
       this.#fillOpacityField,
       this.#fontFamilyField,
       this.#fontSizeField,
@@ -224,6 +237,85 @@ class FillField {
 
   refresh(): void {
     this.#input.refresh();
+  }
+}
+
+class FillColorField {
+  #targetApp;
+
+  #input = new ColorInput();
+
+  #field;
+
+  #previousState: unknown;
+
+  constructor(targetApp: App) {
+    this.#targetApp = targetApp;
+
+    this.#input.domNode.addEventListener('input', () => this.#handleInput());
+
+    this.#field = new ColorField('Fill Color', this.#input.domNode);
+
+    $(this.domNode).css({ marginTop: '12px', alignSelf: 'start' });
+
+    // only refresh if necessary
+    this.#targetApp.selectedBases.addEventListener('change', () => document.body.contains(this.domNode) ? this.refresh() : {});
+
+    // only refresh if necessary
+    let drawingObserver = new MutationObserver(() => document.body.contains(this.domNode) ? this.refresh() : {});
+    drawingObserver.observe(this.#targetApp.drawing.domNode, { attributes: true, attributeFilter: ['fill'], subtree: true });
+
+    this.refresh();
+  }
+
+  get domNode() {
+    return this.#field.domNode;
+  }
+
+  refresh(): void {
+    let selectedBases = [...this.#targetApp.selectedBases];
+
+    if (selectedBases.length == 0) {
+      this.#input.domNode.value = '';
+      return;
+    }
+
+    let fills = selectedBases.map(b => b.getAttribute('fill'));
+
+    if (!isStringsArray(fills)) {
+      this.#input.domNode.value = '';
+      return;
+    }
+
+    try {
+      this.#input.domNode.value = consensusValue(fills.map(fill => new Color(fill)).map(c => c.toHex().toLowerCase()));
+    } catch {
+      this.#input.domNode.value = '';
+    }
+  }
+
+  #handleInput(): void {
+    let selectedBases = [...this.#targetApp.selectedBases];
+
+    if (selectedBases.length == 0) {
+      this.refresh();
+      return;
+    }
+
+    if (selectedBases.every(b => b.getAttribute('fill')?.toLowerCase() === this.#input.domNode.value.toLowerCase())) {
+      this.refresh();
+      return;
+    }
+
+    if (this.#targetApp.undoStack.isEmpty() || this.#targetApp.undoStack.peek() !== this.#previousState) {
+      this.#targetApp.pushUndoStack();
+
+      this.#previousState = this.#targetApp.undoStack.peek();
+    }
+
+    selectedBases.forEach(b => b.setAttribute('fill', this.#input.domNode.value.toLowerCase()));
+
+    this.refresh();
   }
 }
 

@@ -13,6 +13,17 @@ export interface App {
 
   pushUndoStack(): void;
 
+  readonly undoStack: {
+    isEmpty(): boolean;
+
+    /**
+     * Returns the previous state at the top of the undo stack.
+     *
+     * Throws if the undo stack is empty.
+     */
+    peek(): PreviousState | never;
+  }
+
   readonly selectedBases: {
     [Symbol.iterator](): Iterator<Nucleobase>;
 
@@ -25,3 +36,8 @@ export interface App {
     addEventListener(name: 'change', listener: () => void): void;
   };
 }
+
+/**
+ * A previous state of the app.
+ */
+type PreviousState = unknown;

@@ -1,6 +1,6 @@
 {
   "name": "@rnacanvas/forms.edit",
-  "version": "3.6.5",
+  "version": "4.0.0",
   "description": "The Editing form",
   "repository": {
     "type": "git",
@@ -31,6 +31,8 @@
   "dependencies": {
     "@rnacanvas/consensize": "^2.1.0",
     "@rnacanvas/forms": "^2.1.0",
+    "@rnacanvas/value-check": "^1.14.1",
+    "@svgdotjs/svg.js": "^3.2.4",
     "jquery": "^3.7.1"
   }
 }
