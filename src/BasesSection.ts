@@ -276,21 +276,21 @@ class FillColorField {
     let selectedBases = [...this.#targetApp.selectedBases];
 
     if (selectedBases.length == 0) {
-      this.#input.domNode.value = '';
+      this.#input.domNode.value = '#000000';
       return;
     }
 
     let fills = selectedBases.map(b => b.getAttribute('fill'));
 
     if (!isStringsArray(fills)) {
-      this.#input.domNode.value = '';
+      this.#input.domNode.value = '#000000';
       return;
     }
 
     try {
       this.#input.domNode.value = consensusValue(fills.map(fill => new Color(fill)).map(c => c.toHex().toLowerCase()));
     } catch {
-      this.#input.domNode.value = '';
+      this.#input.domNode.value = '#000000';
     }
   }
 
