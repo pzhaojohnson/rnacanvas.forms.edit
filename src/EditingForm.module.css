@@ -1,6 +1,6 @@
 .editing-form {
-  width: 349px;
-  height: 528px;
+  width: 266px;
+  height: 524px;
 
   border-radius: 16px;
 
@@ -33,7 +33,7 @@
 }
 
 .content-container {
-  margin: 25px 0px 0px 25px;
+  margin: 27px 0px 0px 27px;
 
   display: flex;
   flex-direction: column;

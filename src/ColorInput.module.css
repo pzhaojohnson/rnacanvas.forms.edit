@@ -1,14 +1,14 @@
 .color-input {
   border-radius: 50%;
 
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
 
   padding: 3.5px;
 
   background-color: white;
 
-  border: solid 1px #aeaeae;
+  border: solid 1px #767676;
 
   cursor: pointer;
 }
