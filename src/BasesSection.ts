@@ -20,8 +20,6 @@ import { Color } from '@svgdotjs/svg.js';
 
 import { consensusValue } from '@rnacanvas/consensize';
 
-import { isStringsArray } from '@rnacanvas/value-check';
-
 import * as $ from 'jquery';
 
 
@@ -249,6 +247,11 @@ class FillColorField {
 
   #previousState: unknown;
 
+  /**
+   * The value of the color input when last focused.
+   */
+  #lastFocusValue?: string;
+
   constructor(targetApp: App) {
     this.#targetApp = targetApp;
 
@@ -257,6 +260,8 @@ class FillColorField {
     this.#field = new ColorField('Fill Color', this.#input.domNode);
 
     $(this.domNode).css({ marginTop: '12px', alignSelf: 'start' });
+
+    this.#input.domNode.addEventListener('focus', () => this.#lastFocusValue = this.#input.domNode.value);
 
     // only refresh if necessary
     this.#targetApp.selectedBases.addEventListener('change', () => document.body.contains(this.domNode) ? this.refresh() : {});
@@ -294,6 +299,11 @@ class FillColorField {
   }
 
   #handleInput(): void {
+    if (this.#input.domNode.value === this.#lastFocusValue) {
+      // in Firefox an input event is fired when just opening a color input
+      return;
+    }
+
     let selectedBases = [...this.#targetApp.selectedBases];
 
     if (selectedBases.length == 0) {
