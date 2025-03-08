@@ -245,6 +245,9 @@ class FillColorField {
 
   #field;
 
+  /**
+   * Used to determine whether to push the undo stack or not.
+   */
   #previousState: unknown;
 
   /**
@@ -260,6 +263,8 @@ class FillColorField {
     this.#field = new ColorField('Fill Color', this.#input.domNode);
 
     $(this.domNode).css({ marginTop: '12px', alignSelf: 'start' });
+
+    this.#targetApp.selectedBases.addEventListener('change', () => this.#previousState = undefined);
 
     this.#input.domNode.addEventListener('focus', () => this.#lastFocusValue = this.#input.domNode.value);
 
