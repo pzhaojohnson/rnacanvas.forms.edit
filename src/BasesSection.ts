@@ -280,15 +280,14 @@ class FillColorField {
       return;
     }
 
-    let fills = selectedBases.map(b => b.getAttribute('fill'));
-
-    if (!isStringsArray(fills)) {
-      this.#input.domNode.value = '#000000';
-      return;
-    }
-
     try {
-      this.#input.domNode.value = consensusValue(fills.map(fill => new Color(fill)).map(c => c.toHex().toLowerCase()));
+      // fill color values in RGB format
+      let fills = selectedBases.map(b => window.getComputedStyle(b.domNode).fill);
+
+      // note that the `Color` class cannot handle keyword colors (e.g., "red", "magenta", "azure")
+      let colors = fills.map(f => new Color(f));
+
+      this.#input.domNode.value = consensusValue(colors.map(c => c.toHex().toLowerCase()));
     } catch {
       this.#input.domNode.value = '#000000';
     }

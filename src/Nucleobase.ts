@@ -2,6 +2,8 @@
  * The nucleobase interface used by the Editing form.
  */
 export interface Nucleobase {
+  readonly domNode: SVGTextElement;
+
   getAttribute(name: string): string | null;
 
   setAttribute(name: string, value: string): void;
