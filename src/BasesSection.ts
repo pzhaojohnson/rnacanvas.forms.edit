@@ -249,8 +249,6 @@ class FillColorField {
 
   #previousState: unknown;
 
-  #previousColor;
-
   constructor(targetApp: App) {
     this.#targetApp = targetApp;
 
@@ -268,8 +266,6 @@ class FillColorField {
     drawingObserver.observe(this.#targetApp.drawing.domNode, { attributes: true, attributeFilter: ['fill'], subtree: true });
 
     this.refresh();
-
-    this.#previousColor = this.#input.domNode.value;
   }
 
   get domNode() {
@@ -299,14 +295,6 @@ class FillColorField {
   }
 
   #handleInput(): void {
-    if (this.#input.domNode.value === this.#previousColor) {
-      // there has been an input event without a new color having actually been input
-      // (happens in Firefox when first clicking on a color input)
-      return;
-    } else {
-      this.#previousColor = this.#input.domNode.value;
-    }
-
     let selectedBases = [...this.#targetApp.selectedBases];
 
     if (selectedBases.length == 0) {
