@@ -127,6 +127,8 @@ class Header {
   #text = document.createElement('p');
 
   constructor() {
+    this.domNode.classList.add(styles['header']);
+
     this.#caret.classList.add(styles['header-caret']);
     this.#caret.setAttribute('viewBox', '0 0 6 10');
     this.#caret.setAttribute('width', '6');
@@ -140,8 +142,11 @@ class Header {
       ></path>
     `;
 
+    this.domNode.append(this.#caret);
+
     this.#text.classList.add(styles['header-text']);
     this.#text.textContent = 'Bases';
+    this.domNode.append(this.#text);
   }
 }
 
