@@ -22,14 +22,19 @@ import { consensusValue } from '@rnacanvas/consensize';
 
 import * as $ from 'jquery';
 
-
 /**
  * The section for editing bases.
  */
 export class BasesSection {
   readonly domNode = document.createElement('div');
 
+  #header = new Header();
+
+  #content = document.createElement('div');
+
   #numBasesSelected;
+
+  #collapsableContent = document.createElement('div');
 
   #textContentField;
   #fillField;
@@ -46,41 +51,50 @@ export class BasesSection {
   constructor(targetApp: App) {
     this.domNode.classList.add(styles['bases-section']);
 
+    this.#header.domNode.addEventListener('click', () => this.domNode.classList.toggle(styles['open']));
+    this.domNode.append(this.#header.domNode);
+
+    this.#content.classList.add(styles['content']);
+    this.domNode.append(this.#content);
+
     this.#numBasesSelected = new NumBasesSelected(targetApp);
-    this.domNode.append(this.#numBasesSelected.domNode);
+    this.#content.append(this.#numBasesSelected.domNode);
+
+    this.#collapsableContent.classList.add(styles['collapsable-content']);
+    this.#content.append(this.#collapsableContent);
 
     this.#textContentField = new TextContentField(targetApp);
-    this.domNode.append(this.#textContentField.domNode);
+    this.#collapsableContent.append(this.#textContentField.domNode);
 
     this.#fillField = new FillField(targetApp);
-    this.domNode.append(this.#fillField.domNode);
+    this.#collapsableContent.append(this.#fillField.domNode);
 
     this.#fillColorField = new FillColorField(targetApp);
-    this.domNode.append(this.#fillColorField.domNode);
+    this.#collapsableContent.append(this.#fillColorField.domNode);
 
     this.#fillOpacityField = new FillOpacityField(targetApp);
-    this.domNode.append(this.#fillOpacityField.domNode);
+    this.#collapsableContent.append(this.#fillOpacityField.domNode);
 
     this.#fontFamilyField = new FontFamilyField(targetApp);
-    this.domNode.append(this.#fontFamilyField.domNode);
+    this.#collapsableContent.append(this.#fontFamilyField.domNode);
 
     this.#fontSizeField = new FontSizeField(targetApp);
-    this.domNode.append(this.#fontSizeField.domNode);
+    this.#collapsableContent.append(this.#fontSizeField.domNode);
 
     this.#fontWeightField = new FontWeightField(targetApp);
-    this.domNode.append(this.#fontWeightField.domNode);
+    this.#collapsableContent.append(this.#fontWeightField.domNode);
 
     this.#boldField = new BoldField(targetApp);
-    this.domNode.append(this.#boldField.domNode);
+    this.#collapsableContent.append(this.#boldField.domNode);
 
     this.#fontStyleField = new FontStyleField(targetApp);
-    this.domNode.append(this.#fontStyleField.domNode);
+    this.#collapsableContent.append(this.#fontStyleField.domNode);
 
     this.#textDecorationField = new TextDecorationField(targetApp);
-    this.domNode.append(this.#textDecorationField.domNode);
+    this.#collapsableContent.append(this.#textDecorationField.domNode);
 
     this.#underlinedField = new UnderlinedField(targetApp);
-    this.domNode.append(this.#underlinedField.domNode);
+    this.#collapsableContent.append(this.#underlinedField.domNode);
   }
 
   get #refreshableComponents() {
@@ -102,6 +116,32 @@ export class BasesSection {
 
   refresh(): void {
     this.#refreshableComponents.forEach(comp => comp.refresh());
+  }
+}
+
+class Header {
+  readonly domNode = document.createElement('div');
+
+  #caret = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+
+  #text = document.createElement('p');
+
+  constructor() {
+    this.#caret.classList.add(styles['header-caret']);
+    this.#caret.setAttribute('viewBox', '0 0 6 10');
+    this.#caret.setAttribute('width', '6');
+    this.#caret.setAttribute('height', '10');
+
+    this.#caret.innerHTML = `
+      <path
+        d="M 1 1 L 5 5 L 1 9"
+        stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        fill="none"
+      ></path>
+    `;
+
+    this.#text.classList.add(styles['header-text']);
+    this.#text.textContent = 'Bases';
   }
 }
 
@@ -155,7 +195,7 @@ class TextContentField {
 
     this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent';
 
-    $(this.domNode).css({ marginTop: '15px', alignSelf: 'start' });
+    $(this.domNode).css({ alignSelf: 'start' });
 
     // only refresh when necessary
     this.#targetApp.selectedBases.addEventListener('change', () => document.body.contains(this.domNode) ? this.refresh() : {});

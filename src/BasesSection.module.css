@@ -3,6 +3,41 @@
   flex-direction: column;
 }
 
+.header {
+  cursor: pointer;
+}
+
+.header-caret {
+  margin-right: 6px;
+}
+
+.open .header-caret {
+  transform: rotate(90deg);
+}
+
+.header-text {
+  margin: 0px;
+  padding: 0px;
+
+  font-family: "Open Sans", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  font-style: normal;
+  color: black;
+
+  cursor: pointer;
+
+  outline: none;
+}
+
+.header:hover .header-text {
+  text-decoration: underline;
+}
+
+.content {
+  margin: 10px 0px 0px 10px;
+}
+
 .num-bases-selected {
   margin: 0px;
   padding: 0px;
@@ -17,4 +52,14 @@
   -webkit-user-select: none;
 
   pointer-events: none;
+}
+
+.collapsable-content {
+  margin-top: 15px;
+
+  visibility: collapse;
+}
+
+.open .collapsable-content {
+  visibility: visible;
 }
