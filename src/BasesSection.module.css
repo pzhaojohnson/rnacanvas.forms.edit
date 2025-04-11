@@ -8,6 +8,8 @@
   flex-direction: row;
   align-items: center;
 
+  align-self: start;
+
   pointer-events: auto;
 
   cursor: pointer;
@@ -45,7 +47,10 @@
 }
 
 .content {
-  margin: 10px 0px 0px 10px;
+  margin: 9px 0px 0px 12px;
+
+  display: flex;
+  flex-direction: column;
 }
 
 .num-bases-selected {
