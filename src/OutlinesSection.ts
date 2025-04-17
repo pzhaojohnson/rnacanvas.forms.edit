@@ -43,6 +43,7 @@ export class OutlinesSection {
   #fillColorField;
   #fillOpacityField;
   #strokeField;
+  #strokeColorField;
   #strokeOpacityField;
   #strokeDasharrayField;
 
@@ -81,6 +82,9 @@ export class OutlinesSection {
     this.#strokeField = new StrokeField(targetApp);
     this.#collapsableContent.append(this.#strokeField.domNode);
 
+    this.#strokeColorField = new StrokeColorField(targetApp);
+    this.#collapsableContent.append(this.#strokeColorField.domNode);
+
     this.#strokeOpacityField = new StrokeOpacityField(targetApp);
     this.#collapsableContent.append(this.#strokeOpacityField.domNode);
 
@@ -111,6 +115,7 @@ export class OutlinesSection {
       this.#fillColorField,
       this.#fillOpacityField,
       this.#strokeField,
+      this.#strokeColorField,
       this.#strokeOpacityField,
     ];
   }
