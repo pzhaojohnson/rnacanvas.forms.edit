@@ -282,11 +282,20 @@ class RemoveButton {
 
   #button = new LightSolidButton('Remove', () => this.press());
 
+  #drawingObserver;
+
   constructor(targetApp: App) {
     this.#targetApp = targetApp;
 
     // only refresh when necessary
     this.#targetApp.selectedOutlines.addEventListener('change', () => document.body.contains(this.domNode) ? this.refresh() : {});
+
+    // only refresh when necessary
+    this.#targetApp.selectedBases.addEventListener('change', () => document.body.contains(this.domNode) ? this.refresh() : {});
+
+    // refresh when outlines are added or removed from selected bases
+    this.#drawingObserver = new MutationObserver(() => document.body.contains(this.domNode) ? this.refresh() : {});
+    this.#drawingObserver.observe(targetApp.drawing.domNode, { childList: true, subtree: true });
 
     this.refresh();
   }
@@ -296,26 +305,44 @@ class RemoveButton {
   }
 
   press(): void {
-    let selectedOutlines = [...this.#targetApp.selectedOutlines];
+    let allOutlines = [...this.#targetApp.drawing.outlines];
 
-    if (selectedOutlines.length == 0) {
+    let selectedOutlines = new Set(this.#targetApp.selectedOutlines);
+
+    let selectedBases = new Set(this.#targetApp.selectedBases);
+
+    // outlines to be removed
+    let toBeRemoved = allOutlines.filter(o => selectedOutlines.has(o) || selectedBases.has(o.owner));
+
+    if (toBeRemoved.length == 0) {
       this.refresh();
       return;
     }
 
     this.#targetApp.pushUndoStack();
 
-    selectedOutlines.forEach(o => o.domNode.remove());
+    toBeRemoved.forEach(o => o.domNode.remove());
 
     this.refresh();
   }
 
   refresh(): void {
-    let selectedOutlines = [...this.#targetApp.selectedOutlines];
+    let allOutlines = [...this.#targetApp.drawing.outlines];
 
-    selectedOutlines.length == 0 ? this.#button.disable() : this.#button.enable();
+    let selectedOutlines = new Set(this.#targetApp.selectedOutlines);
 
-    this.#button.tooltip.textContent = selectedOutlines.length == 0 ? 'No outlines are selected.' : 'Remove the selected outlines.';
+    let selectedBases = new Set(this.#targetApp.selectedBases);
+
+    // outlines to be removed
+    let toBeRemoved = allOutlines.filter(o => selectedOutlines.has(o) || selectedBases.has(o.owner));
+
+    toBeRemoved.length == 0 ? this.#button.disable() : this.#button.enable();
+
+    if (toBeRemoved.length == 0) {
+      this.#button.tooltip.textContent = 'No outlines or outlined bases are selected.';
+    } else {
+      this.#button.tooltip.textContent = 'Remove selected outlines and outlines from selected bases.';
+    }
   }
 }
 
