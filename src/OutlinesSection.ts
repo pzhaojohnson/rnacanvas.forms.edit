@@ -192,6 +192,9 @@ class AddSection {
 
     this.#buttonsContainer.append(this.#addButton.domNode, this.#removeButton.domNode);
 
+    // checked by default
+    this.#onlyAddMissingCheckbox.domNode.checked = true;
+
     this.#onlyAddMissingField.domNode.style.marginTop = '12px';
     this.#onlyAddMissingField.domNode.style.alignSelf = 'start';
 
