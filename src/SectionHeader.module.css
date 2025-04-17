@@ -1,0 +1,42 @@
+.section-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  align-self: start;
+
+  pointer-events: auto;
+
+  cursor: pointer;
+}
+
+.text {
+  margin: 0px;
+  padding: 0px;
+
+  font-family: "Open Sans", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  font-style: normal;
+  color: black;
+
+  pointer-events: auto;
+
+  cursor: pointer;
+
+  outline: none;
+}
+
+.section-header:hover .text {
+  text-decoration: underline;
+}
+
+.caret {
+  margin-right: 6px;
+
+  pointer-events: auto;
+}
+
+.down-caret {
+  transform: rotate(90deg);
+}

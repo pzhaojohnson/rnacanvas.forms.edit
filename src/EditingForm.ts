@@ -4,6 +4,8 @@ import * as styles from './EditingForm.module.css';
 
 import { BasesSection } from './BasesSection';
 
+import { OutlinesSection } from './OutlinesSection';
+
 import { CloseButton } from './CloseButton';
 
 import { DragTranslater } from '@rnacanvas/forms';
@@ -14,6 +16,7 @@ export class EditingForm {
   readonly domNode = document.createElement('div');
 
   #basesSection;
+  #outlinesSection;
 
   #dragTranslater;
 
@@ -33,6 +36,9 @@ export class EditingForm {
 
     this.#basesSection = new BasesSection(targetApp);
     contentContainer.append(this.#basesSection.domNode);
+
+    this.#outlinesSection = new OutlinesSection(targetApp);
+    contentContainer.append(this.#outlinesSection.domNode);
 
     // add last to place on top of everything else
     let closeButton = CloseButton();
@@ -54,8 +60,15 @@ export class EditingForm {
     this.domNode.remove();
   }
 
+  get #refreshableComponents() {
+    return [
+      this.#basesSection,
+      this.#outlinesSection,
+    ];
+  }
+
   refresh(): void {
-    this.#basesSection.refresh();
+    this.#refreshableComponents.forEach(component => component.refresh());
   }
 
   reposition() {
