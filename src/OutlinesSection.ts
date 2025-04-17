@@ -117,6 +117,7 @@ export class OutlinesSection {
       this.#strokeField,
       this.#strokeColorField,
       this.#strokeOpacityField,
+      this.#strokeDasharrayField,
     ];
   }
 
