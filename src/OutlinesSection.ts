@@ -45,6 +45,7 @@ export class OutlinesSection {
   #strokeField;
   #strokeColorField;
   #strokeOpacityField;
+  #strokeWidthField;
   #strokeDasharrayField;
 
   constructor(targetApp: App) {
@@ -88,6 +89,9 @@ export class OutlinesSection {
     this.#strokeOpacityField = new StrokeOpacityField(targetApp);
     this.#collapsableContent.append(this.#strokeOpacityField.domNode);
 
+    this.#strokeWidthField = new StrokeWidthField(targetApp);
+    this.#collapsableContent.append(this.#strokeWidthField.domNode);
+
     this.#strokeDasharrayField = new StrokeDasharrayField(targetApp);
     this.#collapsableContent.append(this.#strokeDasharrayField.domNode);
   }
@@ -117,6 +121,7 @@ export class OutlinesSection {
       this.#strokeField,
       this.#strokeColorField,
       this.#strokeOpacityField,
+      this.#strokeWidthField,
       this.#strokeDasharrayField,
     ];
   }
@@ -639,6 +644,36 @@ class StrokeOpacityField {
     this.#field = new TextInputField('Stroke Opacity', this.#input.domNode);
 
     this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/stroke-opacity';
+
+    $(this.domNode).css({ marginTop: '12px', alignSelf: 'start' });
+
+    this.refresh();
+  }
+
+  get domNode() {
+    return this.#field.domNode;
+  }
+
+  refresh(): void {
+    this.#input.refresh();
+  }
+}
+
+class StrokeWidthField {
+  #targetApp;
+
+  #input;
+
+  #field;
+
+  constructor(targetApp: App) {
+    this.#targetApp = targetApp;
+
+    this.#input = new AttributeInput(targetApp, 'stroke-width');
+
+    this.#field = new TextInputField('Stroke Width', this.#input.domNode);
+
+    this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/stroke-width';
 
     $(this.domNode).css({ marginTop: '12px', alignSelf: 'start' });
 
