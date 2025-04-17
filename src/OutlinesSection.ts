@@ -198,6 +198,8 @@ class AddSection {
     this.#drawingObserver = new MutationObserver(() => document.body.contains(this.domNode) ? this.refresh() : {});
     this.#drawingObserver.observe(targetApp.drawing.domNode, { childList: true, subtree: true });
 
+    this.#onlyAddMissingCheckbox.domNode.addEventListener('change', () => this.refresh());
+
     this.refresh();
   }
 
