@@ -168,6 +168,8 @@ class AddSection {
 
   #removeButton;
 
+  #drawingObserver;
+
   constructor(targetApp: App) {
     this.#targetApp = targetApp;
 
@@ -188,6 +190,15 @@ class AddSection {
     this.#onlyAddMissingField.domNode.style.alignSelf = 'start';
 
     this.domNode.append(this.#onlyAddMissingField.domNode);
+
+    // only refresh when necessary
+    targetApp.selectedBases.addEventListener('change', () => document.body.contains(this.domNode) ? this.refresh() : {});
+
+    // only refresh when necessary
+    this.#drawingObserver = new MutationObserver(() => document.body.contains(this.domNode) ? this.refresh() : {});
+    this.#drawingObserver.observe(targetApp.drawing.domNode, { childList: true, subtree: true });
+
+    this.refresh();
   }
 
   get #onlyAddMissing(): boolean {
