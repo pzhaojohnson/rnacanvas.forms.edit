@@ -244,7 +244,7 @@ class AddSection {
       this.#addButton.tooltip.textContent = 'No bases are selected.';
     } else if (this.#onlyAddMissing && notOutlined.length == 0) {
       this.#addButton.disable();
-      this.#addButton.tooltip.textContent = 'All selected bases are already outlined.';
+      this.#addButton.tooltip.textContent = 'The selected bases are already outlined.';
     } else {
       this.#addButton.enable();
       this.#addButton.tooltip.textContent = 'Outline the selected bases.';
