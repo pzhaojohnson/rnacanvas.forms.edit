@@ -16,6 +16,14 @@ export class TextButton {
     this.domNode.append(this.tooltip.domNode);
   }
 
+  get textContent() {
+    return this.#text.textContent;
+  }
+
+  set textContent(textContent) {
+    this.#text.textContent = textContent;
+  }
+
   disable() {
     this.domNode.classList.add(styles['disabled']);
   }
