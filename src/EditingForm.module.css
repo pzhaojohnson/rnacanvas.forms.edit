@@ -2,6 +2,8 @@
   width: 266px;
   height: 524px;
 
+  overflow: auto;
+
   border-radius: 16px;
 
   border: 1px solid #220536;

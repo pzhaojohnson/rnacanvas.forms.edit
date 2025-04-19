@@ -57,6 +57,7 @@ export class OutlinesSection {
     this.#header.domNode.addEventListener('click', () => this.toggle());
     this.domNode.append(this.#header.domNode);
 
+    this.#content.classList.add(styles['content']);
     this.domNode.append(this.#content);
 
     this.#numSelected = new NumSelected(targetApp);
@@ -197,6 +198,8 @@ class AddSection {
 
     this.#buttonsContainer.append(this.#addButton.domNode, this.#removeButton.domNode);
 
+    this.#addButton.tooltip.domNode.style.left = '-22px';
+
     // checked by default
     this.#onlyAddMissingCheckbox.domNode.checked = true;
 
@@ -287,6 +290,8 @@ class RemoveButton {
   constructor(targetApp: App) {
     this.#targetApp = targetApp;
 
+    this.#button.tooltip.domNode.style.left = '-11px';
+
     // only refresh when necessary
     this.#targetApp.selectedOutlines.addEventListener('change', () => document.body.contains(this.domNode) ? this.refresh() : {});
 
@@ -362,7 +367,7 @@ class RField {
 
     this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/r';
 
-    $(this.domNode).css({ marginTop: '12px', alignSelf: 'start' });
+    $(this.domNode).css({ marginTop: '16px', alignSelf: 'start' });
 
     this.refresh();
   }
@@ -392,7 +397,7 @@ class FillField {
 
     this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/fill';
 
-    $(this.domNode).css({ marginTop: '12px', alignSelf: 'start' });
+    $(this.domNode).css({ marginTop: '10px', alignSelf: 'start' });
 
     this.refresh();
   }
@@ -547,7 +552,7 @@ class StrokeField {
 
     this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/stroke';
 
-    $(this.domNode).css({ marginTop: '12px', alignSelf: 'start' });
+    $(this.domNode).css({ marginTop: '10px', alignSelf: 'start' });
 
     this.refresh();
   }
@@ -702,7 +707,7 @@ class StrokeWidthField {
 
     this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/stroke-width';
 
-    $(this.domNode).css({ marginTop: '12px', alignSelf: 'start' });
+    $(this.domNode).css({ marginTop: '10px', alignSelf: 'start' });
 
     this.refresh();
   }
@@ -732,7 +737,7 @@ class StrokeDasharrayField {
 
     this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/stroke-dasharray';
 
-    $(this.domNode).css({ marginTop: '12px', alignSelf: 'start' });
+    $(this.domNode).css({ marginTop: '10px', alignSelf: 'start' });
 
     this.refresh();
   }

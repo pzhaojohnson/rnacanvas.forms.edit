@@ -48,13 +48,10 @@
 
 .tooltip {
   position: absolute;
-  top: -61px;
-  left: 24px;
+  top: -59px;
+  left: -22px;
 
-  height: 36px;
-  width: 95px;
-
-  padding: 0px;
+  padding: 10px 19px;
 
   border-radius: 5px;
 
@@ -93,7 +90,7 @@
 
   position: absolute;
   top: 100%;
-  left: 39px;
+  left: 38px;
 }
 
 .tooltip-text-container {
