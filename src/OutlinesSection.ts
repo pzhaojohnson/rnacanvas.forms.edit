@@ -194,18 +194,22 @@ class SelectSection {
 
     this.#label.classList.add(styles['select-section-label']);
     this.#label.textContent = 'Select:';
+    this.domNode.append(this.#label);
 
     this.#allButton.domNode.addEventListener('click', () => this.#selectAll());
     this.#allButton.domNode.textContent = 'All';
     this.#allButton.domNode.style.marginLeft = '17px';
+    this.domNode.append(this.#allButton.domNode);
 
     this.#outliningButton.domNode.addEventListener('click', () => this.#selectOutlining());
     this.#outliningButton.domNode.textContent = 'Outlining';
     this.#outliningButton.domNode.style.marginLeft = '16px';
+    this.domNode.append(this.#outliningButton.domNode);
 
     this.#noneButton.domNode.addEventListener('click', () => this.#deselectAll());
     this.#noneButton.domNode.textContent = 'None';
     this.#noneButton.domNode.style.marginLeft = '16px';
+    this.domNode.append(this.#noneButton.domNode);
 
     // only refresh when necessary
     targetApp.selectedOutlines.addEventListener('change', () => document.body.contains(this.domNode) ? this.refresh() : {});
