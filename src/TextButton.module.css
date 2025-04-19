@@ -36,6 +36,10 @@
   color: #a9a9ff;
 }
 
+.disabled:hover .text {
+  text-decoration: none;
+}
+
 .tooltip {
   position: absolute;
   top: -59px;
