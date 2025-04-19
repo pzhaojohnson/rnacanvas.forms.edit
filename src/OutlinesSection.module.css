@@ -29,7 +29,7 @@
 }
 
 .collapsable-content {
-  margin-top: 15px;
+  margin-top: 14px;
 
   display: flex;
   flex-direction: column;
@@ -39,4 +39,28 @@
 
 .open .collapsable-content {
   visibility: visible;
+}
+
+.select-section {
+  margin-top: 14px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.select-section-label {
+  margin: 0px;
+  padding: 0px;
+
+  font-family: "Open Sans", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  font-style: normal;
+  color: black;
+
+  user-select: none;
+  -webkit-user-select: none;
+
+  pointer-events: none;
 }

@@ -6,6 +6,8 @@ import * as $ from 'jquery';
 
 import { SectionHeader } from './SectionHeader';
 
+import { TextButton } from './TextButton';
+
 import { LightSolidButton } from './LightSolidButton';
 
 import { Checkbox } from './Checkbox';
@@ -37,6 +39,7 @@ export class OutlinesSection {
 
   #collapsableContent = document.createElement('div');
 
+  #selectSection;
   #addSection;
   #rField;
   #fillField;
@@ -65,6 +68,9 @@ export class OutlinesSection {
 
     this.#collapsableContent.classList.add(styles['collapsable-content']);
     this.#content.append(this.#collapsableContent);
+
+    this.#selectSection = new SelectSection(targetApp);
+    this.#collapsableContent.append(this.#selectSection.domNode);
 
     this.#addSection = new AddSection(targetApp);
     this.#collapsableContent.append(this.#addSection.domNode);
@@ -114,6 +120,7 @@ export class OutlinesSection {
   get #refreshableComponents() {
     return [
       this.#numSelected,
+      this.#selectSection,
       this.#addSection,
       this.#rField,
       this.#fillField,
@@ -165,6 +172,139 @@ class NumSelected {
   }
 }
 
+class SelectSection {
+  #targetApp;
+
+  readonly domNode = document.createElement('div');
+
+  #label = document.createElement('p');
+
+  #allButton = new TextButton();
+
+  #outliningButton = new TextButton();
+
+  #noneButton = new TextButton();
+
+  #drawingObserver;
+
+  constructor(targetApp: App) {
+    this.#targetApp = targetApp;
+
+    this.domNode.classList.add(styles['select-section']);
+
+    this.#label.classList.add(styles['select-section-label']);
+    this.#label.textContent = 'Select:';
+
+    this.#allButton.domNode.addEventListener('click', () => this.#selectAll());
+    this.#allButton.domNode.textContent = 'All';
+    this.#allButton.domNode.style.marginLeft = '17px';
+
+    this.#outliningButton.domNode.addEventListener('click', () => this.#selectOutlining());
+    this.#outliningButton.domNode.textContent = 'Outlining';
+    this.#outliningButton.domNode.style.marginLeft = '16px';
+
+    this.#noneButton.domNode.addEventListener('click', () => this.#deselectAll());
+    this.#noneButton.domNode.textContent = 'None';
+    this.#noneButton.domNode.style.marginLeft = '16px';
+
+    // only refresh when necessary
+    targetApp.selectedOutlines.addEventListener('change', () => document.body.contains(this.domNode) ? this.refresh() : {});
+
+    // watch for when outlines are added or removed from the drawing
+    this.#drawingObserver = new MutationObserver(() => document.body.contains(this.domNode) ? this.refresh(): {});
+    this.#drawingObserver.observe(targetApp.drawing.domNode, { childList: true, subtree: true });
+
+    this.refresh();
+  }
+
+  /**
+   * Add all outlines to selected.
+   */
+  #selectAll() {
+    let allOutlines = [...this.#targetApp.drawing.outlines];
+
+    this.#targetApp.addToSelected(allOutlines);
+  }
+
+  /**
+   * Add all outlines outlining the currently selected bases to the current selection.
+   */
+  #selectOutlining() {
+    let selectedBases = new Set(this.#targetApp.selectedBases);
+
+    let allOutlines = [...this.#targetApp.drawing.outlines];
+
+    this.#targetApp.addToSelected(allOutlines.filter(o => selectedBases.has(o.owner)));
+  }
+
+  /**
+   * Remove all outlines from selected.
+   */
+  #deselectAll() {
+    let allOutlines = [...this.#targetApp.drawing.outlines];
+
+    this.#targetApp.removeFromSelected(allOutlines);
+  }
+
+  refresh(): void {
+    this.#refreshAllButton();
+
+    this.#refreshOutliningButton();
+
+    this.#refreshNoneButton();
+  }
+
+  #refreshAllButton() {
+    let allOutlines = [...this.#targetApp.drawing.outlines];
+
+    let selectedOutlines = [...this.#targetApp.selectedOutlines];
+
+    if (selectedOutlines.length == allOutlines.length) {
+      this.#allButton.disable();
+      this.#allButton.tooltip.textContent = 'All outlines are already selected.';
+    } else {
+      this.#allButton.enable();
+      this.#allButton.tooltip.textContent = 'Select all outlines.';
+    }
+  }
+
+  #refreshOutliningButton() {
+    let allOutlines = [...this.#targetApp.drawing.outlines];
+
+    let selectedBases = new Set(this.#targetApp.selectedBases);
+
+    let outliningOutlines = allOutlines.filter(o => selectedBases.has(o.owner));
+
+    let selectedOutlines = new Set(this.#targetApp.selectedOutlines);
+
+    if (selectedBases.size == 0) {
+      this.#outliningButton.disable();
+      this.#outliningButton.tooltip.textContent = 'No bases are selected.';
+    } else if (outliningOutlines.length == 0) {
+      this.#outliningButton.disable();
+      this.#outliningButton.tooltip.textContent = 'None of the selected bases are outlined.';
+    } else if (outliningOutlines.every(o => selectedOutlines.has(o))) {
+      this.#outliningButton.disable();
+      this.#outliningButton.tooltip.textContent = 'All outlines outlining the selected bases are already selected.';
+    } else {
+      this.#outliningButton.enable();
+      this.#outliningButton.tooltip.textContent = 'Select outlines outlining the selected bases.';
+    }
+  }
+
+  #refreshNoneButton() {
+    let selectedOutlines = [...this.#targetApp.selectedOutlines];
+
+    if (selectedOutlines.length == 0) {
+      this.#noneButton.disable();
+      this.#noneButton.tooltip.textContent = 'No outlines are selected.';
+    } else {
+      this.#noneButton.enable();
+      this.#noneButton.tooltip.textContent = 'Deselect all currently selected outlines.';
+    }
+  }
+}
+
 class AddSection {
   #targetApp;
 
@@ -184,6 +324,8 @@ class AddSection {
 
   constructor(targetApp: App) {
     this.#targetApp = targetApp;
+
+    this.domNode.style.marginTop = '17px';
 
     this.domNode.style.display = 'flex';
     this.domNode.style.flexDirection = 'column';

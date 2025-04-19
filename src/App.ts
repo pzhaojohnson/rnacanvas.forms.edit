@@ -32,6 +32,8 @@ export interface App {
 
   addToSelected(eles: (Nucleobase | Outline)[]): void;
 
+  removeFromSelected(eles: (Nucleobase | Outline)[]): void;
+
   readonly selectedBases: {
     [Symbol.iterator](): Iterator<Nucleobase>;
 
