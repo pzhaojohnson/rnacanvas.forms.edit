@@ -26,6 +26,8 @@ import { Color } from '@svgdotjs/svg.js';
 
 import { consensusValue } from '@rnacanvas/consensize';
 
+import { bringToFront, sendToBack } from '@rnacanvas/draw.svg';
+
 export class OutlinesSection {
   #targetApp;
 
@@ -41,6 +43,7 @@ export class OutlinesSection {
 
   #selectSection;
   #addSection;
+  #zSection;
   #rField;
   #fillField;
   #fillColorField;
@@ -74,6 +77,9 @@ export class OutlinesSection {
 
     this.#addSection = new AddSection(targetApp);
     this.#collapsableContent.append(this.#addSection.domNode);
+
+    this.#zSection = new ZSection(targetApp);
+    this.#collapsableContent.append(this.#zSection.domNode);
 
     this.#rField = new RField(targetApp);
     this.#collapsableContent.append(this.#rField.domNode);
@@ -122,6 +128,7 @@ export class OutlinesSection {
       this.#numSelected,
       this.#selectSection,
       this.#addSection,
+      this.#zSection,
       this.#rField,
       this.#fillField,
       this.#fillColorField,
@@ -470,6 +477,103 @@ class RemoveButton {
     } else {
       this.#button.enable();
       this.#button.tooltip.textContent = 'Remove the selected outlines.';
+    }
+  }
+}
+
+class ZSection {
+  #targetApp;
+
+  readonly domNode = document.createElement('div');
+
+  #label = document.createElement('p');
+
+  #frontButton = new TextButton();
+
+  #backButton = new TextButton();
+
+  constructor(targetApp: App) {
+    this.#targetApp = targetApp;
+
+    this.domNode.classList.add(styles['z-section']);
+
+    this.#label.classList.add(styles['z-section-label']);
+    this.#label.textContent = 'Send to:';
+    this.domNode.append(this.#label);
+
+    this.#frontButton.domNode.addEventListener('click', () => this.#bringToFront());
+    this.#frontButton.textContent = 'Front';
+    this.#frontButton.domNode.style.marginLeft = '17px';
+    this.domNode.append(this.#frontButton.domNode);
+
+    this.#backButton.domNode.addEventListener('click', () => this.#sendToBack());
+    this.#backButton.textContent = 'Back';
+    this.#backButton.domNode.style.marginLeft = '16px';
+    this.domNode.append(this.#backButton.domNode);
+
+    // only refresh when necessary
+    targetApp.selectedOutlines.addEventListener('change', () => document.body.contains(this.domNode) ? this.refresh() : {});
+
+    this.refresh();
+  }
+
+  #bringToFront() {
+    let selectedOutlines = [...this.#targetApp.selectedOutlines];
+
+    if (selectedOutlines.length == 0) {
+      this.refresh();
+      return;
+    }
+
+    this.#targetApp.pushUndoStack();
+
+    selectedOutlines.forEach(o => bringToFront(o.domNode));
+
+    this.refresh();
+  }
+
+  #sendToBack() {
+    let selectedOutlines = [...this.#targetApp.selectedOutlines];
+
+    if (selectedOutlines.length == 0) {
+      this.refresh();
+      return;
+    }
+
+    this.#targetApp.pushUndoStack();
+
+    selectedOutlines.forEach(o => sendToBack(o.domNode));
+
+    this.refresh();
+  }
+
+  refresh(): void {
+    this.#refreshFrontButton();
+
+    this.#refreshBackButton();
+  }
+
+  #refreshFrontButton() {
+    let selectedOutlines = [...this.#targetApp.selectedOutlines];
+
+    if (selectedOutlines.length == 0) {
+      this.#frontButton.disable();
+      this.#frontButton.tooltip.textContent = 'No outlines are selected.';
+    } else {
+      this.#frontButton.enable();
+      this.#frontButton.tooltip.textContent = 'Bring selected outlines to the front.';
+    }
+  }
+
+  #refreshBackButton() {
+    let selectedOutlines = [...this.#targetApp.selectedOutlines];
+
+    if (selectedOutlines.length == 0) {
+      this.#backButton.disable();
+      this.#backButton.tooltip.textContent = 'No outlines are selected.';
+    } else {
+      this.#backButton.enable();
+      this.#backButton.tooltip.textContent = 'Send selected outlines to the back.';
     }
   }
 }
