@@ -270,7 +270,10 @@ class SelectSection {
 
     let selectedOutlines = [...this.#targetApp.selectedOutlines];
 
-    if (selectedOutlines.length == allOutlines.length) {
+    if (allOutlines.length == 0) {
+      this.#allButton.disable();
+      this.#allButton.tooltip.textContent = 'There are no outlines in the drawing.';
+    } else if (selectedOutlines.length == allOutlines.length) {
       this.#allButton.disable();
       this.#allButton.tooltip.textContent = 'All outlines are already selected.';
     } else {
