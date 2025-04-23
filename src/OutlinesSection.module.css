@@ -29,7 +29,7 @@
 }
 
 .collapsable-content {
-  margin-top: 14px;
+  margin-top: 16px;
 
   display: flex;
   flex-direction: column;
@@ -42,8 +42,6 @@
 }
 
 .select-section {
-  margin-top: 14px;
-
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -66,7 +64,7 @@
 }
 
 .z-section {
-  margin-top: 14px;
+  margin-top: 16px;
 
   display: flex;
   flex-direction: row;

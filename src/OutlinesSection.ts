@@ -205,17 +205,17 @@ class SelectSection {
 
     this.#allButton.domNode.addEventListener('click', () => this.#selectAll());
     this.#allButton.textContent = 'All';
-    this.#allButton.domNode.style.marginLeft = '17px';
+    this.#allButton.domNode.style.marginLeft = '20px';
     this.domNode.append(this.#allButton.domNode);
 
     this.#outliningButton.domNode.addEventListener('click', () => this.#selectOutlining());
     this.#outliningButton.textContent = 'Outlining';
-    this.#outliningButton.domNode.style.marginLeft = '16px';
+    this.#outliningButton.domNode.style.marginLeft = '17px';
     this.domNode.append(this.#outliningButton.domNode);
 
     this.#noneButton.domNode.addEventListener('click', () => this.#deselectAll());
     this.#noneButton.textContent = 'None';
-    this.#noneButton.domNode.style.marginLeft = '16px';
+    this.#noneButton.domNode.style.marginLeft = '17px';
     this.domNode.append(this.#noneButton.domNode);
 
     // only refresh when necessary
@@ -293,7 +293,7 @@ class SelectSection {
       this.#outliningButton.tooltip.textContent = 'No bases are selected.';
     } else if (outliningOutlines.length == 0) {
       this.#outliningButton.disable();
-      this.#outliningButton.tooltip.textContent = 'None of the selected bases are outlined.';
+      this.#outliningButton.tooltip.textContent = 'No selected bases are outlined.';
     } else if (outliningOutlines.every(o => selectedOutlines.has(o))) {
       this.#outliningButton.disable();
       this.#outliningButton.tooltip.textContent = 'All outlines outlining the selected bases are already selected.';
@@ -311,7 +311,7 @@ class SelectSection {
       this.#noneButton.tooltip.textContent = 'No outlines are selected.';
     } else {
       this.#noneButton.enable();
-      this.#noneButton.tooltip.textContent = 'Deselect all currently selected outlines.';
+      this.#noneButton.tooltip.textContent = 'Deselect all outlines.';
     }
   }
 }
@@ -343,15 +343,13 @@ class AddSection {
 
     this.#buttonsContainer.style.display = 'flex';
     this.#buttonsContainer.style.flexDirection = 'row';
-    this.#buttonsContainer.style.gap = '12px';
+    this.#buttonsContainer.style.gap = '13px';
 
     this.domNode.append(this.#buttonsContainer);
 
     this.#removeButton = new RemoveButton(targetApp);
 
     this.#buttonsContainer.append(this.#addButton.domNode, this.#removeButton.domNode);
-
-    this.#addButton.tooltip.domNode.style.left = '-22px';
 
     // checked by default
     this.#onlyAddMissingCheckbox.domNode.checked = true;
@@ -441,8 +439,6 @@ class RemoveButton {
   constructor(targetApp: App) {
     this.#targetApp = targetApp;
 
-    this.#button.tooltip.domNode.style.left = '-11px';
-
     // only refresh when necessary
     this.#targetApp.selectedOutlines.addEventListener('change', () => document.body.contains(this.domNode) ? this.refresh() : {});
 
@@ -476,7 +472,7 @@ class RemoveButton {
       this.#button.tooltip.textContent = 'No outlines are selected.';
     } else {
       this.#button.enable();
-      this.#button.tooltip.textContent = 'Remove the selected outlines.';
+      this.#button.tooltip.textContent = 'Remove the selected outlines from the drawing.';
     }
   }
 }
@@ -503,12 +499,12 @@ class ZSection {
 
     this.#frontButton.domNode.addEventListener('click', () => this.#bringToFront());
     this.#frontButton.textContent = 'Front';
-    this.#frontButton.domNode.style.marginLeft = '17px';
+    this.#frontButton.domNode.style.marginLeft = '21px';
     this.domNode.append(this.#frontButton.domNode);
 
     this.#backButton.domNode.addEventListener('click', () => this.#sendToBack());
     this.#backButton.textContent = 'Back';
-    this.#backButton.domNode.style.marginLeft = '16px';
+    this.#backButton.domNode.style.marginLeft = '26px';
     this.domNode.append(this.#backButton.domNode);
 
     // only refresh when necessary
@@ -561,7 +557,7 @@ class ZSection {
       this.#frontButton.tooltip.textContent = 'No outlines are selected.';
     } else {
       this.#frontButton.enable();
-      this.#frontButton.tooltip.textContent = 'Bring selected outlines to the front.';
+      this.#frontButton.tooltip.textContent = 'Bring the selected outlines to the front.';
     }
   }
 
@@ -594,7 +590,7 @@ class RField {
 
     this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/r';
 
-    $(this.domNode).css({ marginTop: '16px', alignSelf: 'start' });
+    $(this.domNode).css({ marginTop: '17px', alignSelf: 'start' });
 
     this.refresh();
   }
