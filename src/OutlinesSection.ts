@@ -339,14 +339,14 @@ class AddSection {
   constructor(targetApp: App) {
     this.#targetApp = targetApp;
 
-    this.domNode.style.marginTop = '17px';
+    this.domNode.style.marginTop = '19px';
 
     this.domNode.style.display = 'flex';
     this.domNode.style.flexDirection = 'column';
 
     this.#buttonsContainer.style.display = 'flex';
     this.#buttonsContainer.style.flexDirection = 'row';
-    this.#buttonsContainer.style.gap = '13px';
+    this.#buttonsContainer.style.gap = '14px';
 
     this.domNode.append(this.#buttonsContainer);
 
@@ -593,7 +593,7 @@ class RField {
 
     this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/r';
 
-    $(this.domNode).css({ marginTop: '17px', alignSelf: 'start' });
+    $(this.domNode).css({ marginTop: '20px', alignSelf: 'start' });
 
     this.refresh();
   }

@@ -1,5 +1,5 @@
 .editing-form {
-  width: 267px;
+  width: 268px;
   height: 524px;
 
   overflow: auto;
@@ -35,7 +35,7 @@
 }
 
 .content-container {
-  margin: 27px 0px 0px 27px;
+  margin: 27px 0px 0px 24px;
 
   display: flex;
   flex-direction: column;

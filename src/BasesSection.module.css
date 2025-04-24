@@ -50,7 +50,7 @@
 }
 
 .content {
-  margin: 9px 0px 0px 12px;
+  margin: 10px 0px 0px 12px;
 
   display: flex;
   flex-direction: column;
@@ -73,7 +73,7 @@
 }
 
 .collapsable-content {
-  margin-top: 15px;
+  margin-top: 16px;
 
   visibility: collapse;
 }

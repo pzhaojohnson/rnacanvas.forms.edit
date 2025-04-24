@@ -1,12 +1,12 @@
 .outlines-section {
-  margin-top: 18px;
+  margin-top: 22px;
 
   display: flex;
   flex-direction: column;
 }
 
 .content {
-  margin: 8px 0px 0px 12px;
+  margin: 10px 0px 0px 12px;
 
   display: flex;
   flex-direction: column;
@@ -29,7 +29,7 @@
 }
 
 .collapsable-content {
-  margin-top: 16px;
+  margin-top: 17px;
 
   display: flex;
   flex-direction: column;
@@ -64,7 +64,7 @@
 }
 
 .z-section {
-  margin-top: 16px;
+  margin-top: 21px;
 
   display: flex;
   flex-direction: row;

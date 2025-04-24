@@ -269,7 +269,7 @@ class FillField {
 
     this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill';
 
-    $(this.domNode).css({ marginTop: '12px', alignSelf: 'start' });
+    $(this.domNode).css({ marginTop: '10px', alignSelf: 'start' });
 
     this.refresh();
   }
@@ -424,7 +424,7 @@ class FontFamilyField {
 
     this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/font-family';
 
-    $(this.domNode).css({ marginTop: '12px', alignSelf: 'start' });
+    $(this.domNode).css({ marginTop: '10px', alignSelf: 'start' });
 
     this.refresh();
   }
@@ -454,7 +454,7 @@ class FontSizeField {
 
     this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/font-size';
 
-    $(this.domNode).css({ marginTop: '12px', alignSelf: 'start' });
+    $(this.domNode).css({ marginTop: '10px', alignSelf: 'start' });
 
     this.refresh();
   }
@@ -484,7 +484,7 @@ class FontWeightField {
 
     this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/font-weight';
 
-    $(this.domNode).css({ marginTop: '12px', alignSelf: 'start' });
+    $(this.domNode).css({ marginTop: '10px', alignSelf: 'start' });
 
     this.refresh();
   }
@@ -639,7 +639,7 @@ class TextDecorationField {
 
     this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/text-decoration';
 
-    $(this.domNode).css({ marginTop: '12px', alignSelf: 'start' });
+    $(this.domNode).css({ marginTop: '10px', alignSelf: 'start' });
 
     this.refresh();
   }
