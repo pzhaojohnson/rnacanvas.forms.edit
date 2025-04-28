@@ -34,11 +34,11 @@
   display: flex;
   flex-direction: column;
 
-  visibility: collapse;
+  display: none;
 }
 
 .open .collapsable-content {
-  visibility: visible;
+  display: block;
 }
 
 .select-section {
