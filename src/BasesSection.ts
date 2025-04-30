@@ -26,6 +26,8 @@ import * as $ from 'jquery';
  * The section for editing bases.
  */
 export class BasesSection {
+  #targetApp;
+
   readonly domNode = document.createElement('div');
 
   #header = new Header();
@@ -49,6 +51,8 @@ export class BasesSection {
   #underlinedField;
 
   constructor(targetApp: App) {
+    this.#targetApp = targetApp;
+
     this.domNode.classList.add(styles['bases-section']);
 
     this.#header.domNode.addEventListener('click', () => this.domNode.classList.toggle(styles['open']));
@@ -66,7 +70,7 @@ export class BasesSection {
     // only refresh when necesary
     targetApp.selectedBases.addEventListener('change', () => {
       if (document.body.contains(this.domNode)) {
-        this.#bottomContent.style.display = [...targetApp.selectedBases].length > 0 ? 'block' : 'none';
+        [...targetApp.selectedBases].length > 0 ? this.#showBottomContent() : this.#hideBottomContent();
       }
     });
 
@@ -123,6 +127,16 @@ export class BasesSection {
 
   refresh(): void {
     this.#refreshableComponents.forEach(comp => comp.refresh());
+
+    [...this.#targetApp.selectedBases].length > 0 ? this.#showBottomContent() : this.#hideBottomContent();
+  }
+
+  #showBottomContent() {
+    this.#bottomContent.style.display = 'block';
+  }
+
+  #hideBottomContent() {
+    this.#bottomContent.style.display = 'none';
   }
 }
 

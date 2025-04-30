@@ -81,7 +81,7 @@ export class OutlinesSection {
     // only refresh when necessary
     targetApp.selectedOutlines.addEventListener('change', () => {
       if (document.body.contains(this.domNode)) {
-        this.#bottomContent.style.display = [...targetApp.selectedOutlines].length > 0 ? 'flex' : 'none';
+        [...targetApp.selectedOutlines].length > 0 ? this.#showBottomContent() : this.#hideBottomContent();
       }
     });
 
@@ -150,6 +150,16 @@ export class OutlinesSection {
 
   refresh(): void {
     this.#refreshableComponents.forEach(component => component.refresh());
+
+    [...this.#targetApp.selectedOutlines].length > 0 ? this.#showBottomContent() : this.#hideBottomContent();
+  }
+
+  #showBottomContent() {
+    this.#bottomContent.style.display = 'flex';
+  }
+
+  #hideBottomContent() {
+    this.#bottomContent.style.display = 'none';
   }
 }
 
