@@ -69,6 +69,12 @@ export class OutlinesSection {
     this.#numSelected = new NumSelected(targetApp);
     this.#content.append(this.#numSelected.domNode);
 
+    this.#selectSection = new SelectSection(targetApp);
+    this.#content.append(this.#selectSection.domNode);
+
+    this.#addSection = new AddSection(targetApp);
+    this.#content.append(this.#addSection.domNode);
+
     this.#bottomContent.classList.add(styles['bottom-content']);
     this.#content.append(this.#bottomContent);
 
@@ -78,12 +84,6 @@ export class OutlinesSection {
         this.#bottomContent.style.display = [...targetApp.selectedOutlines].length > 0 ? 'flex' : 'none';
       }
     });
-
-    this.#selectSection = new SelectSection(targetApp);
-    this.#bottomContent.append(this.#selectSection.domNode);
-
-    this.#addSection = new AddSection(targetApp);
-    this.#bottomContent.append(this.#addSection.domNode);
 
     this.#zSection = new ZSection(targetApp);
     this.#bottomContent.append(this.#zSection.domNode);
