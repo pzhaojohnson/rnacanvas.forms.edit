@@ -8,8 +8,12 @@
 .content {
   margin: 10px 0px 0px 12px;
 
-  display: flex;
+  display: none;
   flex-direction: column;
+}
+
+.open .content {
+  display: flex;
 }
 
 .num-selected {
@@ -28,17 +32,11 @@
   pointer-events: none;
 }
 
-.collapsable-content {
+.bottom-content {
   margin-top: 17px;
 
-  display: flex;
-  flex-direction: column;
-
   display: none;
-}
-
-.open .collapsable-content {
-  display: block;
+  flex-direction: column;
 }
 
 .select-section {

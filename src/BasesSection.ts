@@ -34,7 +34,7 @@ export class BasesSection {
 
   #numBasesSelected;
 
-  #collapsableContent = document.createElement('div');
+  #bottomContent = document.createElement('div');
 
   #textContentField;
   #fillField;
@@ -60,41 +60,48 @@ export class BasesSection {
     this.#numBasesSelected = new NumBasesSelected(targetApp);
     this.#content.append(this.#numBasesSelected.domNode);
 
-    this.#collapsableContent.classList.add(styles['collapsable-content']);
-    this.#content.append(this.#collapsableContent);
+    this.#bottomContent.classList.add(styles['bottom-content']);
+    this.#content.append(this.#bottomContent);
+
+    // only refresh when necesary
+    targetApp.selectedBases.addEventListener('change', () => {
+      if (document.body.contains(this.domNode)) {
+        this.#bottomContent.style.display = [...targetApp.selectedBases].length > 0 ? 'block' : 'none';
+      }
+    });
 
     this.#textContentField = new TextContentField(targetApp);
-    this.#collapsableContent.append(this.#textContentField.domNode);
+    this.#bottomContent.append(this.#textContentField.domNode);
 
     this.#fillField = new FillField(targetApp);
-    this.#collapsableContent.append(this.#fillField.domNode);
+    this.#bottomContent.append(this.#fillField.domNode);
 
     this.#fillColorField = new FillColorField(targetApp);
-    this.#collapsableContent.append(this.#fillColorField.domNode);
+    this.#bottomContent.append(this.#fillColorField.domNode);
 
     this.#fillOpacityField = new FillOpacityField(targetApp);
-    this.#collapsableContent.append(this.#fillOpacityField.domNode);
+    this.#bottomContent.append(this.#fillOpacityField.domNode);
 
     this.#fontFamilyField = new FontFamilyField(targetApp);
-    this.#collapsableContent.append(this.#fontFamilyField.domNode);
+    this.#bottomContent.append(this.#fontFamilyField.domNode);
 
     this.#fontSizeField = new FontSizeField(targetApp);
-    this.#collapsableContent.append(this.#fontSizeField.domNode);
+    this.#bottomContent.append(this.#fontSizeField.domNode);
 
     this.#fontWeightField = new FontWeightField(targetApp);
-    this.#collapsableContent.append(this.#fontWeightField.domNode);
+    this.#bottomContent.append(this.#fontWeightField.domNode);
 
     this.#boldField = new BoldField(targetApp);
-    this.#collapsableContent.append(this.#boldField.domNode);
+    this.#bottomContent.append(this.#boldField.domNode);
 
     this.#fontStyleField = new FontStyleField(targetApp);
-    this.#collapsableContent.append(this.#fontStyleField.domNode);
+    this.#bottomContent.append(this.#fontStyleField.domNode);
 
     this.#textDecorationField = new TextDecorationField(targetApp);
-    this.#collapsableContent.append(this.#textDecorationField.domNode);
+    this.#bottomContent.append(this.#textDecorationField.domNode);
 
     this.#underlinedField = new UnderlinedField(targetApp);
-    this.#collapsableContent.append(this.#underlinedField.domNode);
+    this.#bottomContent.append(this.#underlinedField.domNode);
   }
 
   get #refreshableComponents() {

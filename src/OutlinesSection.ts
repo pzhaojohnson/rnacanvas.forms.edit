@@ -39,7 +39,7 @@ export class OutlinesSection {
 
   #numSelected;
 
-  #collapsableContent = document.createElement('div');
+  #bottomContent = document.createElement('div');
 
   #selectSection;
   #addSection;
@@ -69,44 +69,51 @@ export class OutlinesSection {
     this.#numSelected = new NumSelected(targetApp);
     this.#content.append(this.#numSelected.domNode);
 
-    this.#collapsableContent.classList.add(styles['collapsable-content']);
-    this.#content.append(this.#collapsableContent);
+    this.#bottomContent.classList.add(styles['bottom-content']);
+    this.#content.append(this.#bottomContent);
+
+    // only refresh when necessary
+    targetApp.selectedOutlines.addEventListener('change', () => {
+      if (document.body.contains(this.domNode)) {
+        this.#bottomContent.style.display = [...targetApp.selectedOutlines].length > 0 ? 'flex' : 'none';
+      }
+    });
 
     this.#selectSection = new SelectSection(targetApp);
-    this.#collapsableContent.append(this.#selectSection.domNode);
+    this.#bottomContent.append(this.#selectSection.domNode);
 
     this.#addSection = new AddSection(targetApp);
-    this.#collapsableContent.append(this.#addSection.domNode);
+    this.#bottomContent.append(this.#addSection.domNode);
 
     this.#zSection = new ZSection(targetApp);
-    this.#collapsableContent.append(this.#zSection.domNode);
+    this.#bottomContent.append(this.#zSection.domNode);
 
     this.#rField = new RField(targetApp);
-    this.#collapsableContent.append(this.#rField.domNode);
+    this.#bottomContent.append(this.#rField.domNode);
 
     this.#fillField = new FillField(targetApp);
-    this.#collapsableContent.append(this.#fillField.domNode);
+    this.#bottomContent.append(this.#fillField.domNode);
 
     this.#fillColorField = new FillColorField(targetApp);
-    this.#collapsableContent.append(this.#fillColorField.domNode);
+    this.#bottomContent.append(this.#fillColorField.domNode);
 
     this.#fillOpacityField = new FillOpacityField(targetApp);
-    this.#collapsableContent.append(this.#fillOpacityField.domNode);
+    this.#bottomContent.append(this.#fillOpacityField.domNode);
 
     this.#strokeField = new StrokeField(targetApp);
-    this.#collapsableContent.append(this.#strokeField.domNode);
+    this.#bottomContent.append(this.#strokeField.domNode);
 
     this.#strokeColorField = new StrokeColorField(targetApp);
-    this.#collapsableContent.append(this.#strokeColorField.domNode);
+    this.#bottomContent.append(this.#strokeColorField.domNode);
 
     this.#strokeOpacityField = new StrokeOpacityField(targetApp);
-    this.#collapsableContent.append(this.#strokeOpacityField.domNode);
+    this.#bottomContent.append(this.#strokeOpacityField.domNode);
 
     this.#strokeWidthField = new StrokeWidthField(targetApp);
-    this.#collapsableContent.append(this.#strokeWidthField.domNode);
+    this.#bottomContent.append(this.#strokeWidthField.domNode);
 
     this.#strokeDasharrayField = new StrokeDasharrayField(targetApp);
-    this.#collapsableContent.append(this.#strokeDasharrayField.domNode);
+    this.#bottomContent.append(this.#strokeDasharrayField.domNode);
   }
 
   isOpen(): boolean {
