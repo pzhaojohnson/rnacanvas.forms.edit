@@ -32,14 +32,9 @@
   pointer-events: none;
 }
 
-.bottom-content {
+.select-section {
   margin-top: 17px;
 
-  display: none;
-  flex-direction: column;
-}
-
-.select-section {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -59,6 +54,11 @@
   -webkit-user-select: none;
 
   pointer-events: none;
+}
+
+.bottom-content {
+  display: none;
+  flex-direction: column;
 }
 
 .z-section {
