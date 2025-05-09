@@ -356,7 +356,7 @@ class AddSection {
   constructor(targetApp: App) {
     this.#targetApp = targetApp;
 
-    this.domNode.style.marginTop = '19px';
+    this.domNode.style.marginTop = '21px';
 
     this.domNode.style.display = 'flex';
     this.domNode.style.flexDirection = 'column';
@@ -374,7 +374,7 @@ class AddSection {
     // checked by default
     this.#onlyAddMissingCheckbox.domNode.checked = true;
 
-    this.#onlyAddMissingField.domNode.style.marginTop = '12px';
+    this.#onlyAddMissingField.domNode.style.marginTop = '11px';
     this.#onlyAddMissingField.domNode.style.alignSelf = 'start';
 
     this.domNode.append(this.#onlyAddMissingField.domNode);
@@ -519,12 +519,12 @@ class ZSection {
 
     this.#frontButton.domNode.addEventListener('click', () => this.#bringToFront());
     this.#frontButton.textContent = 'Front';
-    this.#frontButton.domNode.style.marginLeft = '21px';
+    this.#frontButton.domNode.style.marginLeft = '24px';
     this.domNode.append(this.#frontButton.domNode);
 
     this.#backButton.domNode.addEventListener('click', () => this.#sendToBack());
     this.#backButton.textContent = 'Back';
-    this.#backButton.domNode.style.marginLeft = '26px';
+    this.#backButton.domNode.style.marginLeft = '28px';
     this.domNode.append(this.#backButton.domNode);
 
     // only refresh when necessary
@@ -610,7 +610,7 @@ class RField {
 
     this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/r';
 
-    $(this.domNode).css({ marginTop: '20px', alignSelf: 'start' });
+    $(this.domNode).css({ marginTop: '22px', alignSelf: 'start' });
 
     this.refresh();
   }
