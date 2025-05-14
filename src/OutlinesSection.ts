@@ -356,14 +356,14 @@ class AddSection {
   constructor(targetApp: App) {
     this.#targetApp = targetApp;
 
-    this.domNode.style.marginTop = '21px';
+    this.domNode.style.marginTop = '25px';
 
     this.domNode.style.display = 'flex';
     this.domNode.style.flexDirection = 'column';
 
     this.#buttonsContainer.style.display = 'flex';
     this.#buttonsContainer.style.flexDirection = 'row';
-    this.#buttonsContainer.style.gap = '14px';
+    this.#buttonsContainer.style.gap = '15px';
 
     this.domNode.append(this.#buttonsContainer);
 
