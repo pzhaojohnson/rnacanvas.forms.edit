@@ -238,7 +238,7 @@ class ZSection {
 
     this.#frontButton.domNode.addEventListener('click', () => this.#bringToFront());
     this.#frontButton.textContent = 'Front';
-    this.#frontButton.domNode.style.marginLeft = '24px';
+    this.#frontButton.domNode.style.marginLeft = '26px';
     this.domNode.append(this.#frontButton.domNode);
 
     this.#backButton.domNode.addEventListener('click', () => this.#sendToBack());
@@ -323,7 +323,7 @@ class TextContentField {
 
     this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent';
 
-    this.domNode.style.marginTop = '23px';
+    this.domNode.style.marginTop = '22px';
     this.domNode.style.alignSelf = 'start';
 
     // only refresh when necessary
