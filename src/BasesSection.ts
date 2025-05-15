@@ -4,6 +4,8 @@ import type  { Nucleobase } from './Nucleobase';
 
 import * as styles from './BasesSection.module.css';
 
+import { TextButton } from './TextButton';
+
 import { TextInput } from './TextInput';
 
 import { TextInputField } from './TextInputField';
@@ -19,6 +21,8 @@ import { ColorField } from './ColorField';
 import { Color } from '@svgdotjs/svg.js';
 
 import { consensusValue } from '@rnacanvas/consensize';
+
+import { bringToFront, sendToBack } from '@rnacanvas/draw.svg';
 
 import * as $ from 'jquery';
 
@@ -38,6 +42,7 @@ export class BasesSection {
 
   #bottomContent = document.createElement('div');
 
+  #zSection;
   #textContentField;
   #fillField;
   #fillColorField;
@@ -73,6 +78,9 @@ export class BasesSection {
         [...targetApp.selectedBases].length > 0 ? this.#showBottomContent() : this.#hideBottomContent();
       }
     });
+
+    this.#zSection = new ZSection(targetApp);
+    this.#bottomContent.append(this.#zSection.domNode);
 
     this.#textContentField = new TextContentField(targetApp);
     this.#bottomContent.append(this.#textContentField.domNode);
@@ -111,6 +119,7 @@ export class BasesSection {
   get #refreshableComponents() {
     return [
       this.#numBasesSelected,
+      this.#zSection,
       this.#textContentField,
       this.#fillField,
       this.#fillColorField,
@@ -207,6 +216,99 @@ class NumBasesSelected {
   }
 }
 
+class ZSection {
+  #targetApp;
+
+  readonly domNode = document.createElement('div');
+
+  #label = document.createElement('p');
+
+  #frontButton = new TextButton();
+
+  #backButton = new TextButton();
+
+  constructor(targetApp: App) {
+    this.#targetApp = targetApp;
+
+    this.domNode.classList.add(styles['z-section']);
+
+    this.#label.classList.add(styles['z-section-label']);
+    this.#label.textContent = 'Send to:';
+    this.domNode.append(this.#label);
+
+    this.#frontButton.domNode.addEventListener('click', () => this.#bringToFront());
+    this.#frontButton.textContent = 'Front';
+    this.#frontButton.domNode.style.marginLeft = '24px';
+    this.domNode.append(this.#frontButton.domNode);
+
+    this.#backButton.domNode.addEventListener('click', () => this.#sendToBack());
+    this.#backButton.textContent = 'Back';
+    this.#backButton.domNode.style.marginLeft = '28px';
+    this.domNode.append(this.#backButton.domNode);
+
+    // only refresh when necessary
+    targetApp.selectedBases.addEventListener('change', () => document.body.contains(this.domNode) ? this.refresh() : {});
+
+    this.refresh();
+  }
+
+  #bringToFront(): void {
+    let selectedBases = [...this.#targetApp.selectedBases];
+
+    if (selectedBases.length == 0) {
+      this.refresh();
+      return;
+    }
+
+    this.#targetApp.pushUndoStack();
+
+    selectedBases.forEach(b => bringToFront(b.domNode));
+  }
+
+  #sendToBack(): void {
+    let selectedBases = [...this.#targetApp.selectedBases];
+
+    if (selectedBases.length == 0) {
+      this.refresh();
+      return;
+    }
+
+    this.#targetApp.pushUndoStack();
+
+    selectedBases.forEach(b => sendToBack(b.domNode));
+  }
+
+  refresh(): void {
+    this.#refreshFrontButton();
+
+    this.#refreshBackButton();
+  }
+
+  #refreshFrontButton(): void {
+    let selectedBases = [...this.#targetApp.selectedBases];
+
+    if (selectedBases.length == 0) {
+      this.#frontButton.disable();
+      this.#frontButton.tooltip.textContent = 'No bases are selected.';
+    } else {
+      this.#frontButton.enable();
+      this.#frontButton.tooltip.textContent = 'Bring the selected bases to the front.';
+    }
+  }
+
+  #refreshBackButton(): void {
+    let selectedBases = [...this.#targetApp.selectedBases];
+
+    if (selectedBases.length == 0) {
+      this.#backButton.disable();
+      this.#backButton.tooltip.textContent = 'No bases are selected.';
+    } else {
+      this.#backButton.enable();
+      this.#backButton.tooltip.textContent = 'Send the selected bases to the back.';
+    }
+  }
+}
+
 class TextContentField {
   #targetApp;
 
@@ -221,7 +323,8 @@ class TextContentField {
 
     this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent';
 
-    $(this.domNode).css({ alignSelf: 'start' });
+    this.domNode.style.marginTop = '23px';
+    this.domNode.style.alignSelf = 'start';
 
     // only refresh when necessary
     this.#targetApp.selectedBases.addEventListener('change', () => document.body.contains(this.domNode) ? this.refresh() : {});
