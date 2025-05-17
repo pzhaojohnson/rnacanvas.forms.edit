@@ -9,10 +9,13 @@ export class TextButton {
 
   readonly tooltip = new Tooltip('');
 
-  constructor() {
+  constructor(textContent?: string, onClick?: () => void) {
+    onClick ? this.domNode.onclick = onClick : {};
+
     this.domNode.classList.add(styles['text-button']);
 
     this.#text.classList.add(styles['text']);
+    this.#text.textContent = textContent ?? '';
     this.domNode.append(this.#text);
 
     this.tooltip.owner = this.domNode;

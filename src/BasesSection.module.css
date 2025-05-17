@@ -76,6 +76,13 @@
   pointer-events: none;
 }
 
+.selection-tools {
+  margin-top: 20px;
+
+  display: flex;
+  flex-direction: row;
+}
+
 .bottom-content {
   margin-top: 19px;
 

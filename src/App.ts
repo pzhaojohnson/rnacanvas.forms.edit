@@ -2,6 +2,8 @@ import type { Nucleobase } from './Nucleobase';
 
 import type { Outline } from './Outline';
 
+import type { SecondaryBond } from './SecondaryBond';
+
 /**
  * The app interface used by the Editing form.
  */
@@ -12,9 +14,19 @@ export interface App {
   readonly drawing: {
     readonly domNode: SVGSVGElement;
 
+    /**
+     * All bases in the drawing.
+     */
+    readonly bases: Iterable<Nucleobase>;
+
     readonly outlines: Iterable<Outline>;
 
     outline(b: Nucleobase): Outline;
+
+    /**
+     * All secondary bonds in the drawing.
+     */
+    readonly secondaryBonds: Iterable<SecondaryBond>;
   }
 
   pushUndoStack(): void;

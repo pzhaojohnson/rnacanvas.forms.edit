@@ -4,6 +4,8 @@ import type  { Nucleobase } from './Nucleobase';
 
 import * as styles from './BasesSection.module.css';
 
+import { SectionHeader } from './SectionHeader';
+
 import { TextButton } from './TextButton';
 
 import { TextInput } from './TextInput';
@@ -40,6 +42,8 @@ export class BasesSection {
 
   #numBasesSelected;
 
+  #selectionTools;
+
   #bottomContent = document.createElement('div');
 
   #zSection;
@@ -68,6 +72,9 @@ export class BasesSection {
 
     this.#numBasesSelected = new NumBasesSelected(targetApp);
     this.#content.append(this.#numBasesSelected.domNode);
+
+    this.#selectionTools = new SelectionTools(targetApp);
+    this.#content.append(this.#selectionTools.domNode);
 
     this.#bottomContent.classList.add(styles['bottom-content']);
     this.#content.append(this.#bottomContent);
@@ -119,6 +126,7 @@ export class BasesSection {
   get #refreshableComponents() {
     return [
       this.#numBasesSelected,
+      this.#selectionTools,
       this.#zSection,
       this.#textContentField,
       this.#fillField,
@@ -213,6 +221,199 @@ class NumBasesSelected {
     this.#numSpan.textContent = `${numBasesSelected}`;
 
     this.#trailingTextSpan.textContent = numBasesSelected == 1 ? ' base is selected.' : ' bases are selected.';
+  }
+}
+
+class SelectionTools {
+  #targetApp;
+
+  readonly domNode = document.createElement('div');
+
+  #label = new SectionHeader();
+
+  #hidableButtons = document.createElement('div');
+
+  #buttons = {
+    'All': new TextButton('All', () => this.#selectAll()),
+    'None': new TextButton('None', () => this.#selectNone()),
+
+    'A': new TextButton('A', () => this.#selectByTextContent('A')),
+    'U': new TextButton('U', () => this.#selectByTextContent('U')),
+    'G': new TextButton('G', () => this.#selectByTextContent('G')),
+    'C': new TextButton('C', () => this.#selectByTextContent('C')),
+    'T': new TextButton('T', () => this.#selectByTextContent('T')),
+
+    'a': new TextButton('a', () => this.#selectByTextContent('a')),
+    'u': new TextButton('u', () => this.#selectByTextContent('u')),
+    'g': new TextButton('g', () => this.#selectByTextContent('g')),
+    'c': new TextButton('c', () => this.#selectByTextContent('c')),
+    't': new TextButton('t', () => this.#selectByTextContent('t')),
+
+    'Outlined': new TextButton('Outlined', () => this.#selectOutlined()),
+
+    'Paired': new TextButton('Paired', () => this.#selectPaired()),
+    'Unpaired': new TextButton('Unpaired', () => this.#selectUnpaired()),
+  };
+
+  #drawingObserver;
+
+  constructor(targetApp: App) {
+    this.#targetApp = targetApp;
+
+    this.domNode.classList.add(styles['selection-tools']);
+
+    this.#label.textContent = 'Select:';
+    this.#label.domNode.addEventListener('click', () => this.#toggle());
+    this.domNode.append(this.#label.domNode);
+
+    let buttonsContainer = document.createElement('div');
+    $(buttonsContainer).css({ display: 'flex', flexDirection: 'column', gap: '6px' });
+    this.domNode.append(buttonsContainer);
+
+    let topRow = document.createElement('div');
+    $(topRow).css({ display: 'flex', flexDirection: 'row', gap: '15px' });
+    topRow.append(...(['All', 'None'] as const).map(name => this.#buttons[name].domNode));
+    buttonsContainer.append(topRow);
+
+    let upperCaseButtons = document.createElement('div');
+    $(upperCaseButtons).css({ display: 'flex', flexDirection: 'row', gap: '12px' });
+    upperCaseButtons.append(...(['A', 'U', 'G', 'C', 'T'] as const).map(letter => this.#buttons[letter].domNode))
+    buttonsContainer.append(upperCaseButtons);
+
+    let lowerCaseButtons = document.createElement('div');
+    $(lowerCaseButtons).css({ display: 'flex', flexDirection: 'row', gap: '12px' });
+    lowerCaseButtons.append(...(['a', 'u', 'g', 'c', 't'] as const).map(letter => this.#buttons[letter].domNode))
+    buttonsContainer.append(lowerCaseButtons);
+
+    buttonsContainer.append(this.#buttons['Outlined'].domNode);
+
+    let secondaryStructureButtons = document.createElement('div');
+    $(secondaryStructureButtons).css({ display: 'flex', flexDirection: 'row', gap: '12px' });
+    secondaryStructureButtons.append(...(['Paired', 'Unpaired'] as const).map(name => this.#buttons[name].domNode));
+    buttonsContainer.append(secondaryStructureButtons);
+
+    // only refresh when the Editing form is open
+    targetApp.selectedBases.addEventListener('change', () => document.body.contains(this.domNode) ? this.refresh(): {});
+    targetApp.selectedOutlines.addEventListener('change', () => document.body.contains(this.domNode) ? this.refresh(): {});
+
+    // only refresh when the Editing form is open
+    this.#drawingObserver = new MutationObserver(() => document.body.contains(this.domNode) ? this.refresh(): {});
+
+    // watch for the addition and removal of elements
+    this.#drawingObserver.observe(targetApp.drawing.domNode, { childList: true, subtree: true });
+
+    this.refresh();
+  }
+
+  #toggle() {
+    let isOpen = this.#hidableButtons.style.display != 'none';
+
+    this.#hidableButtons.style.display = isOpen ? 'none' : 'block';
+  }
+
+  #selectAll() {
+    this.#targetApp.addToSelected([...this.#targetApp.drawing.bases]);
+  }
+
+  #selectNone() {
+    this.#targetApp.removeFromSelected([...this.#targetApp.drawing.bases]);
+  }
+
+  #selectByTextContent(textContent: string) {
+    this.#targetApp.addToSelected([...this.#targetApp.drawing.bases].filter(b => b.domNode.textContent == textContent));
+  }
+
+  #selectOutlined() {
+    this.#targetApp.addToSelected([...this.#targetApp.selectedOutlines].map(o => o.owner));
+  }
+
+  #selectPaired() {
+    this.#targetApp.addToSelected([...this.#targetApp.drawing.secondaryBonds].flatMap(sb => [sb.base1, sb.base2]));
+  }
+
+  #selectUnpaired() {
+    // all paired bases
+    let paired = new Set([...this.#targetApp.drawing.secondaryBonds].flatMap(sb => [sb.base1, sb.base2]));
+
+    this.#targetApp.addToSelected([...this.#targetApp.drawing.bases].filter(b => !paired.has(b)));
+  }
+
+  refresh(): void {
+    let allBases = [...this.#targetApp.drawing.bases];
+
+    let pairedBases = new Set([...this.#targetApp.drawing.secondaryBonds].flatMap(sb => [sb.base1, sb.base2]));
+    let unpairedBases = allBases.filter(b => !pairedBases.has(b));
+
+    let selectedBases = new Set(this.#targetApp.selectedBases);
+    let selectedOutlines = [...this.#targetApp.selectedOutlines];
+
+    if (allBases.length == 0) {
+      this.#buttons['All'].disable();
+      this.#buttons['All'].tooltip.textContent = 'There are no bases in the drawing.';
+    } else if (selectedBases.size == allBases.length) {
+      this.#buttons['All'].disable();
+      this.#buttons['All'].tooltip.textContent = 'All bases are already selected.';
+    } else {
+      this.#buttons['All'].enable();
+      this.#buttons['All'].tooltip.textContent = 'Select all bases.';
+    }
+
+    if (selectedBases.size == 0) {
+      this.#buttons['None'].disable();
+      this.#buttons['None'].tooltip.textContent = 'No bases are selected.';
+    } else {
+      this.#buttons['None'].enable();
+      this.#buttons['None'].tooltip.textContent = 'Deselect all bases.';
+    }
+
+    (['A', 'U', 'G', 'C', 'T', 'a', 'u', 'g', 'c', 't'] as const).forEach(letter => {
+      let bases = allBases.filter(b => b.textContent == letter);
+      let button = this.#buttons[letter];
+
+      if (bases.length == 0) {
+        button.disable();
+        button.tooltip.textContent = `No bases have letter "${letter}".`;
+      } else if (bases.every(b => selectedBases.has(b))) {
+        button.disable();
+        button.tooltip.textContent = `All bases with letter "${letter}" are already selected.`;
+      } else {
+        button.enable();
+        button.tooltip.textContent = `Select all bases with letter "${letter}".`;
+      }
+    });
+
+    if (selectedOutlines.length == 0) {
+      this.#buttons['Outlined'].disable();
+      this.#buttons['Outlined'].tooltip.textContent = 'No outlines are selected.';
+    } else if (selectedOutlines.map(o => o.owner).every(b => selectedBases.has(b))) {
+      this.#buttons['Outlined'].disable();
+      this.#buttons['Outlined'].tooltip.textContent = 'All bases outlined by the selected outlines are already selected.';
+    } else {
+      this.#buttons['Outlined'].enable();
+      this.#buttons['Outlined'].tooltip.textContent = 'Select bases outlined by the selected outlines.';
+    }
+
+    if (pairedBases.size == 0) {
+      this.#buttons['Paired'].disable();
+      this.#buttons['Paired'].tooltip.textContent = 'There are no paired bases in the drawing.';
+    } else if ([...pairedBases].every(b => selectedBases.has(b))) {
+      this.#buttons['Paired'].disable();
+      this.#buttons['Paired'].tooltip.textContent = 'All paired bases are already selected.';
+    } else {
+      this.#buttons['Paired'].enable();
+      this.#buttons['Paired'].tooltip.textContent = 'Select all paired bases.';
+    }
+
+    if (unpairedBases.length == 0) {
+      this.#buttons['Unpaired'].disable();
+      this.#buttons['Unpaired'].tooltip.textContent = 'There are no unpaired bases in the drawing.';
+    } else if (unpairedBases.every(b => selectedBases.has(b))) {
+      this.#buttons['Unpaired'].disable();
+      this.#buttons['Unpaired'].tooltip.textContent = 'All unpaired bases are already selected.';
+    } else {
+      this.#buttons['Unpaired'].enable();
+      this.#buttons['Unpaired'].tooltip.textContent = 'Select all unpaired bases.';
+    }
   }
 }
 
