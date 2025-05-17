@@ -278,6 +278,10 @@ class SelectionTools {
     $(this.#hidableButtons).css({ display: 'flex', flexDirection: 'column', gap: '6px' });
     buttonsContainer.append(this.#hidableButtons);
 
+    // hide by default
+    this.#hidableButtons.style.display = 'none';
+    this.#label.caret.pointRight();
+
     let upperCaseButtons = document.createElement('div');
     $(upperCaseButtons).css({ display: 'flex', flexDirection: 'row', gap: '17px' });
     upperCaseButtons.append(...(['A', 'U', 'G', 'C', 'T'] as const).map(letter => this.#buttons[letter].domNode))
