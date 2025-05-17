@@ -315,7 +315,7 @@ class SelectionTools {
   #toggle() {
     let isOpen = this.#hidableButtons.style.display != 'none';
 
-    this.#hidableButtons.style.display = isOpen ? 'none' : 'block';
+    this.#hidableButtons.style.display = isOpen ? 'none' : 'flex';
     isOpen ? this.#label.caret.pointRight() : this.#label.caret.pointDown();
   }
 
