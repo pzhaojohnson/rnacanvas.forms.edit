@@ -267,30 +267,33 @@ class SelectionTools {
     this.domNode.append(this.#label.domNode);
 
     let buttonsContainer = document.createElement('div');
-    $(buttonsContainer).css({ display: 'flex', flexDirection: 'column', gap: '6px' });
+    $(buttonsContainer).css({ marginTop: '1.5px', display: 'flex', flexDirection: 'column', gap: '6px' });
     this.domNode.append(buttonsContainer);
 
     let topRow = document.createElement('div');
-    $(topRow).css({ display: 'flex', flexDirection: 'row', gap: '15px' });
+    $(topRow).css({ display: 'flex', flexDirection: 'row', gap: '23px' });
     topRow.append(...(['All', 'None'] as const).map(name => this.#buttons[name].domNode));
     buttonsContainer.append(topRow);
 
+    $(this.#hidableButtons).css({ display: 'flex', flexDirection: 'column', gap: '6px' });
+    buttonsContainer.append(this.#hidableButtons);
+
     let upperCaseButtons = document.createElement('div');
-    $(upperCaseButtons).css({ display: 'flex', flexDirection: 'row', gap: '12px' });
+    $(upperCaseButtons).css({ display: 'flex', flexDirection: 'row', gap: '17px' });
     upperCaseButtons.append(...(['A', 'U', 'G', 'C', 'T'] as const).map(letter => this.#buttons[letter].domNode))
-    buttonsContainer.append(upperCaseButtons);
+    this.#hidableButtons.append(upperCaseButtons);
 
     let lowerCaseButtons = document.createElement('div');
-    $(lowerCaseButtons).css({ display: 'flex', flexDirection: 'row', gap: '12px' });
+    $(lowerCaseButtons).css({ display: 'flex', flexDirection: 'row', gap: '18px' });
     lowerCaseButtons.append(...(['a', 'u', 'g', 'c', 't'] as const).map(letter => this.#buttons[letter].domNode))
-    buttonsContainer.append(lowerCaseButtons);
+    this.#hidableButtons.append(lowerCaseButtons);
 
-    buttonsContainer.append(this.#buttons['Outlined'].domNode);
+    this.#hidableButtons.append(this.#buttons['Outlined'].domNode);
 
     let secondaryStructureButtons = document.createElement('div');
-    $(secondaryStructureButtons).css({ display: 'flex', flexDirection: 'row', gap: '12px' });
+    $(secondaryStructureButtons).css({ display: 'flex', flexDirection: 'row', gap: '18px' });
     secondaryStructureButtons.append(...(['Paired', 'Unpaired'] as const).map(name => this.#buttons[name].domNode));
-    buttonsContainer.append(secondaryStructureButtons);
+    this.#hidableButtons.append(secondaryStructureButtons);
 
     // only refresh when the Editing form is open
     targetApp.selectedBases.addEventListener('change', () => document.body.contains(this.domNode) ? this.refresh(): {});
@@ -309,6 +312,7 @@ class SelectionTools {
     let isOpen = this.#hidableButtons.style.display != 'none';
 
     this.#hidableButtons.style.display = isOpen ? 'none' : 'block';
+    isOpen ? this.#label.caret.pointRight() : this.#label.caret.pointDown();
   }
 
   #selectAll() {
@@ -372,13 +376,13 @@ class SelectionTools {
 
       if (bases.length == 0) {
         button.disable();
-        button.tooltip.textContent = `No bases have letter "${letter}".`;
+        button.tooltip.textContent = `No bases have the letter "${letter}".`;
       } else if (bases.every(b => selectedBases.has(b))) {
         button.disable();
-        button.tooltip.textContent = `All bases with letter "${letter}" are already selected.`;
+        button.tooltip.textContent = `All bases with the letter "${letter}" are already selected.`;
       } else {
         button.enable();
-        button.tooltip.textContent = `Select all bases with letter "${letter}".`;
+        button.tooltip.textContent = `Select all bases with the letter "${letter}".`;
       }
     });
 

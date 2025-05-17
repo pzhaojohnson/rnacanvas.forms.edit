@@ -77,14 +77,15 @@
 }
 
 .selection-tools {
-  margin-top: 20px;
+  margin-top: 21px;
 
   display: flex;
   flex-direction: row;
+  gap: 23px;
 }
 
 .bottom-content {
-  margin-top: 19px;
+  margin-top: 22px;
 
   display: none;
 }

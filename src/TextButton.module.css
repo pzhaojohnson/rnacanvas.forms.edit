@@ -1,6 +1,8 @@
 .text-button {
   position: relative;
 
+  align-self: start;
+
   pointer-events: auto;
 }
 
