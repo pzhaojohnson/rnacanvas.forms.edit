@@ -6,6 +6,10 @@ import { BasesSection } from './BasesSection';
 
 import { OutlinesSection } from './OutlinesSection';
 
+import { PrimaryBondsSection } from './PrimaryBondsSection';
+
+import { SecondaryBondsSection } from './SecondaryBondsSection';
+
 import { CloseButton } from './CloseButton';
 
 import { DragTranslater } from '@rnacanvas/forms';
@@ -17,6 +21,9 @@ export class EditingForm {
 
   #basesSection;
   #outlinesSection;
+
+  #primaryBondsSection;
+  #secondaryBondsSection;
 
   #dragTranslater;
 
@@ -39,6 +46,12 @@ export class EditingForm {
 
     this.#outlinesSection = new OutlinesSection(targetApp);
     contentContainer.append(this.#outlinesSection.domNode);
+
+    this.#primaryBondsSection = new PrimaryBondsSection(targetApp);
+    contentContainer.append(this.#primaryBondsSection.domNode);
+
+    this.#secondaryBondsSection = new SecondaryBondsSection(targetApp);
+    contentContainer.append(this.#secondaryBondsSection.domNode);
 
     // add last to place on top of everything else
     let closeButton = CloseButton();
@@ -64,6 +77,8 @@ export class EditingForm {
     return [
       this.#basesSection,
       this.#outlinesSection,
+      this.#primaryBondsSection,
+      this.#secondaryBondsSection,
     ];
   }
 

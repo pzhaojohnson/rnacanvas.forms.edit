@@ -1,0 +1,38 @@
+.primary-bonds-section {
+  margin-top: 29px;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  margin: 10px 0px 0px 12px;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.collapsed .content {
+  display: none;
+}
+
+.num-selected {
+  margin: 0px;
+  padding: 0px;
+
+  font-family: "Open Sans", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  font-style: normal;
+  color: black;
+
+  user-select: none;
+  -webkit-user-select: none;
+
+  pointer-events: none;
+}
+
+.bottom-content {
+  display: none;
+  flex-direction: column;
+}

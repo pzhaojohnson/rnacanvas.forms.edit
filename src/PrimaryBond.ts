@@ -1,6 +1,6 @@
 import type { Nucleobase } from './Nucleobase';
 
-export interface SecondaryBond {
+export interface PrimaryBond {
   readonly domNode: SVGLineElement;
 
   readonly base1: Nucleobase;

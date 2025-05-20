@@ -7,8 +7,10 @@ export class SectionHeader {
 
   #text = document.createElement('p');
 
-  constructor() {
+  constructor(textContent?: string, onClick?: () => void) {
     this.domNode.classList.add(styles['section-header']);
+
+    onClick ? this.domNode.onclick = onClick : {};
 
     this.caret.domNode.style.marginRight = '6px';
     this.caret.domNode.style.pointerEvents = 'auto';
@@ -16,6 +18,7 @@ export class SectionHeader {
     this.domNode.append(this.caret.domNode);
 
     this.#text.classList.add(styles['text']);
+    textContent ? this.textContent = textContent : {};
 
     this.domNode.append(this.#text);
   }

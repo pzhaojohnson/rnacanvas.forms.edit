@@ -2,6 +2,8 @@ import type { Nucleobase } from './Nucleobase';
 
 import type { Outline } from './Outline';
 
+import type { PrimaryBond } from './PrimaryBond';
+
 import type { SecondaryBond } from './SecondaryBond';
 
 /**
@@ -66,6 +68,24 @@ export interface App {
      *
      * Note that the listener is not called when outlines themselves change,
      * just when the set of currently selected outlines changes.
+     */
+    addEventListener(name: 'change', listener: () => void): void;
+  }
+
+  readonly selectedPrimaryBonds: {
+    [Symbol.iterator](): Iterator<PrimaryBond>;
+
+    /**
+     * Listeners are called whenever the current primary bonds selection changes.
+     */
+    addEventListener(name: 'change', listener: () => void): void;
+  }
+
+  readonly selectedSecondaryBonds: {
+    [Symbol.iterator](): Iterator<SecondaryBond>;
+
+    /**
+     * Listeners are called whenever the current secondary bonds selection changes.
      */
     addEventListener(name: 'change', listener: () => void): void;
   }

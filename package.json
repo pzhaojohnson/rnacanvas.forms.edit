@@ -1,6 +1,6 @@
 {
   "name": "@rnacanvas/forms.edit",
-  "version": "9.0.3",
+  "version": "10.0.0",
   "description": "The Editing form",
   "repository": {
     "type": "git",
@@ -35,6 +35,8 @@
     "@rnacanvas/tooltips": "^1.2.0",
     "@rnacanvas/value-check": "^1.14.1",
     "@svgdotjs/svg.js": "^3.2.4",
-    "jquery": "^3.7.1"
+    "@types/lodash": "^4.17.16",
+    "jquery": "^3.7.1",
+    "lodash": "^4.17.21"
   }
 }
