@@ -46,7 +46,7 @@ export class PrimaryBondsSection {
     this.domNode.append(this.#content);
 
     this.#numSelected = new NumSelected(targetApp);
-    this.domNode.append(this.#numSelected.domNode);
+    this.#content.append(this.#numSelected.domNode);
 
     this.#bottomContent.classList.add(styles['bottom-content']);
     this.domNode.append(this.#bottomContent);
