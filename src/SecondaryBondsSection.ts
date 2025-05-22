@@ -40,6 +40,8 @@ export class SecondaryBondsSection {
 
     this.domNode.classList.add(styles['secondary-bonds-section']);
 
+    this.domNode.append(this.#header.domNode);
+
     this.#content.classList.add(styles['content']);
     this.domNode.append(this.#content);
 
@@ -76,6 +78,8 @@ export class SecondaryBondsSection {
 
     this.#strokeDasharrayField = new StrokeDasharrayField(targetApp);
     this.#bottomContent.append(this.#strokeDasharrayField.domNode);
+
+    this.collapse();
 
     this.refresh();
   }
