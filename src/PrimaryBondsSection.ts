@@ -49,7 +49,7 @@ export class PrimaryBondsSection {
     this.#content.append(this.#numSelected.domNode);
 
     this.#bottomContent.classList.add(styles['bottom-content']);
-    this.domNode.append(this.#bottomContent);
+    this.#content.append(this.#bottomContent);
 
     // only refresh when necessary
     targetApp.selectedPrimaryBonds.addEventListener('change', () => {
