@@ -4,6 +4,8 @@ import * as styles from './PrimaryBondsSection.module.css';
 
 import { SectionHeader } from './SectionHeader';
 
+import { TextButton } from './TextButton';
+
 import { ZSection as _ZSection } from './ZSection';
 
 import { AttributeInput } from './AttributeInput';
@@ -13,6 +15,8 @@ import { TextInputField } from './TextInputField';
 import { ColorAttributeInput } from './ColorAttributeInput';
 
 import { ColorField } from './ColorField';
+
+import * as $ from 'jquery';
 
 export class PrimaryBondsSection {
   #targetApp;
@@ -24,6 +28,7 @@ export class PrimaryBondsSection {
   #content = document.createElement('div');
 
   #numSelected;
+  #selectionTools;
 
   #bottomContent = document.createElement('div');
 
@@ -47,6 +52,9 @@ export class PrimaryBondsSection {
 
     this.#numSelected = new NumSelected(targetApp);
     this.#content.append(this.#numSelected.domNode);
+
+    this.#selectionTools = new SelectionTools(targetApp);
+    this.#content.append(this.#selectionTools.domNode);
 
     this.#bottomContent.classList.add(styles['bottom-content']);
     this.#content.append(this.#bottomContent);
@@ -111,6 +119,7 @@ export class PrimaryBondsSection {
   get #refreshableComponents() {
     return [
       this.#numSelected,
+      this.#selectionTools,
       this.#zSection,
       this.#strokeField,
       this.#strokeColorField,
@@ -162,6 +171,170 @@ class NumSelected {
     this.#num.textContent = `${num}`;
 
     this.#trailingText.textContent = num == 1 ? ' primary bond is selected.' : ' primary bonds are selected.';
+  }
+}
+
+class SelectionTools {
+  #targetApp;
+
+  readonly domNode = document.createElement('div');
+
+  #toggle = new SectionHeader('Select:', () => this.toggle());
+
+  #buttons = {
+    'All': new TextButton('All', () => this.#selectAll()),
+    'None': new TextButton('None', () => this.#deselectAll()),
+
+    'Between': new TextButton('Between', () => this.#selectBetween()),
+    'Connecting': new TextButton('Connecting', () => this.#selectConnecting()),
+  };
+
+  #buttonsContainer = document.createElement('div');
+
+  #alwaysVisibleButtons = document.createElement('div');
+
+  #sometimesHiddenButtons = document.createElement('div');
+
+  #drawingObserver;
+
+  constructor(targetApp: App) {
+    this.#targetApp = targetApp;
+
+    this.domNode.classList.add(styles['selection-tools']);
+
+    this.domNode.append(this.#toggle.domNode);
+
+    $(this.#buttonsContainer).css({ marginTop: '1.5px', display: 'flex', flexDirection: 'column', gap: '6px' });
+    this.domNode.append(this.#buttonsContainer);
+
+    $(this.#alwaysVisibleButtons).css({ display: 'flex', flexDirection: 'row', gap: '23px' });
+    this.#alwaysVisibleButtons.append(...(['All', 'None'] as const).map(name => this.#buttons[name].domNode));
+    this.#buttonsContainer.append(this.#alwaysVisibleButtons);
+
+    $(this.#sometimesHiddenButtons).css({ display: 'flex', flexDirection: 'row', gap: '23px' });
+    this.#sometimesHiddenButtons.append(...(['Between', 'Connecting'] as const).map(name => this.#buttons[name].domNode));
+    this.#buttonsContainer.append(this.#sometimesHiddenButtons);
+
+    // hide by default
+    this.#sometimesHiddenButtons.style.display = 'none';
+    this.#toggle.caret.pointRight();
+
+    // only refresh when the Editing form is open
+    targetApp.selectedPrimaryBonds.addEventListener('change', () => document.body.contains(this.domNode) ? this.refresh() : {});
+    targetApp.selectedBases.addEventListener('change', () => document.body.contains(this.domNode) ? this.refresh(): {});
+
+    // only refresh when the Editing form is open
+    this.#drawingObserver = new MutationObserver(() => document.body.contains(this.domNode) ? this.refresh() : {});
+
+    // watch for the addition and removal of elements
+    this.#drawingObserver.observe(targetApp.drawing.domNode, { childList: true, subtree: true });
+
+    this.refresh();
+  }
+
+  toggle(): void {
+    this.isCollapsed() ? this.expand() : this.collapse();
+  }
+
+  isCollapsed(): boolean {
+    return this.#sometimesHiddenButtons.style.display == 'none';
+  }
+
+  collapse(): void {
+    this.#sometimesHiddenButtons.style.display = 'none';
+    this.#toggle.caret.pointRight();
+  }
+
+  expand(): void {
+    this.#sometimesHiddenButtons.style.display = 'flex';
+    this.#toggle.caret.pointDown();
+  }
+
+  #selectAll(): void {
+    this.#targetApp.addToSelected([...this.#targetApp.drawing.primaryBonds])
+  }
+
+  #deselectAll(): void {
+    this.#targetApp.removeFromSelected([...this.#targetApp.drawing.primaryBonds]);
+  }
+
+  #selectBetween(): void {
+    this.#targetApp.addToSelected(this.#between);
+  }
+
+  /**
+   * All primary bonds between the selected bases.
+   */
+  get #between() {
+    let selectedBases = new Set(this.#targetApp.selectedBases);
+
+    return [...this.#targetApp.drawing.primaryBonds].filter(pb => selectedBases.has(pb.base1) && selectedBases.has(pb.base2));
+  }
+
+  #selectConnecting(): void {
+    this.#targetApp.addToSelected(this.#connecting);
+  }
+
+  /**
+   * All primary bonds connecting the selected bases.
+   */
+  get #connecting() {
+    let selectedBases = new Set(this.#targetApp.selectedBases);
+
+    return [...this.#targetApp.drawing.primaryBonds].filter(pb => selectedBases.has(pb.base1) || selectedBases.has(pb.base2));
+  }
+
+  refresh(): void {
+    let allPrimaryBonds = [...this.#targetApp.drawing.primaryBonds];
+
+    let selectedPrimaryBonds = new Set(this.#targetApp.selectedPrimaryBonds);
+
+    if (allPrimaryBonds.length == 0) {
+      this.#buttons['All'].disable();
+      this.#buttons['All'].tooltip.textContent = 'There are no primary bonds in the drawing.';
+    } else if (allPrimaryBonds.every(pb => selectedPrimaryBonds.has(pb))) {
+      this.#buttons['All'].disable();
+      this.#buttons['All'].tooltip.textContent = 'All primary bonds are already selected.';
+    } else {
+      this.#buttons['All'].enable();
+      this.#buttons['All'].tooltip.textContent = 'Select all primary bonds.';
+    }
+
+    if (selectedPrimaryBonds.size == 0) {
+      this.#buttons['None'].disable();
+      this.#buttons['None'].tooltip.textContent = 'No primary bonds are selected.';
+    } else {
+      this.#buttons['None'].enable();
+      this.#buttons['None'].tooltip.textContent = 'Deselect all primary bonds.';
+    }
+
+    let selectedBases = [...this.#targetApp.selectedBases];
+
+    let between = this.#between;
+
+    if (selectedBases.length == 0) {
+      this.#buttons['Between'].disable();
+      this.#buttons['Between'].tooltip.textContent = 'No bases are selected.';
+    } else if (between.every(pb => selectedPrimaryBonds.has(pb))) {
+      this.#buttons['Between'].disable();
+      this.#buttons['Between'].tooltip.textContent = 'All primary bonds between the selected bases are already selected.';
+    } else {
+      this.#buttons['Between'].enable();
+      this.#buttons['Between'].tooltip.textContent = 'Select primary bonds between the selected bases.';
+    }
+
+    let connecting = this.#connecting;
+
+    if (selectedBases.length == 0) {
+      this.#buttons['Connecting'].disable();
+      this.#buttons['Connecting'].tooltip.textContent = 'No bases are selected.';
+    } else if (connecting.every(pb => selectedPrimaryBonds.has(pb))) {
+      this.#buttons['Connecting'].disable();
+      this.#buttons['Connecting'].tooltip.textContent = 'All primary bonds connecting the selected bases are already selected.';
+    } else {
+      this.#buttons['Connecting'].enable();
+      this.#buttons['Connecting'].tooltip.textContent = 'Select primary bonds connecting the selected bases.';
+    }
   }
 }
 

@@ -32,6 +32,14 @@
   pointer-events: none;
 }
 
+.selection-tools {
+  margin-top: 21px;
+
+  display: flex;
+  flex-direction: row;
+  gap: 23px;
+}
+
 .bottom-content {
   display: none;
   flex-direction: column;

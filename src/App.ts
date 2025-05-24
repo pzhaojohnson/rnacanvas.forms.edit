@@ -26,6 +26,11 @@ export interface App {
     outline(b: Nucleobase): Outline;
 
     /**
+     * All primary bonds in the drawing.
+     */
+    readonly primaryBonds: Iterable<PrimaryBond>;
+
+    /**
      * All secondary bonds in the drawing.
      */
     readonly secondaryBonds: Iterable<SecondaryBond>;
@@ -44,9 +49,9 @@ export interface App {
     peek(): PreviousState | never;
   }
 
-  addToSelected(eles: (Nucleobase | Outline)[]): void;
+  addToSelected(eles: DrawingElement[]): void;
 
-  removeFromSelected(eles: (Nucleobase | Outline)[]): void;
+  removeFromSelected(eles: DrawingElement[]): void;
 
   readonly selectedBases: {
     [Symbol.iterator](): Iterator<Nucleobase>;
@@ -95,3 +100,10 @@ export interface App {
  * A previous state of the app.
  */
 type PreviousState = unknown;
+
+type DrawingElement = (
+  Nucleobase
+  | Outline
+  | PrimaryBond
+  | SecondaryBond
+);
