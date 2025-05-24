@@ -204,14 +204,14 @@ class SelectionTools {
 
     this.domNode.append(this.#toggle.domNode);
 
-    $(this.#buttonsContainer).css({ marginTop: '1.5px', display: 'flex', flexDirection: 'column', gap: '6px' });
+    $(this.#buttonsContainer).css({ marginTop: '1.5px', display: 'flex', flexDirection: 'column', gap: '12px' });
     this.domNode.append(this.#buttonsContainer);
 
-    $(this.#alwaysVisibleButtons).css({ display: 'flex', flexDirection: 'row', gap: '23px' });
+    $(this.#alwaysVisibleButtons).css({ display: 'flex', flexDirection: 'row', gap: '27px' });
     this.#alwaysVisibleButtons.append(...(['All', 'None'] as const).map(name => this.#buttons[name].domNode));
     this.#buttonsContainer.append(this.#alwaysVisibleButtons);
 
-    $(this.#sometimesHiddenButtons).css({ display: 'flex', flexDirection: 'row', gap: '23px' });
+    $(this.#sometimesHiddenButtons).css({ display: 'flex', flexDirection: 'row', gap: '20px' });
     this.#sometimesHiddenButtons.append(...(['Between', 'Connecting'] as const).map(name => this.#buttons[name].domNode));
     this.#buttonsContainer.append(this.#sometimesHiddenButtons);
 
@@ -350,7 +350,7 @@ class ZSection {
 
     this.#zSection = new _ZSection(selectedPrimaryBonds, targetApp);
 
-    this.domNode.style.marginTop = '22px';
+    this.domNode.style.marginTop = '25px';
 
     this.#zSection.addEventListener('refresh', () => this.#handleRefresh());
 
