@@ -426,7 +426,7 @@ class SelectionTools {
           this.#buttons[basePair].tooltip.textContent = `All secondary bonds between ${basePair} base-pairs are already selected.`;
         } else {
           this.#buttons[basePair].enable();
-          this.#buttons[basePair].tooltip.textContent = `Select all secondary bonds between ${basePair} base-pairs.`;
+          this.#buttons[basePair].tooltip.textContent = `Select secondary bonds between ${basePair} base-pairs.`;
         }
       });
   }
