@@ -244,8 +244,8 @@ class SelectionTools {
     // only refresh when the Editing form is open
     this.#drawingObserver = new MutationObserver(() => document.body.contains(this.domNode) ? this.refresh() : {});
 
-    // watch for the addition and removal of elements
-    this.#drawingObserver.observe(targetApp.drawing.domNode, { childList: true, subtree: true });
+    // watch for the addition / removal of elements and changes to the text contents of bases
+    this.#drawingObserver.observe(targetApp.drawing.domNode, { childList: true, characterData: true, subtree: true });
 
     this.refresh();
   }
