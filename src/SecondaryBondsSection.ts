@@ -221,6 +221,7 @@ class SelectionTools {
     this.#alwaysVisibleButtons.append(...(['All', 'None'] as const).map(name => this.#buttons[name].domNode));
     this.#buttonsContainer.append(this.#alwaysVisibleButtons);
 
+    $(this.#sometimesHiddenButtons).css({ display: 'flex', flexDirection: 'column', gap: '12px' });
     this.#buttonsContainer.append(this.#sometimesHiddenButtons);
 
     // hide by default
@@ -233,7 +234,7 @@ class SelectionTools {
     this.#sometimesHiddenButtons.append(row2);
 
     let row3 = document.createElement('div');
-    $(row3).css({ display: 'flex', flexDirection: 'row', gap: '8px' });
+    $(row3).css({ display: 'flex', flexDirection: 'row', gap: '12px' });
     row3.append(...(['A:U', 'G:C', 'G:U', 'A:T', 'G:T'] as const).map(name => this.#buttons[name].domNode));
     this.#sometimesHiddenButtons.append(row3);
 
