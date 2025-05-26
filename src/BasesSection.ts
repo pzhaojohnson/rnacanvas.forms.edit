@@ -1,6 +1,6 @@
 import type { App } from './App';
 
-import type  { Nucleobase } from './Nucleobase';
+import type { Nucleobase } from '@rnacanvas/draw.bases';
 
 import * as styles from './BasesSection.module.css';
 

@@ -1,5 +1,9 @@
 import type { App } from './App';
 
+import { BasePair } from '@rnacanvas/draw.bases';
+
+import type { SecondaryBond } from './SecondaryBond';
+
 import * as styles from './SecondaryBondsSection.module.css';
 
 import { SectionHeader } from './SectionHeader';
@@ -187,6 +191,12 @@ class SelectionTools {
 
     'Between': new TextButton('Between', () => this.#selectBetween()),
     'Connecting': new TextButton('Connecting', () => this.#selectConnecting()),
+
+    'A:U': new TextButton('A:U', () => this.#selectAU()),
+    'A:T': new TextButton('A:T', () => this.#selectAT()),
+    'G:C': new TextButton('G:C', () => this.#selectGC()),
+    'G:U': new TextButton('G:U', () => this.#selectGU()),
+    'G:T': new TextButton('G:T', () => this.#selectGT()),
   };
 
   #buttonsContainer = document.createElement('div');
@@ -211,13 +221,21 @@ class SelectionTools {
     this.#alwaysVisibleButtons.append(...(['All', 'None'] as const).map(name => this.#buttons[name].domNode));
     this.#buttonsContainer.append(this.#alwaysVisibleButtons);
 
-    $(this.#sometimesHiddenButtons).css({ display: 'flex', flexDirection: 'row', gap: '20px' });
-    this.#sometimesHiddenButtons.append(...(['Between', 'Connecting'] as const).map(name => this.#buttons[name].domNode));
     this.#buttonsContainer.append(this.#sometimesHiddenButtons);
 
     // hide by default
     this.#sometimesHiddenButtons.style.display = 'none';
     this.#toggle.caret.pointRight();
+
+    let row2 = document.createElement('div');
+    $(row2).css({ display: 'flex', flexDirection: 'row', gap: '20px' });
+    row2.append(...(['Between', 'Connecting'] as const).map(name => this.#buttons[name].domNode));
+    this.#sometimesHiddenButtons.append(row2);
+
+    let row3 = document.createElement('div');
+    $(row3).css({ display: 'flex', flexDirection: 'row', gap: '8px' });
+    row3.append(...(['A:U', 'G:C', 'G:U', 'A:T', 'G:T'] as const).map(name => this.#buttons[name].domNode));
+    this.#sometimesHiddenButtons.append(row3);
 
     // only refresh when the Editing form is open
     targetApp.selectedSecondaryBonds.addEventListener('change', () => document.body.contains(this.domNode) ? this.refresh() : {});
@@ -284,6 +302,61 @@ class SelectionTools {
     return [...this.#targetApp.drawing.secondaryBonds].filter(sb => selectedBases.has(sb.base1) || selectedBases.has(sb.base2));
   }
 
+  #selectAU() {
+    this.#targetApp.addToSelected(this.#AU);
+  }
+
+  /**
+   * All A:U secondary bonds in the drawing of the target app.
+   */
+  get #AU() {
+    return [...this.#targetApp.drawing.secondaryBonds].filter(isAU);
+  }
+
+  #selectAT() {
+    this.#targetApp.addToSelected(this.#AT);
+  }
+
+  /**
+   * All A:T secondary bonds in the drawing of the target app.
+   */
+  get #AT() {
+    return [...this.#targetApp.drawing.secondaryBonds].filter(isAT);
+  }
+
+  #selectGC() {
+    this.#targetApp.addToSelected(this.#GC);
+  }
+
+  /**
+   * All G:C secondary bonds in the drawing of the target app.
+   */
+  get #GC() {
+    return [...this.#targetApp.drawing.secondaryBonds].filter(isGC);
+  }
+
+  #selectGU() {
+    this.#targetApp.addToSelected(this.#GU);
+  }
+
+  /**
+   * All G:U secondary bonds in the drawing of the target app.
+   */
+  get #GU() {
+    return [...this.#targetApp.drawing.secondaryBonds].filter(isGU);
+  }
+
+  #selectGT() {
+    this.#targetApp.addToSelected(this.#GT);
+  }
+
+  /**
+   * All G:T secondary bonds in the drawing of the target app.
+   */
+  get #GT() {
+    return [...this.#targetApp.drawing.secondaryBonds].filter(isGT);
+  }
+
   refresh(): void {
     let allSecondaryBonds = [...this.#targetApp.drawing.secondaryBonds];
 
@@ -335,6 +408,26 @@ class SelectionTools {
       this.#buttons['Connecting'].enable();
       this.#buttons['Connecting'].tooltip.textContent = 'Select secondary bonds connecting the selected bases.';
     }
+
+    ([
+      ['A:U', this.#AU],
+      ['A:T', this.#AT],
+      ['G:C', this.#GC],
+      ['G:U', this.#GU],
+      ['G:T', this.#GT]
+    ] as const)
+      .forEach(([basePair, secondaryBonds]) => {
+        if (secondaryBonds.length == 0) {
+          this.#buttons[basePair].disable();
+          this.#buttons[basePair].tooltip.textContent = `There are no ${basePair} base-pairs in the drawing.`;
+        } else if (secondaryBonds.every(sb => selectedSecondaryBonds.has(sb))) {
+          this.#buttons[basePair].disable();
+          this.#buttons[basePair].tooltip.textContent = `All secondary bonds between ${basePair} base-pairs are already selected.`;
+        } else {
+          this.#buttons[basePair].enable();
+          this.#buttons[basePair].tooltip.textContent = `Select all secondary bonds between ${basePair} base-pairs.`;
+        }
+      });
   }
 }
 
@@ -576,4 +669,24 @@ class StrokeDasharrayField {
   refresh(): void {
     this.#input.refresh();
   }
+}
+
+function isAU(secondaryBond: SecondaryBond): boolean {
+  return (new BasePair(secondaryBond.base1, secondaryBond.base2)).isAU();
+}
+
+function isAT(secondaryBond: SecondaryBond): boolean {
+  return (new BasePair(secondaryBond.base1, secondaryBond.base2)).isAT();
+}
+
+function isGC(secondaryBond: SecondaryBond): boolean {
+  return (new BasePair(secondaryBond.base1, secondaryBond.base2)).isGC();
+}
+
+function isGU(secondaryBond: SecondaryBond): boolean {
+  return (new BasePair(secondaryBond.base1, secondaryBond.base2)).isGU();
+}
+
+function isGT(secondaryBond: SecondaryBond): boolean {
+  return (new BasePair(secondaryBond.base1, secondaryBond.base2)).isGT();
 }

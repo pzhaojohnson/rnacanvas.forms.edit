@@ -1,4 +1,4 @@
-import type { Nucleobase } from './Nucleobase';
+import type { Nucleobase } from '@rnacanvas/draw.bases';
 
 import type { Outline } from './Outline';
 

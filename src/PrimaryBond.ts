@@ -1,4 +1,4 @@
-import type { Nucleobase } from './Nucleobase';
+import type { Nucleobase } from '@rnacanvas/draw.bases';
 
 export interface PrimaryBond {
   readonly domNode: SVGLineElement;
