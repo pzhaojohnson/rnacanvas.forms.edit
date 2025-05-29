@@ -1,5 +1,5 @@
 .editing-form {
-  width: 268px;
+  width: 290px;
   height: 524px;
 
   overflow: auto;
@@ -8,7 +8,7 @@
 
   border: 1px solid #220536;
 
-  padding: 23px 32px 50px 36px;
+  padding: 23px 16px 50px 36px;
 
   background-color: rgba(227, 229, 255, 0.37);
 
@@ -36,6 +36,12 @@
 
 .content-container {
   margin: 27px 0px 0px 24px;
+
+  /**
+   * Prevents unwanted movement of the vertical scrollbar
+   * when elements are deselected and reselected.
+   */
+  min-height: 2200px;
 
   display: flex;
   flex-direction: column;

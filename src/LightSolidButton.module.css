@@ -1,6 +1,8 @@
 .container {
   position: relative;
 
+  align-self: start;
+
   pointer-events: auto;
 }
 
@@ -10,7 +12,7 @@
   border: none;
 
   padding: 4px 14px;
-  border-radius: 3px;
+  border-radius: 2px;
 
   font-family: "Open Sans", sans-serif;
   font-size: 11px;

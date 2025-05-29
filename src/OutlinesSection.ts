@@ -357,7 +357,7 @@ class AddSection {
   constructor(targetApp: App) {
     this.#targetApp = targetApp;
 
-    this.domNode.style.marginTop = '25px';
+    this.domNode.style.marginTop = '27px';
 
     this.domNode.style.display = 'flex';
     this.domNode.style.flexDirection = 'column';
@@ -446,7 +446,7 @@ class RemoveButton {
   constructor(targetApp: App) {
     this.#targetApp = targetApp;
 
-    this.domNode.style.marginTop = '15px';
+    this.domNode.style.marginTop = '18px';
 
     // only refresh when necessary
     this.#targetApp.selectedOutlines.addEventListener('change', () => document.body.contains(this.domNode) ? this.refresh() : {});
