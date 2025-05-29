@@ -34,6 +34,12 @@ export interface App {
      * All secondary bonds in the drawing.
      */
     readonly secondaryBonds: Iterable<SecondaryBond>;
+
+    /**
+     * Adds a secondary bond between the two bases to the drawing
+     * and returns the added secondary bond.
+     */
+    addSecondaryBond(base1: Nucleobase, base2: Nucleobase): SecondaryBond;
   }
 
   pushUndoStack(): void;

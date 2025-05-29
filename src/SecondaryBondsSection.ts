@@ -1,5 +1,7 @@
 import type { App } from './App';
 
+import type { Nucleobase } from '@rnacanvas/draw.bases';
+
 import { BasePair } from '@rnacanvas/draw.bases';
 
 import type { SecondaryBond } from './SecondaryBond';
@@ -9,6 +11,12 @@ import * as styles from './SecondaryBondsSection.module.css';
 import { SectionHeader } from './SectionHeader';
 
 import { TextButton } from './TextButton';
+
+import { LightSolidButton } from './LightSolidButton';
+
+import { Checkbox } from './Checkbox';
+
+import { CheckboxField } from './CheckboxField';
 
 import { ZSection as _ZSection } from './ZSection';
 
@@ -22,6 +30,10 @@ import { ColorField } from './ColorField';
 
 import * as $ from 'jquery';
 
+import { antiParallelPairs, missing } from '@rnacanvas/base-pairs';
+
+import { seqSorted } from '@rnacanvas/draw.bases';
+
 export class SecondaryBondsSection {
   #targetApp;
 
@@ -33,6 +45,8 @@ export class SecondaryBondsSection {
 
   #numSelected;
   #selectionTools;
+  #addSection;
+  #removeButton;
 
   #bottomContent = document.createElement('div');
 
@@ -59,6 +73,12 @@ export class SecondaryBondsSection {
 
     this.#selectionTools = new SelectionTools(targetApp);
     this.#content.append(this.#selectionTools.domNode);
+
+    this.#addSection = new AddSection(targetApp);
+    this.#content.append(this.#addSection.domNode);
+
+    this.#removeButton = new RemoveButton(targetApp);
+    this.#content.append(this.#removeButton.domNode);
 
     this.#bottomContent.classList.add(styles['bottom-content']);
     this.#content.append(this.#bottomContent);
@@ -124,6 +144,8 @@ export class SecondaryBondsSection {
     return [
       this.#numSelected,
       this.#selectionTools,
+      this.#addSection,
+      this.#removeButton,
       this.#zSection,
       this.#strokeField,
       this.#strokeColorField,
@@ -432,6 +454,148 @@ class SelectionTools {
   }
 }
 
+class AddSection {
+  #targetApp;
+
+  readonly domNode = document.createElement('div');
+
+  #button = new LightSolidButton('Add', () => this.press());
+
+  #onlyAddMissingCheckbox = new Checkbox();
+
+  #onlyAddMissingField = new CheckboxField('Only add missing secondary bonds', this.#onlyAddMissingCheckbox.domNode);
+
+  #drawingObserver;
+
+  constructor(targetApp: App) {
+    this.#targetApp = targetApp;
+
+    this.domNode.classList.add(styles['add-section']);
+
+    this.domNode.append(this.#button.domNode, this.#onlyAddMissingField.domNode);
+
+    // check by default
+    this.#onlyAddMissingCheckbox.domNode.checked = true;
+
+    this.#onlyAddMissingField.domNode.style.marginLeft = '10px';
+
+    // only refresh when the Editing form is open
+    this.#targetApp.selectedBases.addEventListener('change', () => {
+      document.body.contains(this.domNode) ? this.refresh() : {};
+    });
+
+    // watch for the addition and removal of secondary bonds
+    this.#drawingObserver = new MutationObserver(() => document.body.contains(this.domNode) ? this.refresh() : {});
+    this.#drawingObserver.observe(targetApp.drawing.domNode, { childList: true, subtree: true });
+
+    // should only ever change when the Editing form is open
+    this.#onlyAddMissingCheckbox.domNode.addEventListener('change', () => this.refresh());
+  }
+
+  press(): void {
+    let allBases = [...this.#targetApp.drawing.bases];
+
+    let selectedBases = [...this.#targetApp.selectedBases];
+
+    // don't forget to sort!
+    selectedBases = seqSorted(selectedBases, allBases);
+
+    let pairs = antiParallelPairs(selectedBases);
+
+    let allSecondaryBonds = [...this.#targetApp.drawing.secondaryBonds];
+
+    let missingPairs = missing(basePairs(allSecondaryBonds), pairs);
+
+    if (pairs.length == 0) {
+      return;
+    } else if (this.#onlyAddMissingCheckbox.domNode.checked && missingPairs.length == 0) {
+      return;
+    }
+
+    this.#targetApp.pushUndoStack();
+
+    if (this.#onlyAddMissingCheckbox.domNode.checked) {
+      missingPairs.forEach(pair => this.#targetApp.drawing.addSecondaryBond(...pair));
+    } else {
+      pairs.forEach(pair => this.#targetApp.drawing.addSecondaryBond(...pair));
+    }
+  }
+
+  refresh(): void {
+    let allBases = [...this.#targetApp.drawing.bases];
+
+    let selectedBases = [...this.#targetApp.selectedBases];
+
+    // don't forget to sort!
+    selectedBases = seqSorted(selectedBases, allBases);
+
+    let pairs = antiParallelPairs(selectedBases);
+
+    let allSecondaryBonds = [...this.#targetApp.drawing.secondaryBonds];
+
+    let missingPairs = missing(basePairs(allSecondaryBonds), pairs);
+
+    if (selectedBases.length == 0) {
+      this.#button.disable();
+      this.#button.tooltip.textContent = 'No bases are selected.';
+    } else if (selectedBases.length == 1) {
+      this.#button.disable();
+      this.#button.tooltip.textContent = 'At least two bases must be selected.';
+    } else if (this.#onlyAddMissingCheckbox.domNode.checked && missingPairs.length == 0) {
+      this.#button.disable();
+      this.#button.tooltip.textContent = 'There are no missing pairs between the selected bases.';
+    } else {
+      this.#button.enable();
+      this.#button.tooltip.textContent = 'Add secondary bonds between the selected bases.';
+    }
+  }
+}
+
+class RemoveButton {
+  #targetApp;
+
+  #button = new LightSolidButton('Remove', () => this.press());
+
+  constructor(targetApp: App) {
+    this.#targetApp = targetApp;
+
+    // only refresh when the Editing form is open
+    this.#targetApp.selectedSecondaryBonds.addEventListener('change', () => {
+      document.body.contains(this.domNode) ? this.refresh() : {};
+    });
+
+    this.domNode.style.marginTop = '15px';
+  }
+
+  get domNode() {
+    return this.#button.domNode;
+  }
+
+  press(): void {
+    let selectedSecondaryBonds = [...this.#targetApp.selectedSecondaryBonds];
+
+    if (selectedSecondaryBonds.length == 0) {
+      return;
+    }
+
+    this.#targetApp.pushUndoStack();
+
+    selectedSecondaryBonds.forEach(sb => sb.domNode.remove());
+  }
+
+  refresh(): void {
+    let selectedSecondaryBonds = [...this.#targetApp.selectedSecondaryBonds];
+
+    if (selectedSecondaryBonds.length == 0) {
+      this.#button.disable();
+      this.#button.tooltip.textContent = 'No secondary bonds are selected.';
+    } else {
+      this.#button.enable();
+      this.#button.tooltip.textContent = 'Remove the selected secondary bonds from the drawing.';
+    }
+  }
+}
+
 class ZSection {
   #targetApp;
 
@@ -690,4 +854,18 @@ function isGU(secondaryBond: SecondaryBond): boolean {
 
 function isGT(secondaryBond: SecondaryBond): boolean {
   return (new BasePair(secondaryBond.base1, secondaryBond.base2)).isGT();
+}
+
+/**
+ * Returns the base-pair of the secondary bond.
+ */
+function basePair(secondaryBond: SecondaryBond): [Nucleobase, Nucleobase] {
+  return [secondaryBond.base1, secondaryBond.base2];
+}
+
+/**
+ * Returns the base-pairs of the secondary bonds.
+ */
+function basePairs(secondaryBonds: SecondaryBond[]) {
+  return secondaryBonds.map(basePair);
 }

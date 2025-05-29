@@ -40,6 +40,14 @@
   gap: 23px;
 }
 
+.add-section {
+  margin-top: 20px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .bottom-content {
   display: none;
   flex-direction: column;
