@@ -43,6 +43,7 @@ export class OutlinesSection {
 
   #selectSection;
   #addSection;
+  #removeButton;
   #zSection;
   #rField;
   #fillField;
@@ -74,6 +75,9 @@ export class OutlinesSection {
 
     this.#addSection = new AddSection(targetApp);
     this.#content.append(this.#addSection.domNode);
+
+    this.#removeButton = new RemoveButton(targetApp);
+    this.#content.append(this.#removeButton.domNode);
 
     this.#bottomContent.classList.add(styles['bottom-content']);
     this.#content.append(this.#bottomContent);
@@ -135,6 +139,7 @@ export class OutlinesSection {
       this.#numSelected,
       this.#selectSection,
       this.#addSection,
+      this.#removeButton,
       this.#zSection,
       this.#rField,
       this.#fillField,
@@ -341,15 +346,11 @@ class AddSection {
 
   readonly domNode = document.createElement('div');
 
-  #buttonsContainer = document.createElement('div');
-
-  #addButton = new LightSolidButton('Add', () => this.#add());
+  #button = new LightSolidButton('Add', () => this.#add());
 
   #onlyAddMissingCheckbox = new Checkbox();
 
   #onlyAddMissingField = new CheckboxField('Only add missing outlines', this.#onlyAddMissingCheckbox.domNode);
-
-  #removeButton;
 
   #drawingObserver;
 
@@ -361,20 +362,12 @@ class AddSection {
     this.domNode.style.display = 'flex';
     this.domNode.style.flexDirection = 'column';
 
-    this.#buttonsContainer.style.display = 'flex';
-    this.#buttonsContainer.style.flexDirection = 'row';
-    this.#buttonsContainer.style.gap = '15px';
-
-    this.domNode.append(this.#buttonsContainer);
-
-    this.#removeButton = new RemoveButton(targetApp);
-
-    this.#buttonsContainer.append(this.#addButton.domNode, this.#removeButton.domNode);
+    this.domNode.append(this.#button.domNode);
 
     // checked by default
     this.#onlyAddMissingCheckbox.domNode.checked = true;
 
-    this.#onlyAddMissingField.domNode.style.marginTop = '11px';
+    this.#onlyAddMissingField.domNode.style.margin = '10px 0px 0px 10px';
     this.#onlyAddMissingField.domNode.style.alignSelf = 'start';
 
     this.domNode.append(this.#onlyAddMissingField.domNode);
@@ -396,12 +389,6 @@ class AddSection {
   }
 
   refresh(): void {
-    this.#refreshAddButton();
-
-    this.#removeButton.refresh();
-  }
-
-  #refreshAddButton(): void {
     let selectedBases = [...this.#targetApp.selectedBases];
 
     let allOutlines = [...this.#targetApp.drawing.outlines];
@@ -411,14 +398,14 @@ class AddSection {
     let notOutlined = selectedBases.filter(b => !outlined.has(b));
 
     if (selectedBases.length == 0) {
-      this.#addButton.disable();
-      this.#addButton.tooltip.textContent = 'No bases are selected.';
+      this.#button.disable();
+      this.#button.tooltip.textContent = 'No bases are selected.';
     } else if (this.#onlyAddMissing && notOutlined.length == 0) {
-      this.#addButton.disable();
-      this.#addButton.tooltip.textContent = 'The selected bases are already outlined.';
+      this.#button.disable();
+      this.#button.tooltip.textContent = 'The selected bases are already outlined.';
     } else {
-      this.#addButton.enable();
-      this.#addButton.tooltip.textContent = 'Outline the selected bases.';
+      this.#button.enable();
+      this.#button.tooltip.textContent = 'Outline the selected bases.';
     }
   }
 
@@ -458,6 +445,8 @@ class RemoveButton {
 
   constructor(targetApp: App) {
     this.#targetApp = targetApp;
+
+    this.domNode.style.marginTop = '15px';
 
     // only refresh when necessary
     this.#targetApp.selectedOutlines.addEventListener('change', () => document.body.contains(this.domNode) ? this.refresh() : {});
