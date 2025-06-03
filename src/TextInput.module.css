@@ -1,7 +1,7 @@
 .text-input {
-  border: 1px solid #75758c;
   border-radius: 2px;
 
+  border: none;
   outline: none;
 
   width: 90px;
@@ -12,13 +12,11 @@
   font-size: 12px;
   font-weight: 700;
   font-style: normal;
-  color: black;
+  color: white;
+
+  background-color: #e0e0eb;
 
   pointer-events: auto;
-}
-
-.text-input:hover {
-  border-color: #0a0a0b;
 }
 
 .text-input:focus {

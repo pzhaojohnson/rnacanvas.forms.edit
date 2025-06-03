@@ -11,16 +11,16 @@
 
   border: none;
 
-  padding: 4px 14px;
+  padding: 3px 15px;
   border-radius: 2px;
 
   font-family: "Open Sans", sans-serif;
   font-size: 11px;
   font-weight: 700;
   font-style: normal;
-  color: #06064a;
+  color: #001010;
 
-  background-color: rgba(219, 219, 255, 0.9);
+  background-color: #78dada;
 
   cursor: pointer;
 
@@ -31,17 +31,17 @@
 }
 
 .disabled {
-  color: #9797cb;
+  color: #378f8f;
 
   pointer-events: none;
 }
 
 .light-solid-button:hover {
-  background-color: rgba(175, 175, 255, 0.92);
+  background-color: #329a9a;
 }
 
 .light-solid-button:active {
-  background-color: rgba(147, 147, 255, 0.92);
+  background-color: #1b7474;
 }
 
 .light-solid-button:focus {

@@ -49,7 +49,7 @@ class Caret {
     this.domNode.innerHTML = `
       <path
         d="M 1 1 L 5 5 L 1 9"
-        stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
         fill="none"
       ></path>
     `;

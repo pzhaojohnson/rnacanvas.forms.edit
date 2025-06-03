@@ -4,18 +4,13 @@
 
   overflow: auto;
 
-  border-radius: 16px;
+  border-radius: 15px;
 
-  border: 1px solid #220536;
+  border: 1px solid #cacae4;
 
   padding: 23px 16px 50px 36px;
 
-  background-color: rgba(227, 229, 255, 0.37);
-
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-
-  box-shadow: 0 0 14px rgba(219, 219, 238, 0.09);
+  background-color: black;
 }
 
 .header {
@@ -23,10 +18,10 @@
   padding: 0px;
 
   font-family: "Open Sans", sans-serif;
-  font-size: 34px;
+  font-size: 31px;
   font-weight: 700;
   font-style: normal;
-  color: black;
+  color: white;
 
   user-select: none;
   -webkit-user-select: none;
