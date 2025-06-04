@@ -1,12 +1,12 @@
 .outlines-section {
-  margin-top: 37px;
+  margin-top: 39px;
 
   display: flex;
   flex-direction: column;
 }
 
 .content {
-  margin: 10px 0px 0px 12px;
+  margin: 11px 0px 0px 12px;
 
   display: none;
   flex-direction: column;
@@ -33,7 +33,7 @@
 }
 
 .select-section {
-  margin-top: 18px;
+  margin-top: 20px;
 
   display: flex;
   flex-direction: row;
@@ -62,7 +62,7 @@
 }
 
 .z-section {
-  margin-top: 25px;
+  margin-top: 27px;
 
   display: flex;
   flex-direction: row;

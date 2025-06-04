@@ -357,7 +357,7 @@ class AddSection {
   constructor(targetApp: App) {
     this.#targetApp = targetApp;
 
-    this.domNode.style.marginTop = '27px';
+    this.domNode.style.marginTop = '29px';
 
     this.domNode.style.display = 'flex';
     this.domNode.style.flexDirection = 'column';
@@ -599,7 +599,8 @@ class RField {
 
     this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/r';
 
-    $(this.domNode).css({ marginTop: '22px', alignSelf: 'start' });
+    this.domNode.style.marginTop = '24px';
+    this.domNode.style.alignSelf = 'start';
 
     this.refresh();
   }

@@ -204,7 +204,7 @@ class SelectionTools {
 
     this.domNode.append(this.#toggle.domNode);
 
-    $(this.#buttonsContainer).css({ marginTop: '1.5px', display: 'flex', flexDirection: 'column', gap: '12px' });
+    $(this.#buttonsContainer).css({ marginTop: '1.5px', display: 'flex', flexDirection: 'column', gap: '10px' });
     this.domNode.append(this.#buttonsContainer);
 
     $(this.#alwaysVisibleButtons).css({ display: 'flex', flexDirection: 'row', gap: '27px' });
@@ -350,7 +350,7 @@ class ZSection {
 
     this.#zSection = new _ZSection(selectedPrimaryBonds, targetApp);
 
-    this.domNode.style.marginTop = '25px';
+    this.domNode.style.marginTop = '26px';
 
     this.#zSection.addEventListener('refresh', () => this.#handleRefresh());
 
@@ -400,7 +400,7 @@ class StrokeField {
 
     this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/stroke';
 
-    this.domNode.style.marginTop = '19px';
+    this.domNode.style.marginTop = '21px';
     this.domNode.style.alignSelf = 'start';
 
     this.refresh();

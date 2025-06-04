@@ -608,7 +608,7 @@ class ZSection {
 
     this.#zSection = new _ZSection(selectedSecondaryBonds, targetApp);
 
-    this.domNode.style.marginTop = '25px';
+    this.domNode.style.marginTop = '27px';
 
     this.#zSection.addEventListener('refresh', () => this.#handleRefresh());
 
@@ -658,7 +658,7 @@ class StrokeField {
 
     this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/stroke';
 
-    this.domNode.style.marginTop = '19px';
+    this.domNode.style.marginTop = '22px';
     this.domNode.style.alignSelf = 'start';
 
     this.refresh();

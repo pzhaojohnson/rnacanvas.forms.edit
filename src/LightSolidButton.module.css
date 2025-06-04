@@ -20,7 +20,7 @@
   font-style: normal;
   color: #001010;
 
-  background-color: #78dada;
+  background-color: #8cdede;
 
   cursor: pointer;
 
@@ -31,17 +31,17 @@
 }
 
 .disabled {
-  color: #378f8f;
+  color: #3a8f8f;
 
   pointer-events: none;
 }
 
 .light-solid-button:hover {
-  background-color: #329a9a;
+  background-color: #3ca9a9;
 }
 
 .light-solid-button:active {
-  background-color: #1b7474;
+  background-color: #1a7676;
 }
 
 .light-solid-button:focus {

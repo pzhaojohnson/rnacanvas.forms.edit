@@ -14,13 +14,11 @@
   font-style: normal;
   color: black;
 
-  background-color: #e0e0eb;
+  background-color: white;
 
   pointer-events: auto;
 }
 
 .text-input:focus {
-  border-color: #0a0a0b;
-
   outline: none;
 }

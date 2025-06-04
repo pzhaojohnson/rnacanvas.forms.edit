@@ -532,7 +532,7 @@ class TextContentField {
 
     this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent';
 
-    this.domNode.style.marginTop = '22px';
+    this.domNode.style.marginTop = '23px';
     this.domNode.style.alignSelf = 'start';
 
     // only refresh when necessary
