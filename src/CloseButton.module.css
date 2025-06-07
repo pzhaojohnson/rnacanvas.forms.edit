@@ -15,7 +15,7 @@
   font-size: 16px;
   font-weight: 600;
   font-style: normal;
-  color: #e0e066;
+  color: #ffaeae;
 
   pointer-events: auto;
 
@@ -28,9 +28,9 @@
 }
 
 .close-button:hover {
-  background-color: #34342e;
+  background-color: #302b2b;
 }
 
 .close-button:active {
-  background-color: #45453e;
+  background-color: #474040;
 }
