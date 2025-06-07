@@ -14,7 +14,7 @@
   font-size: 11px;
   font-weight: 700;
   font-style: normal;
-  color: cyan;
+  color: #10ffff;
 
   user-select: none;
   -webkit-user-select: none;
@@ -35,7 +35,7 @@
 .disabled .text {
   pointer-events: none;
 
-  color: #075252;
+  color: #097676;
 }
 
 .disabled:hover .text {
