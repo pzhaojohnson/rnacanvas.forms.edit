@@ -18,7 +18,7 @@
 }
 
 .checkbox:checked {
-  background-color: #81ffff;
+  background-color: rgb(255, 194, 194);
 
   background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNSAxNSI+PHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLWxpbmVjYXA9IiIgc3Ryb2tlLWxpbmVqb2luPSIiIHN0cm9rZS13aWR0aD0iMiIgZD0iTTMuNSA4LjUgTDcuNSAxMS41IEwgMTEuNSAzLjUiLz48L3N2Zz4=);
 }
