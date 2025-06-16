@@ -4,11 +4,13 @@
   margin: 0px;
   padding: 0px;
 
-  border: 2px solid white;
-  border-radius: 2px;
+  border: none;
+  outline: none;
 
-  width: 14px;
-  height: 14px;
+  border-radius: 1px;
+
+  width: 15px;
+  height: 15px;
 
   background-color: white;
 
@@ -16,11 +18,7 @@
 }
 
 .checkbox:checked {
-  border-color: #064b4b;
+  background-color: #81ffff;
 
-  background-color: #064b4b;
-
-  background-image: url(data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgOTYgOTYiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIGlkPSJJY29uc19DaGVja21hcmsiIG92ZXJmbG93PSJoaWRkZW4iPjxwYXRoIGQ9Ik04Ni4xIDE1LjggMzQuOSA2NC4yIDEwLjMgMzkgMS44IDQ3LjEgMzQuNSA4MC43IDQzLjEgNzIuNyA5NC4yIDI0LjJaIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMy42NjY2NyIgZmlsbD0iI0ZGRkZGRiIvPjwvc3ZnPg==);
-
-  filter: invert(100%);
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNSAxNSI+PHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLWxpbmVjYXA9IiIgc3Ryb2tlLWxpbmVqb2luPSIiIHN0cm9rZS13aWR0aD0iMiIgZD0iTTMuNSA4LjUgTDcuNSAxMS41IEwgMTEuNSAzLjUiLz48L3N2Zz4=);
 }
