@@ -81,7 +81,7 @@ class NameField {
     this.#field = new TextInputField('Name', this.#input.domNode);
 
     this.domNode.style.alignSelf = 'start';
-    this.#input.domNode.style.width = '131px';
+    this.#input.domNode.style.width = '132px';
 
     this.refresh();
   }
