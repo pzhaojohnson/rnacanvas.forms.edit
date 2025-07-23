@@ -26,6 +26,9 @@ export class DrawingSection {
 
     this.domNode.append(this.#header.domNode);
 
+    this.#content.classList.add(styles['content']);
+    this.domNode.append(this.#content);
+
     this.#nameField = new NameField(targetApp);
     this.#content.append(this.#nameField.domNode);
 
