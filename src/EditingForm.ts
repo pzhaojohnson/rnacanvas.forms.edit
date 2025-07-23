@@ -10,6 +10,8 @@ import { PrimaryBondsSection } from './PrimaryBondsSection';
 
 import { SecondaryBondsSection } from './SecondaryBondsSection';
 
+import { DrawingSection } from './DrawingSection';
+
 import { CloseButton } from './CloseButton';
 
 import { DragTranslater } from '@rnacanvas/forms';
@@ -24,6 +26,8 @@ export class EditingForm {
 
   #primaryBondsSection;
   #secondaryBondsSection;
+
+  #drawingSection;
 
   #dragTranslater;
 
@@ -53,6 +57,9 @@ export class EditingForm {
     this.#secondaryBondsSection = new SecondaryBondsSection(targetApp);
     contentContainer.append(this.#secondaryBondsSection.domNode);
 
+    this.#drawingSection = new DrawingSection(targetApp);
+    contentContainer.append(this.#drawingSection.domNode);
+
     // add last to place on top of everything else
     let closeButton = CloseButton();
     closeButton.addEventListener('click', () => this.close());
@@ -79,6 +86,7 @@ export class EditingForm {
       this.#outlinesSection,
       this.#primaryBondsSection,
       this.#secondaryBondsSection,
+      this.#drawingSection,
     ];
   }
 

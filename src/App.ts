@@ -17,6 +17,11 @@ export interface App {
     readonly domNode: SVGSVGElement;
 
     /**
+     * Corresponds to the `data-name` attribute of the drawing.
+     */
+    name: string | undefined;
+
+    /**
      * All bases in the drawing.
      */
     readonly bases: Iterable<Nucleobase>;
