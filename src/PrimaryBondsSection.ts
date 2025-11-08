@@ -39,6 +39,8 @@ export class PrimaryBondsSection {
   #strokeWidthField;
   #strokeLinecapField;
   #strokeDasharrayField;
+  #basePadding1Field;
+  #basePadding2Field;
 
   constructor(targetApp: App) {
     this.#targetApp = targetApp;
@@ -87,6 +89,12 @@ export class PrimaryBondsSection {
     this.#strokeDasharrayField = new StrokeDasharrayField(targetApp);
     this.#bottomContent.append(this.#strokeDasharrayField.domNode);
 
+    this.#basePadding1Field = new BasePadding1Field(targetApp);
+    this.#bottomContent.append(this.#basePadding1Field.domNode);
+
+    this.#basePadding2Field = new BasePadding2Field(targetApp);
+    this.#bottomContent.append(this.#basePadding2Field.domNode);
+
     this.collapse();
 
     this.refresh();
@@ -127,6 +135,8 @@ export class PrimaryBondsSection {
       this.#strokeWidthField,
       this.#strokeLinecapField,
       this.#strokeDasharrayField,
+      this.#basePadding1Field,
+      this.#basePadding2Field,
     ];
   }
 
@@ -562,6 +572,68 @@ class StrokeDasharrayField {
     this.#field = new TextInputField('Stroke Dash-Array', this.#input.domNode);
 
     this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/stroke-dasharray';
+
+    this.domNode.style.marginTop = '10px';
+    this.domNode.style.alignSelf = 'start';
+
+    this.refresh();
+  }
+
+  get domNode() {
+    return this.#field.domNode;
+  }
+
+  refresh(): void {
+    this.#input.refresh();
+  }
+}
+
+class BasePadding1Field {
+  #targetApp;
+
+  #input;
+
+  #field;
+
+  constructor(targetApp: App) {
+    this.#targetApp = targetApp;
+
+    let selectedPrimaryBonds = targetApp.selectedPrimaryBonds;
+
+    this.#input = new AttributeInput('data-base-padding1', selectedPrimaryBonds, targetApp);
+
+    this.#field = new TextInputField('Base Padding 1', this.#input.domNode);
+
+    this.domNode.style.marginTop = '10px';
+    this.domNode.style.alignSelf = 'start';
+
+    this.refresh();
+  }
+
+  get domNode() {
+    return this.#field.domNode;
+  }
+
+  refresh(): void {
+    this.#input.refresh();
+  }
+}
+
+class BasePadding2Field {
+  #targetApp;
+
+  #input;
+
+  #field;
+
+  constructor(targetApp: App) {
+    this.#targetApp = targetApp;
+
+    let selectedPrimaryBonds = targetApp.selectedPrimaryBonds;
+
+    this.#input = new AttributeInput('data-base-padding2', selectedPrimaryBonds, targetApp);
+
+    this.#field = new TextInputField('Base Padding 2', this.#input.domNode);
 
     this.domNode.style.marginTop = '10px';
     this.domNode.style.alignSelf = 'start';
