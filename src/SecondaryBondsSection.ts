@@ -860,6 +860,19 @@ class BasePadding1Field {
 
     this.#input = new AttributeInput('data-base-padding1', selectedSecondaryBonds, targetApp);
 
+    this.#input.addEventListener('edit', () => {
+      [...selectedSecondaryBonds].forEach(sb => {
+        let basePadding1 = sb.basePadding1;
+
+        // guarantee repositioning of the secondary bond
+        // (secondary bond might not reposition after directly changing base padding data attribute)
+        sb.basePadding1 += 1;
+
+        // set to correct value
+        sb.basePadding1 = basePadding1;
+      });
+    });
+
     this.#field = new TextInputField('Base Padding 1', this.#input.domNode);
 
     this.domNode.style.marginTop = '10px';
@@ -890,6 +903,19 @@ class BasePadding2Field {
     let selectedSecondaryBonds = targetApp.selectedSecondaryBonds;
 
     this.#input = new AttributeInput('data-base-padding2', selectedSecondaryBonds, targetApp);
+
+    this.#input.addEventListener('edit', () => {
+      [...selectedSecondaryBonds].forEach(sb => {
+        let basePadding2 = sb.basePadding2;
+
+        // guarantee repositioning of the secondary bond
+        // (secondary bond might not reposition after directly changing base padding data attribute)
+        sb.basePadding2 += 1;
+
+        // set to correct value
+        sb.basePadding2 = basePadding2;
+      });
+    });
 
     this.#field = new TextInputField('Base Padding 2', this.#input.domNode);
 

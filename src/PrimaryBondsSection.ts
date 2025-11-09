@@ -602,6 +602,19 @@ class BasePadding1Field {
 
     this.#input = new AttributeInput('data-base-padding1', selectedPrimaryBonds, targetApp);
 
+    this.#input.addEventListener('edit', () => {
+      [...selectedPrimaryBonds].forEach(pb => {
+        let basePadding1 = pb.basePadding1;
+
+        // guarantee repositioning of the primary bond
+        // (primary bond might not reposition after directly changing base padding data attribute)
+        pb.basePadding1 += 1;
+
+        // set to correct value
+        pb.basePadding1 = basePadding1;
+      });
+    });
+
     this.#field = new TextInputField('Base Padding 1', this.#input.domNode);
 
     this.domNode.style.marginTop = '10px';
@@ -632,6 +645,19 @@ class BasePadding2Field {
     let selectedPrimaryBonds = targetApp.selectedPrimaryBonds;
 
     this.#input = new AttributeInput('data-base-padding2', selectedPrimaryBonds, targetApp);
+
+    this.#input.addEventListener('edit', () => {
+      [...selectedPrimaryBonds].forEach(pb => {
+        let basePadding2 = pb.basePadding2;
+
+        // guarantee repositioning of the primary bond
+        // (primary bond might not reposition after directly changing base padding data attribute)
+        pb.basePadding2 += 1;
+
+        // set to correct value
+        pb.basePadding2 = basePadding2;
+      });
+    });
 
     this.#field = new TextInputField('Base Padding 2', this.#input.domNode);
 

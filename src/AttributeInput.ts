@@ -13,6 +13,10 @@ export class AttributeInput {
 
   #input = new TextInput({ onSubmit: () => this.#submit() });
 
+  #eventListeners: EventListeners = {
+    'edit': [],
+  };
+
   constructor(attributeName: string, targetElements: LiveSet<DrawingElement>, parentApp: App) {
     this.#attributeName = attributeName;
 
@@ -60,6 +64,16 @@ export class AttributeInput {
     this.#parentApp.pushUndoStack();
 
     targetElements.forEach(ele => ele.domNode.setAttribute(this.#attributeName, value));
+
+    this.#dispatchEvent('edit');
+  }
+
+  addEventListener(name: 'edit', listener: () => void): void {
+    this.#eventListeners[name].push(listener);
+  }
+
+  #dispatchEvent(name: 'edit'): void {
+    this.#eventListeners[name].forEach(listener => listener());
   }
 }
 
@@ -75,3 +89,12 @@ interface LiveSet<T> {
 interface DrawingElement {
   readonly domNode: SVGGraphicsElement;
 }
+
+type EventListeners = {
+  /**
+   * To be called whenever the target elements are edited.
+   */
+  'edit': Listener[],
+};
+
+type Listener = () => void;
