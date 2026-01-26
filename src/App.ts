@@ -2,6 +2,10 @@ import type { Nucleobase } from '@rnacanvas/draw.bases';
 
 import type { Outline } from './Outline';
 
+import type { Numbering } from './Numbering';
+
+import type { NumberingLine } from './NumberingLine';
+
 import type { PrimaryBond } from './PrimaryBond';
 
 import type { SecondaryBond } from './SecondaryBond';
@@ -29,6 +33,10 @@ export interface App {
     readonly outlines: Iterable<Outline>;
 
     outline(b: Nucleobase): Outline;
+
+    readonly numberings: Iterable<Numbering>;
+
+    number(b: Nucleobase, n: number): [Numbering, NumberingLine];
 
     /**
      * All primary bonds in the drawing.
@@ -88,6 +96,12 @@ export interface App {
     addEventListener(name: 'change', listener: () => void): void;
   }
 
+  readonly selectedNumberings: {
+    [Symbol.iterator](): Iterator<Numbering>;
+
+    addEventListener(name: 'change', listener: () => void): void;
+  }
+
   readonly selectedPrimaryBonds: {
     [Symbol.iterator](): Iterator<PrimaryBond>;
 
@@ -115,6 +129,8 @@ type PreviousState = unknown;
 type DrawingElement = (
   Nucleobase
   | Outline
+  | Numbering
+  | NumberingLine
   | PrimaryBond
   | SecondaryBond
 );
