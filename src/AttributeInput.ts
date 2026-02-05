@@ -1,28 +1,38 @@
 import type { App } from './App';
 
+import type { DrawingElement } from './DrawingElement';
+
+import type { LiveCollection } from './LiveCollection';
+
 import { TextInput } from './TextInput';
 
 import { consensusValue } from '@rnacanvas/consensize';
 
 export class AttributeInput {
-  #attributeName;
+  readonly #attributeName;
 
-  #targetElements;
+  readonly #targetElements;
 
-  #parentApp;
+  readonly #parentDrawing;
 
-  #input = new TextInput({ onSubmit: () => this.#submit() });
+  readonly #input = new TextInput({ onSubmit: () => this.#submit() });
 
-  #eventListeners: EventListeners = {
-    'edit': [],
-  };
+  /**
+   * Called immediately after editing the target elements.
+   */
+  onEdit?: () => void;
 
-  constructor(attributeName: string, targetElements: LiveSet<DrawingElement>, parentApp: App) {
+  /**
+   * Called immediately before editing the target elements.
+   */
+  onBeforeEdit?: () => void;
+
+  constructor(attributeName: string, targetElements: LiveCollection<DrawingElement>, parentDrawing: Drawing) {
     this.#attributeName = attributeName;
 
     this.#targetElements = targetElements
 
-    this.#parentApp = parentApp;
+    this.#parentDrawing = parentDrawing;
 
     // only refresh when necessary
     targetElements.addEventListener('change', () => {
@@ -34,7 +44,8 @@ export class AttributeInput {
       document.body.contains(this.domNode) ? this.refresh() : {};
     });
 
-    drawingObserver.observe(parentApp.drawing.domNode, { attributes: true, attributeFilter: [attributeName], subtree: true });
+    // watch for any changes to the target attribute
+    drawingObserver.observe(parentDrawing.domNode, { attributes: true, attributeFilter: [attributeName], subtree: true });
 
     this.refresh();
   }
@@ -56,45 +67,24 @@ export class AttributeInput {
 
     let targetElements = [...this.#targetElements];
 
-    if (targetElements.length == 0 || targetElements.every(sb => sb.domNode.getAttribute(this.#attributeName) === value)) {
+    if (targetElements.length == 0) {
       this.refresh();
+
       return;
     }
 
-    this.#parentApp.pushUndoStack();
+    if (targetElements.every(ele => ele.domNode.getAttribute(this.#attributeName) === value)) {
+      this.refresh();
+
+      return;
+    }
+
+    this.onBeforeEdit ? this.onBeforeEdit() : {};
 
     targetElements.forEach(ele => ele.domNode.setAttribute(this.#attributeName, value));
 
-    this.#dispatchEvent('edit');
-  }
-
-  addEventListener(name: 'edit', listener: () => void): void {
-    this.#eventListeners[name].push(listener);
-  }
-
-  #dispatchEvent(name: 'edit'): void {
-    this.#eventListeners[name].forEach(listener => listener());
+    this.onEdit ? this.onEdit() : {};
   }
 }
 
-interface LiveSet<T> {
-  [Symbol.iterator](): Iterator<T>;
-
-  /**
-   * Listeners are called whenever the collection of items in the set changes.
-   */
-  addEventListener(name: 'change', listener: () => void): void;
-}
-
-interface DrawingElement {
-  readonly domNode: SVGGraphicsElement;
-}
-
-type EventListeners = {
-  /**
-   * To be called whenever the target elements are edited.
-   */
-  'edit': Listener[],
-};
-
-type Listener = () => void;
+type Drawing = App['drawing'];

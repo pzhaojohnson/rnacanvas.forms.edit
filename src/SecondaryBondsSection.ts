@@ -24,9 +24,23 @@ import { AttributeInput } from './AttributeInput';
 
 import { TextInputField } from './TextInputField';
 
+import { SecondaryBondsStrokeField } from './SecondaryBondsStrokeField';
+
 import { ColorAttributeInput } from './ColorAttributeInput';
 
 import { ColorField } from './ColorField';
+
+import { SecondaryBondsStrokeOpacityField } from './SecondaryBondsStrokeOpacityField';
+
+import { SecondaryBondsStrokeWidthField } from './SecondaryBondsStrokeWidthField';
+
+import { SecondaryBondsStrokeLinecapField } from './SecondaryBondsStrokeLinecapField';
+
+import { SecondaryBondsStrokeDasharrayField } from './SecondaryBondsStrokeDasharrayField';
+
+import { SecondaryBondsBasePadding1Field } from './SecondaryBondsBasePadding1Field';
+
+import { SecondaryBondsBasePadding2Field } from './SecondaryBondsBasePadding2Field';
 
 import * as $ from 'jquery';
 
@@ -95,28 +109,28 @@ export class SecondaryBondsSection {
     this.#zSection = new ZSection(targetApp);
     this.#bottomContent.append(this.#zSection.domNode);
 
-    this.#strokeField = new StrokeField(targetApp);
+    this.#strokeField = new SecondaryBondsStrokeField(targetApp);
     this.#bottomContent.append(this.#strokeField.domNode);
 
     this.#strokeColorField = new StrokeColorField(targetApp);
     this.#bottomContent.append(this.#strokeColorField.domNode);
 
-    this.#strokeOpacityField = new StrokeOpacityField(targetApp);
+    this.#strokeOpacityField = new SecondaryBondsStrokeOpacityField(targetApp);
     this.#bottomContent.append(this.#strokeOpacityField.domNode);
 
-    this.#strokeWidthField = new StrokeWidthField(targetApp);
+    this.#strokeWidthField = new SecondaryBondsStrokeWidthField(targetApp);
     this.#bottomContent.append(this.#strokeWidthField.domNode);
 
-    this.#strokeLinecapField = new StrokeLinecapField(targetApp);
+    this.#strokeLinecapField = new SecondaryBondsStrokeLinecapField(targetApp);
     this.#bottomContent.append(this.#strokeLinecapField.domNode);
 
-    this.#strokeDasharrayField = new StrokeDasharrayField(targetApp);
+    this.#strokeDasharrayField = new SecondaryBondsStrokeDasharrayField(targetApp);
     this.#bottomContent.append(this.#strokeDasharrayField.domNode);
 
-    this.#basePadding1Field = new BasePadding1Field(targetApp);
+    this.#basePadding1Field = new SecondaryBondsBasePadding1Field(targetApp);
     this.#bottomContent.append(this.#basePadding1Field.domNode);
 
-    this.#basePadding2Field = new BasePadding2Field(targetApp);
+    this.#basePadding2Field = new SecondaryBondsBasePadding2Field(targetApp);
     this.#bottomContent.append(this.#basePadding2Field.domNode);
 
     this.collapse();
@@ -650,39 +664,6 @@ class ZSection {
   }
 }
 
-class StrokeField {
-  #targetApp;
-
-  #input;
-
-  #field;
-
-  constructor(targetApp: App) {
-    this.#targetApp = targetApp;
-
-    let selectedSecondaryBonds = targetApp.selectedSecondaryBonds;
-
-    this.#input = new AttributeInput('stroke', selectedSecondaryBonds, targetApp);
-
-    this.#field = new TextInputField('Stroke', this.#input.domNode);
-
-    this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/stroke';
-
-    this.domNode.style.marginTop = '22px';
-    this.domNode.style.alignSelf = 'start';
-
-    this.refresh();
-  }
-
-  get domNode() {
-    return this.#field.domNode;
-  }
-
-  refresh(): void {
-    this.#input.refresh();
-  }
-}
-
 class StrokeColorField {
   #targetApp;
 
@@ -690,237 +671,36 @@ class StrokeColorField {
 
   #field;
 
+  /**
+   * Used to help determine whether to push the undo stack or not.
+   */
+  #previousState: unknown;
+
   constructor(targetApp: App) {
     this.#targetApp = targetApp;
 
     let selectedSecondaryBonds = targetApp.selectedSecondaryBonds;
 
-    this.#input = new ColorAttributeInput('stroke', selectedSecondaryBonds, targetApp);
+    let parentDrawing = targetApp.drawing;
+
+    this.#input = new ColorAttributeInput('stroke', selectedSecondaryBonds, parentDrawing);
+
+    this.#input.onBeforeEdit = () => {
+      if (targetApp.undoStack.isEmpty() || targetApp.undoStack.peek() !== this.#previousState) {
+        targetApp.pushUndoStack();
+
+        this.#previousState = targetApp.undoStack.peek();
+      }
+    };
+
+    selectedSecondaryBonds.addEventListener('change', () => {
+      this.#previousState = undefined;
+    });
 
     this.#field = new ColorField('Stroke Color', this.#input.domNode);
 
     this.#field.domNode.style.marginTop = '12px';
     this.#field.domNode.style.alignSelf = 'start';
-
-    this.refresh();
-  }
-
-  get domNode() {
-    return this.#field.domNode;
-  }
-
-  refresh(): void {
-    this.#input.refresh();
-  }
-}
-
-class StrokeOpacityField {
-  #targetApp;
-
-  #input;
-
-  #field;
-
-  constructor(targetApp: App) {
-    this.#targetApp = targetApp;
-
-    let selectedSecondaryBonds = targetApp.selectedSecondaryBonds;
-
-    this.#input = new AttributeInput('stroke-opacity', selectedSecondaryBonds, targetApp);
-
-    this.#field = new TextInputField('Stroke Opacity', this.#input.domNode);
-
-    this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/stroke-opacity';
-
-    this.domNode.style.marginTop = '12px';
-    this.domNode.style.alignSelf = 'start';
-
-    this.refresh();
-  }
-
-  get domNode() {
-    return this.#field.domNode;
-  }
-
-  refresh(): void {
-    this.#input.refresh();
-  }
-}
-
-class StrokeWidthField {
-  #targetApp;
-
-  #input;
-
-  #field;
-
-  constructor(targetApp: App) {
-    this.#targetApp = targetApp;
-
-    let selectedSecondaryBonds = targetApp.selectedSecondaryBonds;
-
-    this.#input = new AttributeInput('stroke-width', selectedSecondaryBonds, targetApp);
-
-    this.#field = new TextInputField('Stroke Width', this.#input.domNode);
-
-    this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/stroke-width';
-
-    this.domNode.style.marginTop = '10px';
-    this.domNode.style.alignSelf = 'start';
-
-    this.refresh();
-  }
-
-  get domNode() {
-    return this.#field.domNode;
-  }
-
-  refresh(): void {
-    this.#input.refresh();
-  }
-}
-
-class StrokeLinecapField {
-  #targetApp;
-
-  #input;
-
-  #field;
-
-  constructor(targetApp: App) {
-    this.#targetApp = targetApp;
-
-    let selectedSecondaryBonds = targetApp.selectedSecondaryBonds;
-
-    this.#input = new AttributeInput('stroke-linecap', selectedSecondaryBonds, targetApp);
-
-    this.#field = new TextInputField('Stroke Line-Cap', this.#input.domNode);
-
-    this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/stroke-linecap';
-
-    this.domNode.style.marginTop = '10px';
-    this.domNode.style.alignSelf = 'start';
-
-    this.refresh();
-  }
-
-  get domNode() {
-    return this.#field.domNode;
-  }
-
-  refresh(): void {
-    this.#input.refresh();
-  }
-}
-
-class StrokeDasharrayField {
-  #targetApp;
-
-  #input;
-
-  #field;
-
-  constructor(targetApp: App) {
-    this.#targetApp = targetApp;
-
-    let selectedSecondaryBonds = targetApp.selectedSecondaryBonds;
-
-    this.#input = new AttributeInput('stroke-dasharray', selectedSecondaryBonds, targetApp);
-
-    this.#field = new TextInputField('Stroke Dash-Array', this.#input.domNode);
-
-    this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/stroke-dasharray';
-
-    this.domNode.style.marginTop = '10px';
-    this.domNode.style.alignSelf = 'start';
-
-    this.refresh();
-  }
-
-  get domNode() {
-    return this.#field.domNode;
-  }
-
-  refresh(): void {
-    this.#input.refresh();
-  }
-}
-
-class BasePadding1Field {
-  #targetApp;
-
-  #input;
-
-  #field;
-
-  constructor(targetApp: App) {
-    this.#targetApp = targetApp;
-
-    let selectedSecondaryBonds = targetApp.selectedSecondaryBonds;
-
-    this.#input = new AttributeInput('data-base-padding1', selectedSecondaryBonds, targetApp);
-
-    this.#input.addEventListener('edit', () => {
-      [...selectedSecondaryBonds].forEach(sb => {
-        let basePadding1 = sb.basePadding1;
-
-        // guarantee repositioning of the secondary bond
-        // (secondary bond might not reposition after directly changing base padding data attribute)
-        sb.basePadding1 += 1;
-
-        // set to correct value
-        sb.basePadding1 = basePadding1;
-      });
-    });
-
-    this.#field = new TextInputField('Base Padding 1', this.#input.domNode);
-
-    this.domNode.style.marginTop = '10px';
-    this.domNode.style.alignSelf = 'start';
-
-    this.refresh();
-  }
-
-  get domNode() {
-    return this.#field.domNode;
-  }
-
-  refresh(): void {
-    this.#input.refresh();
-  }
-}
-
-class BasePadding2Field {
-  #targetApp;
-
-  #input;
-
-  #field;
-
-  constructor(targetApp: App) {
-    this.#targetApp = targetApp;
-
-    let selectedSecondaryBonds = targetApp.selectedSecondaryBonds;
-
-    this.#input = new AttributeInput('data-base-padding2', selectedSecondaryBonds, targetApp);
-
-    this.#input.addEventListener('edit', () => {
-      [...selectedSecondaryBonds].forEach(sb => {
-        let basePadding2 = sb.basePadding2;
-
-        // guarantee repositioning of the secondary bond
-        // (secondary bond might not reposition after directly changing base padding data attribute)
-        sb.basePadding2 += 1;
-
-        // set to correct value
-        sb.basePadding2 = basePadding2;
-      });
-    });
-
-    this.#field = new TextInputField('Base Padding 2', this.#input.domNode);
-
-    this.domNode.style.marginTop = '10px';
-    this.domNode.style.alignSelf = 'start';
 
     this.refresh();
   }

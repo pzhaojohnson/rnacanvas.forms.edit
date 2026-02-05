@@ -76,7 +76,7 @@ class NameField {
   constructor(targetApp: App) {
     this.#targetApp = targetApp;
 
-    this.#input = new AttributeInput('data-name', new StaticSet([targetApp.drawing]), targetApp);
+    this.#input = new AttributeInput('data-name', new StaticSet([targetApp.drawing]), targetApp.drawing);
 
     this.#field = new TextInputField('Name', this.#input.domNode);
 

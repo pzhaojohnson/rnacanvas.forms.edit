@@ -1,0 +1,6 @@
+.numberings-add-section {
+  margin-top: 29px;
+
+  display: flex;
+  flex-direction: column;
+}

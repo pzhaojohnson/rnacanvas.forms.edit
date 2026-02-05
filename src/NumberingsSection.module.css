@@ -16,63 +16,7 @@
   display: none;
 }
 
-.num-selected {
-  margin: 0px;
-  padding: 0px;
-
-  font-family: "Open Sans", sans-serif;
-  font-size: 12px;
-  font-weight: 400;
-  font-style: normal;
-  color: white;
-
-  user-select: none;
-  -webkit-user-select: none;
-
-  pointer-events: none;
-}
-
-.selection-tools {
-  margin-top: 20px;
-
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-.selection-tools-label {
-  margin: 0px;
-  padding: 0px;
-
-  font-family: "Open Sans", sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  font-style: normal;
-  color: white;
-
-  user-select: none;
-  -webkit-user-select: none;
-
-  pointer-events: none;
-}
-
 .lower-content {
   display: none;
   flex-direction: column;
 }
-
-.add-section {
-  margin-top: 29px;
-
-  display: flex;
-  flex-direction: column;
-}
-
-.displacement-section {
-  margin-top: 29px;
-
-  display: flex;
-  flex-direction: column;
-}
-
-
