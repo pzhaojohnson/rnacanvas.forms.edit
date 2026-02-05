@@ -32,7 +32,7 @@ export class NumberingsTextContentField {
 
     this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent';
 
-    this.domNode.style.marginTop = '23px';
+    this.domNode.style.marginTop = '20px';
     this.domNode.style.alignSelf = 'start';
   }
 

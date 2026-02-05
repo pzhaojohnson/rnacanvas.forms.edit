@@ -14,7 +14,7 @@ export class NumberingsZSection {
 
     this.#zSection = new ZSection(selectedNumberings, targetApp);
 
-    this.domNode.style.marginTop = '26px';
+    this.domNode.style.marginTop = '24px';
 
     this.#zSection.addEventListener('refresh', () => this.#handleRefresh());
 
