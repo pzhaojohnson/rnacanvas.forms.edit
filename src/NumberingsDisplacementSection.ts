@@ -33,6 +33,7 @@ export class NumberingsDisplacementSection {
 
     this.#label.classList.add(styles['label']);
     this.#label.textContent = 'Displacement:';
+    this.domNode.append(this.#label);
 
     this.#fields = {
       'x': new TextInputField('X', this.#inputs['x'].domNode),
