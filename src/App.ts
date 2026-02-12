@@ -36,7 +36,15 @@ export interface App {
 
     readonly numberings: Iterable<Numbering>;
 
+    readonly numberingLines: Iterable<NumberingLine>;
+
     number(b: Nucleobase, n: number): [Numbering, NumberingLine];
+
+    /**
+     * Adds a numbering line to the drawing connecting the specified numbering its own base
+     * (and returns the added numbering line).
+     */
+    connect(n: Numbering): NumberingLine;
 
     /**
      * All primary bonds in the drawing.
@@ -98,6 +106,12 @@ export interface App {
 
   readonly selectedNumberings: {
     [Symbol.iterator](): Iterator<Numbering>;
+
+    addEventListener(name: 'change', listener: () => void): void;
+  }
+
+  readonly selectedNumberingLines: {
+    [Symbol.iterator](): Iterator<NumberingLine>;
 
     addEventListener(name: 'change', listener: () => void): void;
   }

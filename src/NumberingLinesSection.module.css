@@ -1,0 +1,22 @@
+.numbering-lines-section {
+  margin-top: 39px;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  margin: 11px 0px 0px 12px;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.collapsed .content {
+  display: none;
+}
+
+.lower-content {
+  display: none;
+  flex-direction: column;
+}

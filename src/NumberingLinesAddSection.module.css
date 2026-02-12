@@ -1,0 +1,6 @@
+.numbering-lines-add-section {
+  margin-top: 24px;
+
+  display: flex;
+  flex-direction: column;
+}

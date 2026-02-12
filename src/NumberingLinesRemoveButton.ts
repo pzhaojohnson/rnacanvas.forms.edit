@@ -2,7 +2,7 @@ import type { App } from './App';
 
 import { LightSolidButton } from './LightSolidButton';
 
-export class NumberingsRemoveButton {
+export class NumberingLinesRemoveButton {
   readonly #targetApp;
 
   readonly #button = new LightSolidButton('Remove', () => this.press());
@@ -13,7 +13,7 @@ export class NumberingsRemoveButton {
     this.domNode.style.marginTop = '18px';
 
     // only refresh when necessary
-    this.#targetApp.selectedNumberings.addEventListener('change', () => {
+    this.#targetApp.selectedNumberingLines.addEventListener('change', () => {
       document.body.contains(this.domNode) ? this.refresh() : {};
     });
 
@@ -25,9 +25,9 @@ export class NumberingsRemoveButton {
   }
 
   press(): void {
-    let selectedNumberings = [...this.#targetApp.selectedNumberings];
+    let selectedNumberingLines = [...this.#targetApp.selectedNumberingLines];
 
-    if (selectedNumberings.length == 0) {
+    if (selectedNumberingLines.length == 0) {
       this.refresh();
 
       return;
@@ -35,20 +35,20 @@ export class NumberingsRemoveButton {
 
     this.#targetApp.pushUndoStack();
 
-    selectedNumberings.forEach(n => n.domNode.remove());
+    selectedNumberingLines.forEach(line => line.domNode.remove());
 
     this.refresh();
   }
 
   refresh(): void {
-    let selectedNumberings = [...this.#targetApp.selectedNumberings];
+    let selectedNumberingLines = [...this.#targetApp.selectedNumberingLines];
 
-    if (selectedNumberings.length == 0) {
+    if (selectedNumberingLines.length == 0) {
       this.#button.disable();
-      this.#button.tooltip.textContent = 'No numberings are selected.';
+      this.#button.tooltip.textContent = 'No numbering lines are selected.';
     } else {
       this.#button.enable();
-      this.#button.tooltip.textContent = 'Remove the selected numberings from the drawing.';
+      this.#button.tooltip.textContent = 'Remove the selected numbering lines from the drawing.';
     }
   }
 }
