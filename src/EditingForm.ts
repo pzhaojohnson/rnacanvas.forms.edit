@@ -8,6 +8,8 @@ import { OutlinesSection } from './OutlinesSection';
 
 import { NumberingsSection } from './NumberingsSection';
 
+import { NumberingLinesSection } from './NumberingLinesSection';
+
 import { PrimaryBondsSection } from './PrimaryBondsSection';
 
 import { SecondaryBondsSection } from './SecondaryBondsSection';
@@ -28,6 +30,7 @@ export class EditingForm {
   #outlinesSection;
 
   #numberingsSection;
+  #numberingLinesSection;
 
   #primaryBondsSection;
   #secondaryBondsSection;
@@ -58,6 +61,9 @@ export class EditingForm {
 
     this.#numberingsSection = new NumberingsSection(targetApp);
     contentContainer.append(this.#numberingsSection.domNode);
+
+    this.#numberingLinesSection = new NumberingLinesSection(targetApp);
+    contentContainer.append(this.#numberingLinesSection.domNode);
 
     this.#primaryBondsSection = new PrimaryBondsSection(targetApp);
     contentContainer.append(this.#primaryBondsSection.domNode);
@@ -93,6 +99,7 @@ export class EditingForm {
       this.#basesSection,
       this.#outlinesSection,
       this.#numberingsSection,
+      this.#numberingLinesSection,
       this.#primaryBondsSection,
       this.#secondaryBondsSection,
       this.#drawingSection,
