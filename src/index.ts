@@ -1,2 +1,2 @@
-import { EditingForm } from './EditingForm';
-export { EditingForm };
+import { EditForm } from './EditForm';
+export { EditForm };

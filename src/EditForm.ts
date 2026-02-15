@@ -1,6 +1,6 @@
 import type { App } from './App';
 
-import * as styles from './EditingForm.module.css';
+import * as styles from './EditForm.module.css';
 
 import { BasesSection } from './BasesSection';
 
@@ -20,7 +20,7 @@ import { CloseButton } from './CloseButton';
 
 import { DragTranslater } from '@rnacanvas/forms';
 
-export class EditingForm {
+export class EditForm {
   #targetApp;
 
   readonly domNode = document.createElement('div');
@@ -42,7 +42,7 @@ export class EditingForm {
   constructor(targetApp: App) {
     this.#targetApp = targetApp;
 
-    this.domNode.classList.add(styles['editing-form']);
+    this.domNode.classList.add(styles['edit-form']);
 
     let header = document.createElement('p');
     header.classList.add(styles['header']);
