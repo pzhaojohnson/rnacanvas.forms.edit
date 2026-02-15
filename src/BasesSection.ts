@@ -46,7 +46,7 @@ export class BasesSection {
 
   #bottomContent = document.createElement('div');
 
-  #zSection;
+  #zTools;
   #textContentField;
   #fillField;
   #fillColorField;
@@ -86,8 +86,8 @@ export class BasesSection {
       }
     });
 
-    this.#zSection = new ZSection(targetApp);
-    this.#bottomContent.append(this.#zSection.domNode);
+    this.#zTools = new ZTools(targetApp);
+    this.#bottomContent.append(this.#zTools.domNode);
 
     this.#textContentField = new TextContentField(targetApp);
     this.#bottomContent.append(this.#textContentField.domNode);
@@ -127,7 +127,7 @@ export class BasesSection {
     return [
       this.#numBasesSelected,
       this.#selectionTools,
-      this.#zSection,
+      this.#zTools,
       this.#textContentField,
       this.#fillField,
       this.#fillColorField,
@@ -425,7 +425,7 @@ class SelectionTools {
   }
 }
 
-class ZSection {
+class ZTools {
   #targetApp;
 
   readonly domNode = document.createElement('div');
@@ -439,9 +439,9 @@ class ZSection {
   constructor(targetApp: App) {
     this.#targetApp = targetApp;
 
-    this.domNode.classList.add(styles['z-section']);
+    this.domNode.classList.add(styles['z-tools']);
 
-    this.#label.classList.add(styles['z-section-label']);
+    this.#label.classList.add(styles['z-tools-label']);
     this.#label.textContent = 'Send to:';
     this.domNode.append(this.#label);
 

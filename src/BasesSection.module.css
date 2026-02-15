@@ -90,13 +90,13 @@
   display: none;
 }
 
-.z-section {
+.z-tools {
   display: flex;
   flex-direction: row;
   align-items: center;
 }
 
-.z-section-label {
+.z-tools-label {
   margin: 0px;
   padding: 0px;
 

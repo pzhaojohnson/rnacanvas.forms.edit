@@ -1,12 +1,12 @@
 import type { App } from './App';
 
-import * as styles from './ZSection.module.css';
+import * as styles from './ZTools.module.css';
 
 import { TextButton } from './TextButton';
 
 import { bringToFront, sendToBack } from '@rnacanvas/draw.svg';
 
-export class ZSection {
+export class ZTools {
   #targetElements;
 
   #parentApp;
@@ -25,7 +25,7 @@ export class ZSection {
 
     this.#parentApp = parentApp;
 
-    this.domNode.classList.add(styles['z-section']);
+    this.domNode.classList.add(styles['z-tools']);
 
     this.#label.classList.add(styles['label']);
     this.#label.textContent = 'Send to:';

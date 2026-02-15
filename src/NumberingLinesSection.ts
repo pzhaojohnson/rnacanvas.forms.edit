@@ -12,7 +12,7 @@ import { NumberingLinesAddSection } from './NumberingLinesAddSection';
 
 import { NumberingLinesRemoveButton } from './NumberingLinesRemoveButton';
 
-import { NumberingLinesZSection } from './NumberingLinesZSection';
+import { NumberingLinesZTools } from './NumberingLinesZTools';
 
 import { NumberingLinesStrokeField } from './NumberingLinesStrokeField';
 
@@ -113,7 +113,7 @@ class LowerContent {
 
   readonly domNode = document.createElement('div');
 
-  readonly #zSection;
+  readonly #zTools;
 
   readonly #strokeField;
   readonly #strokeColorField;
@@ -137,8 +137,8 @@ class LowerContent {
       }
     });
 
-    this.#zSection = new NumberingLinesZSection(targetApp);
-    this.domNode.append(this.#zSection.domNode);
+    this.#zTools = new NumberingLinesZTools(targetApp);
+    this.domNode.append(this.#zTools.domNode);
 
     this.#strokeField = new NumberingLinesStrokeField(targetApp);
     this.domNode.append(this.#strokeField.domNode);
@@ -181,7 +181,7 @@ class LowerContent {
 
   get #refreshableComponents() {
     return [
-      this.#zSection,
+      this.#zTools,
       this.#strokeField,
       this.#strokeColorField,
       this.#strokeOpacityField,

@@ -6,7 +6,7 @@ import { SectionHeader } from './SectionHeader';
 
 import { TextButton } from './TextButton';
 
-import { ZSection as _ZSection } from './ZSection';
+import { ZTools as _ZTools } from './ZTools';
 
 import { PrimaryBondsStrokeField } from './PrimaryBondsStrokeField';
 
@@ -42,7 +42,7 @@ export class PrimaryBondsSection {
 
   #bottomContent = document.createElement('div');
 
-  #zSection;
+  #zTools;
   #strokeField;
   #strokeColorField;
   #strokeOpacityField;
@@ -78,8 +78,8 @@ export class PrimaryBondsSection {
       }
     });
 
-    this.#zSection = new ZSection(targetApp);
-    this.#bottomContent.append(this.#zSection.domNode);
+    this.#zTools = new ZTools(targetApp);
+    this.#bottomContent.append(this.#zTools.domNode);
 
     this.#strokeField = new PrimaryBondsStrokeField(targetApp);
     this.#bottomContent.append(this.#strokeField.domNode);
@@ -138,7 +138,7 @@ export class PrimaryBondsSection {
     return [
       this.#numSelected,
       this.#selectionTools,
-      this.#zSection,
+      this.#zTools,
       this.#strokeField,
       this.#strokeColorField,
       this.#strokeOpacityField,
@@ -358,46 +358,46 @@ class SelectionTools {
   }
 }
 
-class ZSection {
+class ZTools {
   #targetApp;
 
-  #zSection;
+  #zTools;
 
   constructor(targetApp: App) {
     this.#targetApp = targetApp;
 
     let selectedPrimaryBonds = targetApp.selectedPrimaryBonds;
 
-    this.#zSection = new _ZSection(selectedPrimaryBonds, targetApp);
+    this.#zTools = new _ZTools(selectedPrimaryBonds, targetApp);
 
     this.domNode.style.marginTop = '26px';
 
-    this.#zSection.addEventListener('refresh', () => this.#handleRefresh());
+    this.#zTools.addEventListener('refresh', () => this.#handleRefresh());
 
     this.refresh();
   }
 
   get domNode() {
-    return this.#zSection.domNode;
+    return this.#zTools.domNode;
   }
 
   refresh(): void {
-    this.#zSection.refresh();
+    this.#zTools.refresh();
   }
 
   #handleRefresh(): void {
     let selectedPrimaryBonds = [...this.#targetApp.selectedPrimaryBonds];
 
     if (selectedPrimaryBonds.length == 0) {
-      this.#zSection.buttons['Front'].tooltip.textContent = 'No primary bonds are selected.';
+      this.#zTools.buttons['Front'].tooltip.textContent = 'No primary bonds are selected.';
     } else {
-      this.#zSection.buttons['Front'].tooltip.textContent = 'Bring the selected primary bonds to the front.';
+      this.#zTools.buttons['Front'].tooltip.textContent = 'Bring the selected primary bonds to the front.';
     }
 
     if (selectedPrimaryBonds.length == 0) {
-      this.#zSection.buttons['Back'].tooltip.textContent = 'No primary bonds are selected.';
+      this.#zTools.buttons['Back'].tooltip.textContent = 'No primary bonds are selected.';
     } else {
-      this.#zSection.buttons['Back'].tooltip.textContent = 'Send the selected primary bonds to the back.';
+      this.#zTools.buttons['Back'].tooltip.textContent = 'Send the selected primary bonds to the back.';
     }
   }
 }

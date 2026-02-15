@@ -18,7 +18,7 @@ import { Checkbox } from './Checkbox';
 
 import { CheckboxField } from './CheckboxField';
 
-import { ZSection as _ZSection } from './ZSection';
+import { ZTools as _ZTools } from './ZTools';
 
 import { AttributeInput } from './AttributeInput';
 
@@ -64,7 +64,7 @@ export class SecondaryBondsSection {
 
   #bottomContent = document.createElement('div');
 
-  #zSection;
+  #zTools;
   #strokeField;
   #strokeColorField;
   #strokeOpacityField;
@@ -106,8 +106,8 @@ export class SecondaryBondsSection {
       }
     });
 
-    this.#zSection = new ZSection(targetApp);
-    this.#bottomContent.append(this.#zSection.domNode);
+    this.#zTools = new ZTools(targetApp);
+    this.#bottomContent.append(this.#zTools.domNode);
 
     this.#strokeField = new SecondaryBondsStrokeField(targetApp);
     this.#bottomContent.append(this.#strokeField.domNode);
@@ -168,7 +168,7 @@ export class SecondaryBondsSection {
       this.#selectionTools,
       this.#addSection,
       this.#removeButton,
-      this.#zSection,
+      this.#zTools,
       this.#strokeField,
       this.#strokeColorField,
       this.#strokeOpacityField,
@@ -620,46 +620,46 @@ class RemoveButton {
   }
 }
 
-class ZSection {
+class ZTools {
   #targetApp;
 
-  #zSection;
+  #zTools;
 
   constructor(targetApp: App) {
     this.#targetApp = targetApp;
 
     let selectedSecondaryBonds = targetApp.selectedSecondaryBonds;
 
-    this.#zSection = new _ZSection(selectedSecondaryBonds, targetApp);
+    this.#zTools = new _ZTools(selectedSecondaryBonds, targetApp);
 
     this.domNode.style.marginTop = '27px';
 
-    this.#zSection.addEventListener('refresh', () => this.#handleRefresh());
+    this.#zTools.addEventListener('refresh', () => this.#handleRefresh());
 
     this.refresh();
   }
 
   get domNode() {
-    return this.#zSection.domNode;
+    return this.#zTools.domNode;
   }
 
   refresh(): void {
-    this.#zSection.refresh();
+    this.#zTools.refresh();
   }
 
   #handleRefresh(): void {
     let selectedSecondaryBonds = [...this.#targetApp.selectedSecondaryBonds];
 
     if (selectedSecondaryBonds.length == 0) {
-      this.#zSection.buttons['Front'].tooltip.textContent = 'No secondary bonds are selected.';
+      this.#zTools.buttons['Front'].tooltip.textContent = 'No secondary bonds are selected.';
     } else {
-      this.#zSection.buttons['Front'].tooltip.textContent = 'Bring the selected secondary bonds to the front.';
+      this.#zTools.buttons['Front'].tooltip.textContent = 'Bring the selected secondary bonds to the front.';
     }
 
     if (selectedSecondaryBonds.length == 0) {
-      this.#zSection.buttons['Back'].tooltip.textContent = 'No secondary bonds are selected.';
+      this.#zTools.buttons['Back'].tooltip.textContent = 'No secondary bonds are selected.';
     } else {
-      this.#zSection.buttons['Back'].tooltip.textContent = 'Send the selected secondary bonds to the back.';
+      this.#zTools.buttons['Back'].tooltip.textContent = 'Send the selected secondary bonds to the back.';
     }
   }
 }

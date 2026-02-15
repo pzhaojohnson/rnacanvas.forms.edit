@@ -12,7 +12,7 @@ import { NumberingsAddSection } from './NumberingsAddSection';
 
 import { NumberingsRemoveButton } from './NumberingsRemoveButton';
 
-import { NumberingsZSection } from './NumberingsZSection';
+import { NumberingsZTools } from './NumberingsZTools';
 
 import { NumberingsTextContentField } from './NumberingsTextContentField';
 
@@ -125,7 +125,7 @@ class LowerContent {
 
   readonly domNode = document.createElement('div');
 
-  #zSection;
+  #zTools;
 
   #textContentField;
 
@@ -155,8 +155,8 @@ class LowerContent {
       }
     });
 
-    this.#zSection = new NumberingsZSection(targetApp);
-    this.domNode.append(this.#zSection.domNode);
+    this.#zTools = new NumberingsZTools(targetApp);
+    this.domNode.append(this.#zTools.domNode);
 
     this.#textContentField = new NumberingsTextContentField(targetApp);
     this.domNode.append(this.#textContentField.domNode);
@@ -211,7 +211,7 @@ class LowerContent {
 
   get #refreshableComponents() {
     return [
-      this.#zSection,
+      this.#zTools,
       this.#textContentField,
       this.#fillField,
       this.#fillColorField,

@@ -44,7 +44,7 @@ export class OutlinesSection {
   #selectSection;
   #addSection;
   #removeButton;
-  #zSection;
+  #zTools;
   #rField;
   #fillField;
   #fillColorField;
@@ -89,8 +89,8 @@ export class OutlinesSection {
       }
     });
 
-    this.#zSection = new ZSection(targetApp);
-    this.#bottomContent.append(this.#zSection.domNode);
+    this.#zTools = new ZTools(targetApp);
+    this.#bottomContent.append(this.#zTools.domNode);
 
     this.#rField = new RField(targetApp);
     this.#bottomContent.append(this.#rField.domNode);
@@ -140,7 +140,7 @@ export class OutlinesSection {
       this.#selectSection,
       this.#addSection,
       this.#removeButton,
-      this.#zSection,
+      this.#zTools,
       this.#rField,
       this.#fillField,
       this.#fillColorField,
@@ -486,7 +486,7 @@ class RemoveButton {
   }
 }
 
-class ZSection {
+class ZTools {
   #targetApp;
 
   readonly domNode = document.createElement('div');
@@ -500,9 +500,9 @@ class ZSection {
   constructor(targetApp: App) {
     this.#targetApp = targetApp;
 
-    this.domNode.classList.add(styles['z-section']);
+    this.domNode.classList.add(styles['z-tools']);
 
-    this.#label.classList.add(styles['z-section-label']);
+    this.#label.classList.add(styles['z-tools-label']);
     this.#label.textContent = 'Send to:';
     this.domNode.append(this.#label);
 
