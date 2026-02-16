@@ -2,39 +2,42 @@ import type { App } from './App';
 
 import * as styles from './DrawingSection.module.css';
 
-import { SectionHeader } from './SectionHeader';
+import { SectionToggle } from './SectionToggle';
 
-import { AttributeInput } from './AttributeInput';
-
-import { TextInputField } from './TextInputField';
+import { DrawingNameField } from './DrawingNameField';
 
 export class DrawingSection {
-  #targetApp;
+  readonly #targetApp;
 
   readonly domNode = document.createElement('div');
 
-  #header = new SectionHeader('Drawing', () => this.toggle());
+  readonly #toggle = new SectionToggle('Drawing', () => this.toggle());
 
-  #content = document.createElement('div');
+  readonly #contentContainer = document.createElement('div');
 
-  #nameField;
+  readonly #nameField;
 
   constructor(targetApp: App) {
     this.#targetApp = targetApp;
 
     this.domNode.classList.add(styles['drawing-section']);
 
-    this.domNode.append(this.#header.domNode);
+    this.domNode.append(this.#toggle.domNode);
 
-    this.#content.classList.add(styles['content']);
-    this.domNode.append(this.#content);
+    this.#contentContainer.classList.add(styles['content-container']);
+    this.domNode.append(this.#contentContainer);
 
-    this.#nameField = new NameField(targetApp);
-    this.#content.append(this.#nameField.domNode);
-
-    this.collapse();
+    this.#nameField = new DrawingNameField(targetApp);
+    this.#contentContainer.append(this.#nameField.domNode);
 
     this.refresh();
+
+    // collapse by default
+    this.collapse();
+  }
+
+  toggle(): void {
+    this.isCollapsed() ? this.expand() : this.collapse();
   }
 
   isCollapsed(): boolean {
@@ -43,16 +46,14 @@ export class DrawingSection {
 
   collapse(): void {
     this.domNode.classList.add(styles['collapsed']);
-    this.#header.caret.pointRight();
+
+    this.#toggle.caret.pointRight();
   }
 
   expand(): void {
     this.domNode.classList.remove(styles['collapsed']);
-    this.#header.caret.pointDown();
-  }
 
-  toggle(): void {
-    this.isCollapsed() ? this.expand() : this.collapse();
+    this.#toggle.caret.pointDown();
   }
 
   refresh(): void {
@@ -63,53 +64,5 @@ export class DrawingSection {
     return [
       this.#nameField,
     ];
-  }
-}
-
-class NameField {
-  #targetApp;
-
-  #input;
-
-  #field;
-
-  constructor(targetApp: App) {
-    this.#targetApp = targetApp;
-
-    this.#input = new AttributeInput('data-name', new StaticSet([targetApp.drawing]), targetApp.drawing);
-
-    this.#field = new TextInputField('Name', this.#input.domNode);
-
-    this.domNode.style.alignSelf = 'start';
-    this.#input.domNode.style.width = '132px';
-
-    this.refresh();
-  }
-
-  get domNode() {
-    return this.#field.domNode;
-  }
-
-  refresh(): void {
-    this.#input.refresh();
-  }
-}
-
-/**
- * A set whose items never change.
- */
-class StaticSet<T> {
-  #items;
-
-  constructor(items: T[]) {
-    this.#items = [...items];
-  }
-
-  [Symbol.iterator]() {
-    return this.#items.values();
-  }
-
-  addEventListener(name: 'change', listener: () => void) {
-    // nothing to do
   }
 }

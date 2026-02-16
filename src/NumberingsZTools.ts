@@ -35,13 +35,13 @@ export class NumberingsZTools {
     if (selectedNumberings.length == 0) {
       this.#zTools.buttons['Front'].tooltip.textContent = 'No numberings are selected.';
     } else {
-      this.#zTools.buttons['Front'].tooltip.textContent = 'Bring the selected numberings to the front.';
+      this.#zTools.buttons['Front'].tooltip.textContent = 'Bring the selected numberings to the front of the drawing.';
     }
 
     if (selectedNumberings.length == 0) {
       this.#zTools.buttons['Back'].tooltip.textContent = 'No numberings are selected.';
     } else {
-      this.#zTools.buttons['Back'].tooltip.textContent = 'Send the selected numberings to the back.';
+      this.#zTools.buttons['Back'].tooltip.textContent = 'Send the selected numberings to the back of the drawing.';
     }
   }
 }

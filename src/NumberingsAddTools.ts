@@ -1,6 +1,6 @@
 import type { App } from './App';
 
-import * as styles from './NumberingsAddSection.module.css';
+import * as styles from './NumberingsAddTools.module.css';
 
 import { LightSolidButton } from './LightSolidButton';
 
@@ -8,7 +8,7 @@ import { Checkbox } from './Checkbox';
 
 import { CheckboxField } from './CheckboxField';
 
-export class NumberingsAddSection {
+export class NumberingsAddTools {
   readonly #targetApp;
 
   readonly domNode = document.createElement('div');
@@ -24,7 +24,7 @@ export class NumberingsAddSection {
   constructor(targetApp: App) {
     this.#targetApp = targetApp;
 
-    this.domNode.classList.add(styles['numberings-add-section']);
+    this.domNode.classList.add(styles['numberings-add-tools']);
 
     this.domNode.append(this.#addButton.domNode);
 

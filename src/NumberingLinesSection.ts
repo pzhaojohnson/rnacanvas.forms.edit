@@ -8,7 +8,7 @@ import { NumberingLinesNumSelectedSection } from './NumberingLinesNumSelectedSec
 
 import { NumberingLinesSelectionTools } from './NumberingLinesSelectionTools';
 
-import { NumberingLinesAddSection } from './NumberingLinesAddSection';
+import { NumberingLinesAddTools } from './NumberingLinesAddTools';
 
 import { NumberingLinesRemoveButton } from './NumberingLinesRemoveButton';
 
@@ -43,7 +43,7 @@ export class NumberingLinesSection {
 
   readonly #selectionTools;
 
-  readonly #addSection;
+  readonly #addTools;
   readonly #removeButton;
 
   readonly #lowerContent;
@@ -64,8 +64,8 @@ export class NumberingLinesSection {
     this.#selectionTools = new NumberingLinesSelectionTools(targetApp);
     this.#content.append(this.#selectionTools.domNode);
 
-    this.#addSection = new NumberingLinesAddSection(targetApp);
-    this.#content.append(this.#addSection.domNode);
+    this.#addTools = new NumberingLinesAddTools(targetApp);
+    this.#content.append(this.#addTools.domNode);
 
     this.#removeButton = new NumberingLinesRemoveButton(targetApp);
     this.#content.append(this.#removeButton.domNode);
@@ -87,10 +87,14 @@ export class NumberingLinesSection {
 
   collapse(): void {
     this.domNode.classList.add(styles['collapsed']);
+
+    this.#toggle.caret.pointRight();
   }
 
   expand(): void {
     this.domNode.classList.remove(styles['collapsed']);
+
+    this.#toggle.caret.pointDown();
   }
 
   refresh(): void {
@@ -101,7 +105,7 @@ export class NumberingLinesSection {
     return [
       this.#numSelectedSection,
       this.#selectionTools,
-      this.#addSection,
+      this.#addTools,
       this.#removeButton,
       this.#lowerContent,
     ];

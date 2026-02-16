@@ -35,13 +35,13 @@ export class NumberingLinesZTools {
     if (selectedNumberingLines.length == 0) {
       this.#zTools.buttons['Front'].tooltip.textContent = 'No numbering lines are selected.';
     } else {
-      this.#zTools.buttons['Front'].tooltip.textContent = 'Bring the selected numbering lines to the front.';
+      this.#zTools.buttons['Front'].tooltip.textContent = 'Bring the selected numbering lines to the front of the drawing.';
     }
 
     if (selectedNumberingLines.length == 0) {
       this.#zTools.buttons['Back'].tooltip.textContent = 'No numbering lines are selected.';
     } else {
-      this.#zTools.buttons['Back'].tooltip.textContent = 'Send the selected numbering lines to the back.';
+      this.#zTools.buttons['Back'].tooltip.textContent = 'Send the selected numbering lines to the back of the drawing.';
     }
   }
 }

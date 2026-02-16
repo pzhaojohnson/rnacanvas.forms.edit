@@ -21,23 +21,23 @@ import { CloseButton } from './CloseButton';
 import { DragTranslater } from '@rnacanvas/forms';
 
 export class EditForm {
-  #targetApp;
+  readonly #targetApp;
 
   readonly domNode = document.createElement('div');
 
-  #basesSection;
+  readonly #basesSection;
 
-  #outlinesSection;
+  readonly #outlinesSection;
 
-  #numberingsSection;
-  #numberingLinesSection;
+  readonly #numberingsSection;
+  readonly #numberingLinesSection;
 
-  #primaryBondsSection;
-  #secondaryBondsSection;
+  readonly #primaryBondsSection;
+  readonly #secondaryBondsSection;
 
-  #drawingSection;
+  readonly #drawingSection;
 
-  #dragTranslater;
+  readonly #dragTranslater;
 
   constructor(targetApp: App) {
     this.#targetApp = targetApp;
@@ -90,7 +90,7 @@ export class EditForm {
     container.appendChild(this.domNode);
   }
 
-  close() {
+  close(): void {
     this.domNode.remove();
   }
 
@@ -110,7 +110,7 @@ export class EditForm {
     this.#refreshableComponents.forEach(component => component.refresh());
   }
 
-  reposition() {
+  reposition(): void {
     this.#dragTranslater.untranslate();
   }
 }

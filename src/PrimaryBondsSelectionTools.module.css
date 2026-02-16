@@ -1,0 +1,21 @@
+.primary-bonds-selection-tools {
+  margin-top: 23px;
+
+  display: flex;
+  flex-direction: row;
+  gap: 23px;
+}
+
+.right-side {
+  margin-top: 1.5px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.buttons-container {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}

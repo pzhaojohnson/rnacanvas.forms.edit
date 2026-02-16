@@ -1,6 +1,6 @@
 import type { App } from './App';
 
-import * as styles from './NumberingLinesAddSection.module.css';
+import * as styles from './NumberingLinesAddTools.module.css';
 
 import { LightSolidButton } from './LightSolidButton';
 
@@ -8,7 +8,7 @@ import { Checkbox } from './Checkbox';
 
 import { CheckboxField } from './CheckboxField';
 
-export class NumberingLinesAddSection {
+export class NumberingLinesAddTools {
   readonly #targetApp;
 
   readonly domNode = document.createElement('div');
@@ -24,7 +24,7 @@ export class NumberingLinesAddSection {
   constructor(targetApp: App) {
     this.#targetApp = targetApp;
 
-    this.domNode.classList.add(styles['numbering-lines-add-section']);
+    this.domNode.classList.add(styles['numbering-lines-add-tools']);
 
     this.domNode.append(this.#addButton.domNode);
 

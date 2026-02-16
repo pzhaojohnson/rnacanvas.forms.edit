@@ -1,34 +1,22 @@
 import type { App } from './App';
 
-import type { Nucleobase } from '@rnacanvas/draw.bases';
-
-import { BasePair } from '@rnacanvas/draw.bases';
-
-import type { SecondaryBond } from './SecondaryBond';
-
 import * as styles from './SecondaryBondsSection.module.css';
 
-import { SectionHeader } from './SectionHeader';
+import { SectionToggle } from './SectionToggle';
 
-import { TextButton } from './TextButton';
+import { SecondaryBondsNumSelected } from './SecondaryBondsNumSelected';
 
-import { LightSolidButton } from './LightSolidButton';
+import { SecondaryBondsSelectionTools } from './SecondaryBondsSelectionTools';
 
-import { Checkbox } from './Checkbox';
+import { SecondaryBondsAddTools } from './SecondaryBondsAddTools';
 
-import { CheckboxField } from './CheckboxField';
+import { SecondaryBondsRemoveButton } from './SecondaryBondsRemoveButton';
 
-import { ZTools as _ZTools } from './ZTools';
-
-import { AttributeInput } from './AttributeInput';
-
-import { TextInputField } from './TextInputField';
+import { SecondaryBondsZTools } from './SecondaryBondsZTools';
 
 import { SecondaryBondsStrokeField } from './SecondaryBondsStrokeField';
 
-import { ColorAttributeInput } from './ColorAttributeInput';
-
-import { ColorField } from './ColorField';
+import { SecondaryBondsStrokeColorField } from './SecondaryBondsStrokeColorField';
 
 import { SecondaryBondsStrokeOpacityField } from './SecondaryBondsStrokeOpacityField';
 
@@ -42,100 +30,64 @@ import { SecondaryBondsBasePadding1Field } from './SecondaryBondsBasePadding1Fie
 
 import { SecondaryBondsBasePadding2Field } from './SecondaryBondsBasePadding2Field';
 
-import * as $ from 'jquery';
-
-import { antiParallelPairs, missing } from '@rnacanvas/base-pairs';
-
-import { seqSorted } from '@rnacanvas/draw.bases';
-
 export class SecondaryBondsSection {
-  #targetApp;
+  readonly #targetApp;
 
   readonly domNode = document.createElement('div');
 
-  #header = new SectionHeader('Secondary Bonds', () => this.toggle());
+  readonly #toggle = new SectionToggle('Secondary Bonds', () => this.toggle());
 
-  #content = document.createElement('div');
+  readonly #contentContainer = document.createElement('div');
 
-  #numSelected;
-  #selectionTools;
-  #addSection;
-  #removeButton;
+  readonly #numSelected;
 
-  #bottomContent = document.createElement('div');
+  readonly #selectionTools;
 
-  #zTools;
-  #strokeField;
-  #strokeColorField;
-  #strokeOpacityField;
-  #strokeWidthField;
-  #strokeLinecapField;
-  #strokeDasharrayField;
-  #basePadding1Field;
-  #basePadding2Field;
+  readonly #addTools;
+  readonly #removeButton;
+
+  readonly #lowerContent;
 
   constructor(targetApp: App) {
     this.#targetApp = targetApp;
 
     this.domNode.classList.add(styles['secondary-bonds-section']);
 
-    this.domNode.append(this.#header.domNode);
+    this.domNode.append(this.#toggle.domNode);
 
-    this.#content.classList.add(styles['content']);
-    this.domNode.append(this.#content);
+    this.#contentContainer.classList.add(styles['content-container']);
+    this.domNode.append(this.#contentContainer);
 
-    this.#numSelected = new NumSelected(targetApp);
-    this.#content.append(this.#numSelected.domNode);
+    this.#numSelected = new SecondaryBondsNumSelected(targetApp);
+    this.#contentContainer.append(this.#numSelected.domNode);
 
-    this.#selectionTools = new SelectionTools(targetApp);
-    this.#content.append(this.#selectionTools.domNode);
+    this.#selectionTools = new SecondaryBondsSelectionTools(targetApp);
+    this.#contentContainer.append(this.#selectionTools.domNode);
 
-    this.#addSection = new AddSection(targetApp);
-    this.#content.append(this.#addSection.domNode);
+    this.#addTools = new SecondaryBondsAddTools(targetApp);
+    this.#contentContainer.append(this.#addTools.domNode);
 
-    this.#removeButton = new RemoveButton(targetApp);
-    this.#content.append(this.#removeButton.domNode);
+    this.#removeButton = new SecondaryBondsRemoveButton(targetApp);
+    this.#contentContainer.append(this.#removeButton.domNode);
 
-    this.#bottomContent.classList.add(styles['bottom-content']);
-    this.#content.append(this.#bottomContent);
+    this.#lowerContent = new SecondaryBondsSectionLowerContent(targetApp);
+    this.#contentContainer.append(this.#lowerContent.domNode);
 
-    // only refresh when necessary
+    // only refresh when the Edit form is open
     targetApp.selectedSecondaryBonds.addEventListener('change', () => {
       if (document.body.contains(this.domNode)) {
-        [...targetApp.selectedSecondaryBonds].length == 0 ? this.#hideBottomContent() : this.#showBottomContent();
+        [...targetApp.selectedSecondaryBonds].length == 0 ? this.#lowerContent.hide() : this.#lowerContent.show();
       }
     });
 
-    this.#zTools = new ZTools(targetApp);
-    this.#bottomContent.append(this.#zTools.domNode);
-
-    this.#strokeField = new SecondaryBondsStrokeField(targetApp);
-    this.#bottomContent.append(this.#strokeField.domNode);
-
-    this.#strokeColorField = new StrokeColorField(targetApp);
-    this.#bottomContent.append(this.#strokeColorField.domNode);
-
-    this.#strokeOpacityField = new SecondaryBondsStrokeOpacityField(targetApp);
-    this.#bottomContent.append(this.#strokeOpacityField.domNode);
-
-    this.#strokeWidthField = new SecondaryBondsStrokeWidthField(targetApp);
-    this.#bottomContent.append(this.#strokeWidthField.domNode);
-
-    this.#strokeLinecapField = new SecondaryBondsStrokeLinecapField(targetApp);
-    this.#bottomContent.append(this.#strokeLinecapField.domNode);
-
-    this.#strokeDasharrayField = new SecondaryBondsStrokeDasharrayField(targetApp);
-    this.#bottomContent.append(this.#strokeDasharrayField.domNode);
-
-    this.#basePadding1Field = new SecondaryBondsBasePadding1Field(targetApp);
-    this.#bottomContent.append(this.#basePadding1Field.domNode);
-
-    this.#basePadding2Field = new SecondaryBondsBasePadding2Field(targetApp);
-    this.#bottomContent.append(this.#basePadding2Field.domNode);
-
-    this.collapse();
-
     this.refresh();
+
+    // collapse by default
+    this.collapse();
+  }
+
+  toggle(): void {
+    this.isCollapsed() ? this.expand() : this.collapse();
   }
 
   isCollapsed(): boolean {
@@ -144,30 +96,97 @@ export class SecondaryBondsSection {
 
   collapse(): void {
     this.domNode.classList.add(styles['collapsed']);
-    this.#header.caret.pointRight();
+
+    this.#toggle.caret.pointRight();
   }
 
   expand(): void {
     this.domNode.classList.remove(styles['collapsed']);
-    this.#header.caret.pointDown();
-  }
 
-  toggle(): void {
-    this.isCollapsed() ? this.expand() : this.collapse();
+    this.#toggle.caret.pointDown();
   }
 
   refresh(): void {
     this.#refreshableComponents.forEach(component => component.refresh());
 
-    [...this.#targetApp.selectedSecondaryBonds].length == 0 ? this.#hideBottomContent() : this.#showBottomContent();
+    [...this.#targetApp.selectedSecondaryBonds].length == 0 ? this.#lowerContent.hide() : this.#lowerContent.show();
   }
 
   get #refreshableComponents() {
     return [
       this.#numSelected,
       this.#selectionTools,
-      this.#addSection,
+      this.#addTools,
       this.#removeButton,
+      this.#lowerContent,
+    ];
+  }
+}
+
+class SecondaryBondsSectionLowerContent {
+  readonly #targetApp;
+
+  readonly domNode = document.createElement('div');
+
+  readonly #zTools;
+
+  readonly #strokeField;
+  readonly #strokeColorField;
+  readonly #strokeOpacityField;
+  readonly #strokeWidthField;
+  readonly #strokeLinecapField;
+  readonly #strokeDasharrayField;
+
+  readonly #basePadding1Field;
+  readonly #basePadding2Field;
+
+  constructor(targetApp: App) {
+    this.#targetApp = targetApp;
+
+    this.domNode.classList.add(styles['secondary-bonds-section-lower-content']);
+
+    this.#zTools = new SecondaryBondsZTools(targetApp);
+    this.domNode.append(this.#zTools.domNode);
+
+    this.#strokeField = new SecondaryBondsStrokeField(targetApp);
+    this.domNode.append(this.#strokeField.domNode);
+
+    this.#strokeColorField = new SecondaryBondsStrokeColorField(targetApp);
+    this.domNode.append(this.#strokeColorField.domNode);
+
+    this.#strokeOpacityField = new SecondaryBondsStrokeOpacityField(targetApp);
+    this.domNode.append(this.#strokeOpacityField.domNode);
+
+    this.#strokeWidthField = new SecondaryBondsStrokeWidthField(targetApp);
+    this.domNode.append(this.#strokeWidthField.domNode);
+
+    this.#strokeLinecapField = new SecondaryBondsStrokeLinecapField(targetApp);
+    this.domNode.append(this.#strokeLinecapField.domNode);
+
+    this.#strokeDasharrayField = new SecondaryBondsStrokeDasharrayField(targetApp);
+    this.domNode.append(this.#strokeDasharrayField.domNode);
+
+    this.#basePadding1Field = new SecondaryBondsBasePadding1Field(targetApp);
+    this.domNode.append(this.#basePadding1Field.domNode);
+
+    this.#basePadding2Field = new SecondaryBondsBasePadding2Field(targetApp);
+    this.domNode.append(this.#basePadding2Field.domNode);
+  }
+
+  show(): void {
+    this.domNode.style.display = 'flex';
+  }
+
+  hide(): void {
+    this.domNode.style.display = 'none';
+  }
+
+  refresh(): void {
+    this.#refreshableComponents.forEach(component => component.refresh());
+  }
+
+  get #refreshableComponents() {
+    return [
       this.#zTools,
       this.#strokeField,
       this.#strokeColorField,
@@ -179,571 +198,4 @@ export class SecondaryBondsSection {
       this.#basePadding2Field,
     ];
   }
-
-  #showBottomContent() {
-    this.#bottomContent.style.display = 'flex';
-  }
-
-  #hideBottomContent() {
-    this.#bottomContent.style.display = 'none';
-  }
-}
-
-class NumSelected {
-  #targetApp;
-
-  readonly domNode = document.createElement('p');
-
-  #num = document.createElement('span');
-
-  #trailingText = document.createElement('span');
-
-  constructor(targetApp: App) {
-    this.#targetApp = targetApp;
-
-    this.domNode.classList.add(styles['num-selected']);
-
-    this.#num.style.fontWeight = '700';
-
-    this.domNode.append(this.#num, this.#trailingText);
-
-    // only refresh when necessary
-    this.#targetApp.selectedSecondaryBonds.addEventListener('change', () => {
-      document.body.contains(this.domNode) ? this.refresh() : {};
-    });
-
-    this.refresh();
-  }
-
-  refresh(): void {
-    let num = [...this.#targetApp.selectedSecondaryBonds].length;
-
-    this.#num.textContent = `${num}`;
-
-    this.#trailingText.textContent = num == 1 ? ' secondary bond is selected.' : ' secondary bonds are selected.';
-  }
-}
-
-class SelectionTools {
-  #targetApp;
-
-  readonly domNode = document.createElement('div');
-
-  #toggle = new SectionHeader('Select:', () => this.toggle());
-
-  #buttons = {
-    'All': new TextButton('All', () => this.#selectAll()),
-    'None': new TextButton('None', () => this.#deselectAll()),
-
-    'Between': new TextButton('Between', () => this.#selectBetween()),
-    'Connecting': new TextButton('Connecting', () => this.#selectConnecting()),
-
-    'A:U': new TextButton('A:U', () => this.#selectAU()),
-    'A:T': new TextButton('A:T', () => this.#selectAT()),
-    'G:C': new TextButton('G:C', () => this.#selectGC()),
-    'G:U': new TextButton('G:U', () => this.#selectGU()),
-    'G:T': new TextButton('G:T', () => this.#selectGT()),
-  };
-
-  #buttonsContainer = document.createElement('div');
-
-  #alwaysVisibleButtons = document.createElement('div');
-
-  #sometimesHiddenButtons = document.createElement('div');
-
-  #drawingObserver;
-
-  constructor(targetApp: App) {
-    this.#targetApp = targetApp;
-
-    this.domNode.classList.add(styles['selection-tools']);
-
-    this.domNode.append(this.#toggle.domNode);
-
-    $(this.#buttonsContainer).css({ marginTop: '1.5px', display: 'flex', flexDirection: 'column', gap: '12px' });
-    this.domNode.append(this.#buttonsContainer);
-
-    $(this.#alwaysVisibleButtons).css({ display: 'flex', flexDirection: 'row', gap: '27px' });
-    this.#alwaysVisibleButtons.append(...(['All', 'None'] as const).map(name => this.#buttons[name].domNode));
-    this.#buttonsContainer.append(this.#alwaysVisibleButtons);
-
-    $(this.#sometimesHiddenButtons).css({ display: 'flex', flexDirection: 'column', gap: '12px' });
-    this.#buttonsContainer.append(this.#sometimesHiddenButtons);
-
-    // hide by default
-    this.#sometimesHiddenButtons.style.display = 'none';
-    this.#toggle.caret.pointRight();
-
-    let row2 = document.createElement('div');
-    $(row2).css({ display: 'flex', flexDirection: 'row', gap: '20px' });
-    row2.append(...(['Between', 'Connecting'] as const).map(name => this.#buttons[name].domNode));
-    this.#sometimesHiddenButtons.append(row2);
-
-    let row3 = document.createElement('div');
-    $(row3).css({ display: 'flex', flexDirection: 'row', gap: '12px' });
-    row3.append(...(['A:U', 'G:C', 'G:U', 'A:T', 'G:T'] as const).map(name => this.#buttons[name].domNode));
-    this.#sometimesHiddenButtons.append(row3);
-
-    // only refresh when the Editing form is open
-    targetApp.selectedSecondaryBonds.addEventListener('change', () => document.body.contains(this.domNode) ? this.refresh() : {});
-    targetApp.selectedBases.addEventListener('change', () => document.body.contains(this.domNode) ? this.refresh(): {});
-
-    // only refresh when the Editing form is open
-    this.#drawingObserver = new MutationObserver(() => document.body.contains(this.domNode) ? this.refresh() : {});
-
-    // watch for the addition / removal of elements and changes to the text contents of bases
-    this.#drawingObserver.observe(targetApp.drawing.domNode, { childList: true, characterData: true, subtree: true });
-
-    this.refresh();
-  }
-
-  toggle(): void {
-    this.isCollapsed() ? this.expand() : this.collapse();
-  }
-
-  isCollapsed(): boolean {
-    return this.#sometimesHiddenButtons.style.display == 'none';
-  }
-
-  collapse(): void {
-    this.#sometimesHiddenButtons.style.display = 'none';
-    this.#toggle.caret.pointRight();
-  }
-
-  expand(): void {
-    this.#sometimesHiddenButtons.style.display = 'flex';
-    this.#toggle.caret.pointDown();
-  }
-
-  #selectAll(): void {
-    this.#targetApp.addToSelected([...this.#targetApp.drawing.secondaryBonds])
-  }
-
-  #deselectAll(): void {
-    this.#targetApp.removeFromSelected([...this.#targetApp.drawing.secondaryBonds]);
-  }
-
-  #selectBetween(): void {
-    this.#targetApp.addToSelected(this.#between);
-  }
-
-  /**
-   * All secondary bonds between the selected bases.
-   */
-  get #between() {
-    let selectedBases = new Set(this.#targetApp.selectedBases);
-
-    return [...this.#targetApp.drawing.secondaryBonds].filter(sb => selectedBases.has(sb.base1) && selectedBases.has(sb.base2));
-  }
-
-  #selectConnecting(): void {
-    this.#targetApp.addToSelected(this.#connecting);
-  }
-
-  /**
-   * All secondary bonds connecting the selected bases.
-   */
-  get #connecting() {
-    let selectedBases = new Set(this.#targetApp.selectedBases);
-
-    return [...this.#targetApp.drawing.secondaryBonds].filter(sb => selectedBases.has(sb.base1) || selectedBases.has(sb.base2));
-  }
-
-  #selectAU() {
-    this.#targetApp.addToSelected(this.#AU);
-  }
-
-  /**
-   * All A:U secondary bonds in the drawing of the target app.
-   */
-  get #AU() {
-    return [...this.#targetApp.drawing.secondaryBonds].filter(isAU);
-  }
-
-  #selectAT() {
-    this.#targetApp.addToSelected(this.#AT);
-  }
-
-  /**
-   * All A:T secondary bonds in the drawing of the target app.
-   */
-  get #AT() {
-    return [...this.#targetApp.drawing.secondaryBonds].filter(isAT);
-  }
-
-  #selectGC() {
-    this.#targetApp.addToSelected(this.#GC);
-  }
-
-  /**
-   * All G:C secondary bonds in the drawing of the target app.
-   */
-  get #GC() {
-    return [...this.#targetApp.drawing.secondaryBonds].filter(isGC);
-  }
-
-  #selectGU() {
-    this.#targetApp.addToSelected(this.#GU);
-  }
-
-  /**
-   * All G:U secondary bonds in the drawing of the target app.
-   */
-  get #GU() {
-    return [...this.#targetApp.drawing.secondaryBonds].filter(isGU);
-  }
-
-  #selectGT() {
-    this.#targetApp.addToSelected(this.#GT);
-  }
-
-  /**
-   * All G:T secondary bonds in the drawing of the target app.
-   */
-  get #GT() {
-    return [...this.#targetApp.drawing.secondaryBonds].filter(isGT);
-  }
-
-  refresh(): void {
-    let allSecondaryBonds = [...this.#targetApp.drawing.secondaryBonds];
-
-    let selectedSecondaryBonds = new Set(this.#targetApp.selectedSecondaryBonds);
-
-    if (allSecondaryBonds.length == 0) {
-      this.#buttons['All'].disable();
-      this.#buttons['All'].tooltip.textContent = 'There are no secondary bonds in the drawing.';
-    } else if (allSecondaryBonds.every(sb => selectedSecondaryBonds.has(sb))) {
-      this.#buttons['All'].disable();
-      this.#buttons['All'].tooltip.textContent = 'All secondary bonds are already selected.';
-    } else {
-      this.#buttons['All'].enable();
-      this.#buttons['All'].tooltip.textContent = 'Select all secondary bonds.';
-    }
-
-    if (selectedSecondaryBonds.size == 0) {
-      this.#buttons['None'].disable();
-      this.#buttons['None'].tooltip.textContent = 'No secondary bonds are selected.';
-    } else {
-      this.#buttons['None'].enable();
-      this.#buttons['None'].tooltip.textContent = 'Deselect all secondary bonds.';
-    }
-
-    let selectedBases = [...this.#targetApp.selectedBases];
-
-    let between = this.#between;
-
-    if (selectedBases.length == 0) {
-      this.#buttons['Between'].disable();
-      this.#buttons['Between'].tooltip.textContent = 'No bases are selected.';
-    } else if (between.every(sb => selectedSecondaryBonds.has(sb))) {
-      this.#buttons['Between'].disable();
-      this.#buttons['Between'].tooltip.textContent = 'All secondary bonds between the selected bases are already selected.';
-    } else {
-      this.#buttons['Between'].enable();
-      this.#buttons['Between'].tooltip.textContent = 'Select secondary bonds between the selected bases.';
-    }
-
-    let connecting = this.#connecting;
-
-    if (selectedBases.length == 0) {
-      this.#buttons['Connecting'].disable();
-      this.#buttons['Connecting'].tooltip.textContent = 'No bases are selected.';
-    } else if (connecting.every(sb => selectedSecondaryBonds.has(sb))) {
-      this.#buttons['Connecting'].disable();
-      this.#buttons['Connecting'].tooltip.textContent = 'All secondary bonds connecting the selected bases are already selected.';
-    } else {
-      this.#buttons['Connecting'].enable();
-      this.#buttons['Connecting'].tooltip.textContent = 'Select secondary bonds connecting the selected bases.';
-    }
-
-    ([
-      ['A:U', this.#AU],
-      ['A:T', this.#AT],
-      ['G:C', this.#GC],
-      ['G:U', this.#GU],
-      ['G:T', this.#GT]
-    ] as const)
-      .forEach(([basePair, secondaryBonds]) => {
-        if (secondaryBonds.length == 0) {
-          this.#buttons[basePair].disable();
-          this.#buttons[basePair].tooltip.textContent = `There are no ${basePair} base-pairs in the drawing.`;
-        } else if (secondaryBonds.every(sb => selectedSecondaryBonds.has(sb))) {
-          this.#buttons[basePair].disable();
-          this.#buttons[basePair].tooltip.textContent = `All secondary bonds between ${basePair} base-pairs are already selected.`;
-        } else {
-          this.#buttons[basePair].enable();
-          this.#buttons[basePair].tooltip.textContent = `Select secondary bonds between ${basePair} base-pairs.`;
-        }
-      });
-  }
-}
-
-class AddSection {
-  #targetApp;
-
-  readonly domNode = document.createElement('div');
-
-  #button = new LightSolidButton('Add', () => this.press());
-
-  #onlyAddMissingCheckbox = new Checkbox();
-
-  #onlyAddMissingField = new CheckboxField('Only add missing secondary bonds', this.#onlyAddMissingCheckbox.domNode);
-
-  #drawingObserver;
-
-  constructor(targetApp: App) {
-    this.#targetApp = targetApp;
-
-    this.domNode.classList.add(styles['add-section']);
-
-    this.domNode.append(this.#button.domNode, this.#onlyAddMissingField.domNode);
-
-    // check by default
-    this.#onlyAddMissingCheckbox.domNode.checked = true;
-
-    this.#onlyAddMissingField.domNode.style.marginLeft = '10px';
-
-    // only refresh when the Editing form is open
-    this.#targetApp.selectedBases.addEventListener('change', () => {
-      document.body.contains(this.domNode) ? this.refresh() : {};
-    });
-
-    // watch for the addition and removal of secondary bonds
-    this.#drawingObserver = new MutationObserver(() => document.body.contains(this.domNode) ? this.refresh() : {});
-    this.#drawingObserver.observe(targetApp.drawing.domNode, { childList: true, subtree: true });
-
-    // should only ever change when the Editing form is open
-    this.#onlyAddMissingCheckbox.domNode.addEventListener('change', () => this.refresh());
-  }
-
-  press(): void {
-    let allBases = [...this.#targetApp.drawing.bases];
-
-    let selectedBases = [...this.#targetApp.selectedBases];
-
-    // don't forget to sort!
-    selectedBases = seqSorted(selectedBases, allBases);
-
-    let pairs = antiParallelPairs(selectedBases);
-
-    let allSecondaryBonds = [...this.#targetApp.drawing.secondaryBonds];
-
-    let missingPairs = missing(basePairs(allSecondaryBonds), pairs);
-
-    if (pairs.length == 0) {
-      return;
-    } else if (this.#onlyAddMissingCheckbox.domNode.checked && missingPairs.length == 0) {
-      return;
-    }
-
-    this.#targetApp.pushUndoStack();
-
-    if (this.#onlyAddMissingCheckbox.domNode.checked) {
-      missingPairs.forEach(pair => this.#targetApp.drawing.addSecondaryBond(...pair));
-    } else {
-      pairs.forEach(pair => this.#targetApp.drawing.addSecondaryBond(...pair));
-    }
-  }
-
-  refresh(): void {
-    let allBases = [...this.#targetApp.drawing.bases];
-
-    let selectedBases = [...this.#targetApp.selectedBases];
-
-    // don't forget to sort!
-    selectedBases = seqSorted(selectedBases, allBases);
-
-    let pairs = antiParallelPairs(selectedBases);
-
-    let allSecondaryBonds = [...this.#targetApp.drawing.secondaryBonds];
-
-    let missingPairs = missing(basePairs(allSecondaryBonds), pairs);
-
-    if (selectedBases.length == 0) {
-      this.#button.disable();
-      this.#button.tooltip.textContent = 'No bases are selected.';
-    } else if (selectedBases.length == 1) {
-      this.#button.disable();
-      this.#button.tooltip.textContent = 'At least two bases must be selected.';
-    } else if (this.#onlyAddMissingCheckbox.domNode.checked && missingPairs.length == 0) {
-      this.#button.disable();
-      this.#button.tooltip.textContent = 'There are no missing pairs between the selected bases.';
-    } else {
-      this.#button.enable();
-      this.#button.tooltip.textContent = 'Add secondary bonds between the selected bases.';
-    }
-  }
-}
-
-class RemoveButton {
-  #targetApp;
-
-  #button = new LightSolidButton('Remove', () => this.press());
-
-  constructor(targetApp: App) {
-    this.#targetApp = targetApp;
-
-    // only refresh when the Editing form is open
-    this.#targetApp.selectedSecondaryBonds.addEventListener('change', () => {
-      document.body.contains(this.domNode) ? this.refresh() : {};
-    });
-
-    this.domNode.style.marginTop = '15px';
-  }
-
-  get domNode() {
-    return this.#button.domNode;
-  }
-
-  press(): void {
-    let selectedSecondaryBonds = [...this.#targetApp.selectedSecondaryBonds];
-
-    if (selectedSecondaryBonds.length == 0) {
-      return;
-    }
-
-    this.#targetApp.pushUndoStack();
-
-    selectedSecondaryBonds.forEach(sb => sb.domNode.remove());
-  }
-
-  refresh(): void {
-    let selectedSecondaryBonds = [...this.#targetApp.selectedSecondaryBonds];
-
-    if (selectedSecondaryBonds.length == 0) {
-      this.#button.disable();
-      this.#button.tooltip.textContent = 'No secondary bonds are selected.';
-    } else {
-      this.#button.enable();
-      this.#button.tooltip.textContent = 'Remove the selected secondary bonds from the drawing.';
-    }
-  }
-}
-
-class ZTools {
-  #targetApp;
-
-  #zTools;
-
-  constructor(targetApp: App) {
-    this.#targetApp = targetApp;
-
-    let selectedSecondaryBonds = targetApp.selectedSecondaryBonds;
-
-    this.#zTools = new _ZTools(selectedSecondaryBonds, targetApp);
-
-    this.domNode.style.marginTop = '27px';
-
-    this.#zTools.addEventListener('refresh', () => this.#handleRefresh());
-
-    this.refresh();
-  }
-
-  get domNode() {
-    return this.#zTools.domNode;
-  }
-
-  refresh(): void {
-    this.#zTools.refresh();
-  }
-
-  #handleRefresh(): void {
-    let selectedSecondaryBonds = [...this.#targetApp.selectedSecondaryBonds];
-
-    if (selectedSecondaryBonds.length == 0) {
-      this.#zTools.buttons['Front'].tooltip.textContent = 'No secondary bonds are selected.';
-    } else {
-      this.#zTools.buttons['Front'].tooltip.textContent = 'Bring the selected secondary bonds to the front.';
-    }
-
-    if (selectedSecondaryBonds.length == 0) {
-      this.#zTools.buttons['Back'].tooltip.textContent = 'No secondary bonds are selected.';
-    } else {
-      this.#zTools.buttons['Back'].tooltip.textContent = 'Send the selected secondary bonds to the back.';
-    }
-  }
-}
-
-class StrokeColorField {
-  #targetApp;
-
-  #input;
-
-  #field;
-
-  /**
-   * Used to help determine whether to push the undo stack or not.
-   */
-  #previousState: unknown;
-
-  constructor(targetApp: App) {
-    this.#targetApp = targetApp;
-
-    let selectedSecondaryBonds = targetApp.selectedSecondaryBonds;
-
-    let parentDrawing = targetApp.drawing;
-
-    this.#input = new ColorAttributeInput('stroke', selectedSecondaryBonds, parentDrawing);
-
-    this.#input.onBeforeEdit = () => {
-      if (targetApp.undoStack.isEmpty() || targetApp.undoStack.peek() !== this.#previousState) {
-        targetApp.pushUndoStack();
-
-        this.#previousState = targetApp.undoStack.peek();
-      }
-    };
-
-    selectedSecondaryBonds.addEventListener('change', () => {
-      this.#previousState = undefined;
-    });
-
-    this.#field = new ColorField('Stroke Color', this.#input.domNode);
-
-    this.#field.domNode.style.marginTop = '12px';
-    this.#field.domNode.style.alignSelf = 'start';
-
-    this.refresh();
-  }
-
-  get domNode() {
-    return this.#field.domNode;
-  }
-
-  refresh(): void {
-    this.#input.refresh();
-  }
-}
-
-function isAU(secondaryBond: SecondaryBond): boolean {
-  return (new BasePair(secondaryBond.base1, secondaryBond.base2)).isAU();
-}
-
-function isAT(secondaryBond: SecondaryBond): boolean {
-  return (new BasePair(secondaryBond.base1, secondaryBond.base2)).isAT();
-}
-
-function isGC(secondaryBond: SecondaryBond): boolean {
-  return (new BasePair(secondaryBond.base1, secondaryBond.base2)).isGC();
-}
-
-function isGU(secondaryBond: SecondaryBond): boolean {
-  return (new BasePair(secondaryBond.base1, secondaryBond.base2)).isGU();
-}
-
-function isGT(secondaryBond: SecondaryBond): boolean {
-  return (new BasePair(secondaryBond.base1, secondaryBond.base2)).isGT();
-}
-
-/**
- * Returns the base-pair of the secondary bond.
- */
-function basePair(secondaryBond: SecondaryBond): [Nucleobase, Nucleobase] {
-  return [secondaryBond.base1, secondaryBond.base2];
-}
-
-/**
- * Returns the base-pairs of the secondary bonds.
- */
-function basePairs(secondaryBonds: SecondaryBond[]) {
-  return secondaryBonds.map(basePair);
 }

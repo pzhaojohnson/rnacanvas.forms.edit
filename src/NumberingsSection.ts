@@ -2,13 +2,13 @@ import type { App } from './App';
 
 import * as styles from './NumberingsSection.module.css';
 
-import { SectionHeader } from './SectionHeader';
+import { SectionToggle } from './SectionToggle';
 
 import { NumberingsNumSelected } from './NumberingsNumSelected';
 
 import { NumberingsSelectionTools } from './NumberingsSelectionTools';
 
-import { NumberingsAddSection } from './NumberingsAddSection';
+import { NumberingsAddTools } from './NumberingsAddTools';
 
 import { NumberingsRemoveButton } from './NumberingsRemoveButton';
 
@@ -43,15 +43,15 @@ export class NumberingsSection {
 
   readonly domNode = document.createElement('div');
 
-  readonly #header = new SectionHeader('Numberings', () => this.toggle());
+  readonly #toggle = new SectionToggle('Numberings', () => this.toggle());
 
-  readonly #content = document.createElement('div');
+  readonly #contentContainer = document.createElement('div');
 
   readonly #numSelected;
 
   readonly #selectionTools;
 
-  readonly #addSection;
+  readonly #addTools;
   readonly #removeButton;
 
   readonly #lowerContent;
@@ -61,25 +61,25 @@ export class NumberingsSection {
 
     this.domNode.classList.add(styles['numberings-section']);
 
-    this.domNode.append(this.#header.domNode);
+    this.domNode.append(this.#toggle.domNode);
 
-    this.#content.classList.add(styles['content']);
-    this.domNode.append(this.#content);
+    this.#contentContainer.classList.add(styles['content-container']);
+    this.domNode.append(this.#contentContainer);
 
     this.#numSelected = new NumberingsNumSelected(targetApp);
-    this.#content.append(this.#numSelected.domNode);
+    this.#contentContainer.append(this.#numSelected.domNode);
 
     this.#selectionTools = new NumberingsSelectionTools(targetApp);
-    this.#content.append(this.#selectionTools.domNode);
+    this.#contentContainer.append(this.#selectionTools.domNode);
 
-    this.#addSection = new NumberingsAddSection(targetApp);
-    this.#content.append(this.#addSection.domNode);
+    this.#addTools = new NumberingsAddTools(targetApp);
+    this.#contentContainer.append(this.#addTools.domNode);
 
     this.#removeButton = new NumberingsRemoveButton(targetApp);
-    this.#content.append(this.#removeButton.domNode);
+    this.#contentContainer.append(this.#removeButton.domNode);
 
     this.#lowerContent = new LowerContent(targetApp);
-    this.#content.append(this.#lowerContent.domNode);
+    this.#contentContainer.append(this.#lowerContent.domNode);
 
     // collapse by default
     this.collapse();
@@ -96,13 +96,13 @@ export class NumberingsSection {
   collapse(): void {
     this.domNode.classList.add(styles['collapsed']);
 
-    this.#header.caret.pointRight();
+    this.#toggle.caret.pointRight();
   }
 
   expand(): void {
     this.domNode.classList.remove(styles['collapsed']);
 
-    this.#header.caret.pointDown();
+    this.#toggle.caret.pointDown();
   }
 
   refresh() {
@@ -113,7 +113,7 @@ export class NumberingsSection {
     return [
       this.#numSelected,
       this.#selectionTools,
-      this.#addSection,
+      this.#addTools,
       this.#removeButton,
       this.#lowerContent,
     ];
