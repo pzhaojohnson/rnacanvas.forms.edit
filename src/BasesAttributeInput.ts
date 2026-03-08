@@ -17,6 +17,26 @@ export class BasesAttributeInput {
 
   #centerPoints: Point[] = [];
 
+  readonly #onBeforeEdit = () => {
+    // cache center points
+    this.#centerPoints = [...this.#targetBases].map(b => ({ x: b.centerPoint.x, y: b.centerPoint.y }));
+  };
+
+  readonly #onEdit = () => {
+    // restore center points
+    [...this.#targetBases].forEach((b, i) => {
+      if (i < this.#centerPoints.length) {
+        let centerPoint = this.#centerPoints[i];
+
+        b.centerPoint.x = centerPoint.x;
+        b.centerPoint.y = centerPoint.y;
+      }
+    });
+
+    // uncache center points
+    this.#centerPoints = [];
+  };
+
   constructor(attributeName: string, targetBases: LiveCollection<Nucleobase>, parentDrawing: Drawing) {
     this.#attributeName = attributeName;
 
@@ -26,25 +46,9 @@ export class BasesAttributeInput {
 
     this.#attributeInput = new AttributeInput(attributeName, targetBases, parentDrawing);
 
-    this.#attributeInput.onBeforeEdit = () => {
-      // cache center points
-      this.#centerPoints = [...this.#targetBases].map(b => ({ x: b.centerPoint.x, y: b.centerPoint.y }));
-    };
+    this.#attributeInput.onBeforeEdit = this.#onBeforeEdit;
 
-    this.#attributeInput.onEdit = () => {
-      // restore center points
-      [...this.#targetBases].forEach((b, i) => {
-        if (i < this.#centerPoints.length) {
-          let centerPoint = this.#centerPoints[i];
-
-          b.centerPoint.x = centerPoint.x;
-          b.centerPoint.y = centerPoint.y;
-        }
-      });
-
-      // uncache center points
-      this.#centerPoints = [];
-    };
+    this.#attributeInput.onEdit = this.#onEdit;
 
     this.refresh();
   }
@@ -54,19 +58,29 @@ export class BasesAttributeInput {
   }
 
   get onEdit() {
-    return this.#attributeInput.onEdit;
+    return this.#attributeInput.onEdit ?? this.#onEdit;
   }
 
   set onEdit(onEdit) {
-    this.#attributeInput.onEdit = onEdit;
+    this.#attributeInput.onEdit = () => {
+      // always do on edit
+      this.#onEdit();
+
+      onEdit();
+    };
   }
 
   get onBeforeEdit() {
-    return this.#attributeInput.onBeforeEdit;
+    return this.#attributeInput.onBeforeEdit ?? this.#onBeforeEdit;
   }
 
   set onBeforeEdit(onBeforeEdit) {
-    this.#attributeInput.onBeforeEdit = onBeforeEdit;
+    this.#attributeInput.onBeforeEdit = () => {
+      // always do before edit
+      this.#onBeforeEdit();
+
+      onBeforeEdit();
+    };
   }
 
   refresh(): void {
