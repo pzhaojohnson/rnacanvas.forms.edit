@@ -96,10 +96,10 @@ export class NumberingLinesAddTools {
       this.#addButton.tooltip.textContent = 'No numberings are selected.';
     } else if (this.#onlyAddMissingCheckbox.domNode.checked && unconnectedNumberings.length == 0) {
       this.#addButton.disable();
-      this.#addButton.tooltip.textContent = 'All selected numberings are already connected by lines.';
+      this.#addButton.tooltip.textContent = 'All selected numberings already have lines.';
     } else {
       this.#addButton.enable();
-      this.#addButton.tooltip.textContent = 'Connect the selected numberings with lines.';
+      this.#addButton.tooltip.textContent = 'Give the selected numberings lines.';
     }
   }
 }
