@@ -72,6 +72,9 @@ export class BasesSection {
         [...targetApp.selectedBases].length > 0 ? this.#lowerContent.show() : this.#lowerContent.hide();
       }
     });
+
+    // collapse by default
+    this.collapse();
   }
 
   toggle(): void {
