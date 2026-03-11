@@ -8,9 +8,9 @@ export class TextInputField {
 
     this.domNode.style.cursor = 'text';
 
-    inputElement.addEventListener('focus', () => this.domNode.style.color = 'yellow');
+    inputElement.addEventListener('focus', () => this.#field.label.setColor('yellow'));
 
-    inputElement.addEventListener('blur', () => this.domNode.style.color = '');
+    inputElement.addEventListener('blur', () => this.#field.label.setColor(''));
   }
 
   get domNode() {

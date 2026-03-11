@@ -39,4 +39,12 @@ export class Field {
       this.#nameAnchor.classList.remove(styles['info-link']);
     }
   }
+
+  get label() {
+    let setColor = (color: string) => this.#nameAnchor.style.color = color;
+
+    return {
+      setColor,
+    };
+  }
 }
