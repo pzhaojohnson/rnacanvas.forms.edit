@@ -34,7 +34,7 @@ export class BasesTextContentField {
     });
 
     // watch for the text contents of any bases being changed
-    drawingObserver.observe(this.#targetApp.drawing.domNode, { characterData: true, subtree: true });
+    drawingObserver.observe(this.#targetApp.drawing.domNode, { childList: true, characterData: true, subtree: true });
 
     this.refresh();
   }

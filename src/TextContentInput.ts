@@ -45,7 +45,7 @@ export class TextContentInput {
     });
 
     // watch for any changes to text content
-    this.#drawingObserver.observe(parentDrawing.domNode, { characterData: true, subtree: true });
+    this.#drawingObserver.observe(parentDrawing.domNode, { childList: true, characterData: true, subtree: true });
 
     this.refresh();
   }
