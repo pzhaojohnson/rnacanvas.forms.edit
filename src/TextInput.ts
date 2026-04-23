@@ -15,6 +15,9 @@ export class TextInput {
         this.domNode.blur();
       }
     });
+
+    // prevent paste events into this text input from being responded to by other parts of the app
+    this.domNode.addEventListener('paste', event => event.stopPropagation());
   }
 
   #submit(): void {
