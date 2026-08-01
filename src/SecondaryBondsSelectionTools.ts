@@ -190,6 +190,12 @@ export class SecondaryBondsSelectionTools {
     if (selectedBases.size == 0) {
       this.#buttons['Between'].disable();
       this.#buttons['Between'].tooltip.textContent = 'No bases are selected.';
+    } else if (selectedBases.size == 1) {
+      this.#buttons['Between'].disable();
+      this.#buttons['Between'].tooltip.textContent = 'At least two bases must be selected.';
+    } else if (betweenSecondaryBonds.length == 0) {
+      this.#buttons['Between'].disable();
+      this.#buttons['Between'].tooltip.textContent = "There aren't any secondary bonds between the selected bases.";
     } else if (betweenSecondaryBonds.every(sb => selectedSecondaryBonds.has(sb))) {
       this.#buttons['Between'].disable();
       this.#buttons['Between'].tooltip.textContent = 'All secondary bonds between the selected bases are already selected.';
@@ -205,6 +211,9 @@ export class SecondaryBondsSelectionTools {
     if (selectedBases.size == 0) {
       this.#buttons['Connecting'].disable();
       this.#buttons['Connecting'].tooltip.textContent = 'No bases are selected.';
+    } else if (connectingSecondaryBonds.length == 0) {
+      this.#buttons['Connecting'].disable();
+      this.#buttons['Connecting'].tooltip.textContent = "There aren't any secondary bonds connecting the selected bases.";
     } else if (connectingSecondaryBonds.every(sb => selectedSecondaryBonds.has(sb))) {
       this.#buttons['Connecting'].disable();
       this.#buttons['Connecting'].tooltip.textContent = 'All secondary bonds connecting the selected bases are already selected.';
@@ -223,13 +232,13 @@ export class SecondaryBondsSelectionTools {
       .forEach(([basePair, secondaryBonds]) => {
         if (secondaryBonds.length == 0) {
           this.#buttons[basePair].disable();
-          this.#buttons[basePair].tooltip.textContent = `There aren't any ${basePair} base-pairs in the drawing.`;
+          this.#buttons[basePair].tooltip.textContent = `There aren't any secondary bonds between ${basePair} base-pairs in the drawing.`;
         } else if (secondaryBonds.every(sb => selectedSecondaryBonds.has(sb))) {
           this.#buttons[basePair].disable();
           this.#buttons[basePair].tooltip.textContent = `All secondary bonds between ${basePair} base-pairs are already selected.`;
         } else {
           this.#buttons[basePair].enable();
-          this.#buttons[basePair].tooltip.textContent = `Select secondary bonds between ${basePair} base-pairs.`;
+          this.#buttons[basePair].tooltip.textContent = `Select all secondary bonds between ${basePair} base-pairs.`;
         }
       });
   }

@@ -156,6 +156,12 @@ export class PrimaryBondsSelectionTools {
     if (selectedBases.size == 0) {
       this.#buttons['Between'].disable();
       this.#buttons['Between'].tooltip.textContent = 'No bases are selected.';
+    } else if (selectedBases.size == 1) {
+      this.#buttons['Between'].disable();
+      this.#buttons['Between'].tooltip.textContent = 'At least two bases must be selected.';
+    } else if (betweenPrimaryBonds.length == 0) {
+      this.#buttons['Between'].disable();
+      this.#buttons['Between'].tooltip.textContent = "There aren't any primary bonds between the selected bases.";
     } else if (betweenPrimaryBonds.every(pb => selectedPrimaryBonds.has(pb))) {
       this.#buttons['Between'].disable();
       this.#buttons['Between'].tooltip.textContent = 'All primary bonds between the selected bases are already selected.';
@@ -171,6 +177,9 @@ export class PrimaryBondsSelectionTools {
     if (selectedBases.size == 0) {
       this.#buttons['Connecting'].disable();
       this.#buttons['Connecting'].tooltip.textContent = 'No bases are selected.';
+    } else if (connectingPrimaryBonds.length == 0) {
+      this.#buttons['Connecting'].disable();
+      this.#buttons['Connecting'].tooltip.textContent = "There aren't any primary bonds connecting the selected bases.";
     } else if (connectingPrimaryBonds.every(pb => selectedPrimaryBonds.has(pb))) {
       this.#buttons['Connecting'].disable();
       this.#buttons['Connecting'].tooltip.textContent = 'All primary bonds connecting the selected bases are already selected.';

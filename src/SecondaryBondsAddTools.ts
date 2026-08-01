@@ -104,7 +104,10 @@ export class SecondaryBondsAddTools {
       this.#button.tooltip.textContent = 'At least two bases must be selected.';
     } else if (this.#onlyAddMissingCheckbox.domNode.checked && missingPairs.length == 0) {
       this.#button.disable();
-      this.#button.tooltip.textContent = "There aren't any missing secondary bonds.";
+      this.#button.tooltip.textContent = "There aren't any missing secondary bonds to add.";
+    } else if (this.#onlyAddMissingCheckbox.domNode.checked && missingPairs.length > 0) {
+      this.#button.enable();
+      this.#button.tooltip.textContent = 'Add any missing secondary bonds between the selected bases.';
     } else {
       this.#button.enable();
       this.#button.tooltip.textContent = 'Add secondary bonds between the selected bases.';

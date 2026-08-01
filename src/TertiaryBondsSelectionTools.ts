@@ -190,6 +190,12 @@ export class TertiaryBondsSelectionTools {
     if (selectedBases.size == 0) {
       this.#buttons['Between'].disable();
       this.#buttons['Between'].tooltip.textContent = 'No bases are selected.';
+    } else if (selectedBases.size == 1) {
+      this.#buttons['Between'].disable();
+      this.#buttons['Between'].tooltip.textContent = 'At least two bases must be selected.';
+    } else if (betweenTertiaryBonds.length == 0) {
+      this.#buttons['Between'].disable();
+      this.#buttons['Between'].tooltip.textContent = "There aren't any tertiary bonds between the selected bases.";
     } else if (betweenTertiaryBonds.every(sb => selectedTertiaryBonds.has(sb))) {
       this.#buttons['Between'].disable();
       this.#buttons['Between'].tooltip.textContent = 'All tertiary bonds between the selected bases are already selected.';
@@ -205,6 +211,9 @@ export class TertiaryBondsSelectionTools {
     if (selectedBases.size == 0) {
       this.#buttons['Connecting'].disable();
       this.#buttons['Connecting'].tooltip.textContent = 'No bases are selected.';
+    } else if (connectingTertiaryBonds.length == 0) {
+      this.#buttons['Connecting'].disable();
+      this.#buttons['Connecting'].tooltip.textContent = "There aren't any tertiary bonds connecting the selected bases.";
     } else if (connectingTertiaryBonds.every(sb => selectedTertiaryBonds.has(sb))) {
       this.#buttons['Connecting'].disable();
       this.#buttons['Connecting'].tooltip.textContent = 'All tertiary bonds connecting the selected bases are already selected.';
@@ -223,13 +232,13 @@ export class TertiaryBondsSelectionTools {
       .forEach(([basePair, tertiaryBonds]) => {
         if (tertiaryBonds.length == 0) {
           this.#buttons[basePair].disable();
-          this.#buttons[basePair].tooltip.textContent = `There aren't any ${basePair} base-pairs in the drawing.`;
+          this.#buttons[basePair].tooltip.textContent = `There aren't any tertiary bonds between ${basePair} base-pairs in the drawing.`;
         } else if (tertiaryBonds.every(sb => selectedTertiaryBonds.has(sb))) {
           this.#buttons[basePair].disable();
           this.#buttons[basePair].tooltip.textContent = `All tertiary bonds between ${basePair} base-pairs are already selected.`;
         } else {
           this.#buttons[basePair].enable();
-          this.#buttons[basePair].tooltip.textContent = `Select tertiary bonds between ${basePair} base-pairs.`;
+          this.#buttons[basePair].tooltip.textContent = `Select all tertiary bonds between ${basePair} base-pairs.`;
         }
       });
   }

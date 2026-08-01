@@ -104,7 +104,10 @@ export class TertiaryBondsAddTools {
       this.#button.tooltip.textContent = 'At least two bases must be selected.';
     } else if (this.#onlyAddMissingCheckbox.domNode.checked && missingPairs.length == 0) {
       this.#button.disable();
-      this.#button.tooltip.textContent = "There aren't any missing tertiary bonds.";
+      this.#button.tooltip.textContent = "There aren't any missing tertiary bonds to add.";
+    } else if (this.#onlyAddMissingCheckbox.domNode.checked && missingPairs.length > 0) {
+      this.#button.enable();
+      this.#button.tooltip.textContent = 'Add any missing tertiary bonds between the selected bases.';
     } else {
       this.#button.enable();
       this.#button.tooltip.textContent = 'Add tertiary bonds between the selected bases.';
