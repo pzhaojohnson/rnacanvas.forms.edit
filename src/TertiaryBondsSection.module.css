@@ -1,0 +1,22 @@
+.tertiary-bonds-section {
+  margin-top: 39px;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.content-container {
+  margin: 11px 0px 0px 12px;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.collapsed .content-container {
+  display: none;
+}
+
+.lower-content {
+  display: none;
+  flex-direction: column;
+}

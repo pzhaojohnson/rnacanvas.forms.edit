@@ -14,11 +14,13 @@ import { PrimaryBondsSection } from './PrimaryBondsSection';
 
 import { SecondaryBondsSection } from './SecondaryBondsSection';
 
+import { TertiaryBondsSection } from './TertiaryBondsSection';
+
 import { DrawingSection } from './DrawingSection';
 
 import { CloseButton } from './CloseButton';
 
-import { DragTranslater } from '@rnacanvas/forms';
+import { DragHandler } from '@rnacanvas/forms';
 
 export class EditForm {
   readonly #targetApp;
@@ -34,10 +36,11 @@ export class EditForm {
 
   readonly #primaryBondsSection;
   readonly #secondaryBondsSection;
+  readonly #tertiaryBondsSection;
 
   readonly #drawingSection;
 
-  readonly #dragTranslater;
+  readonly #dragHandler;
 
   constructor(targetApp: App) {
     this.#targetApp = targetApp;
@@ -71,6 +74,9 @@ export class EditForm {
     this.#secondaryBondsSection = new SecondaryBondsSection(targetApp);
     contentContainer.append(this.#secondaryBondsSection.domNode);
 
+    this.#tertiaryBondsSection = new TertiaryBondsSection(targetApp);
+    contentContainer.append(this.#tertiaryBondsSection.domNode);
+
     this.#drawingSection = new DrawingSection(targetApp);
     contentContainer.append(this.#drawingSection.domNode);
 
@@ -79,7 +85,7 @@ export class EditForm {
     closeButton.addEventListener('click', () => this.close());
     this.domNode.append(closeButton);
 
-    this.#dragTranslater = new DragTranslater(this.domNode);
+    this.#dragHandler = new DragHandler(this.domNode);
   }
 
   appendTo(container: Node): void {
@@ -102,6 +108,7 @@ export class EditForm {
       this.#numberingLinesSection,
       this.#primaryBondsSection,
       this.#secondaryBondsSection,
+      this.#tertiaryBondsSection,
       this.#drawingSection,
     ];
   }
@@ -111,6 +118,6 @@ export class EditForm {
   }
 
   reposition(): void {
-    this.#dragTranslater.untranslate();
+    this.#dragHandler.untranslate();
   }
 }

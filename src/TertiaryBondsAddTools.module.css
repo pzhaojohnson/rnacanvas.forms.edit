@@ -1,0 +1,7 @@
+.tertiary-bonds-add-tools {
+  margin-top: 29px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

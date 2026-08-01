@@ -10,6 +10,8 @@ import type { PrimaryBond } from './PrimaryBond';
 
 import type { SecondaryBond } from './SecondaryBond';
 
+import type { TertiaryBond } from './TertiaryBond';
+
 /**
  * The app interface used by the Editing form.
  */
@@ -61,6 +63,13 @@ export interface App {
      * and returns the added secondary bond.
      */
     addSecondaryBond(base1: Nucleobase, base2: Nucleobase): SecondaryBond;
+
+    /**
+     * All tertiary bonds in the drawing.
+     */
+    tertiaryBonds: Iterable<TertiaryBond>;
+
+    addTertiaryBond(base1: Nucleobase, base2: Nucleobase): TertiaryBond;
   }
 
   pushUndoStack(): void;
@@ -133,6 +142,12 @@ export interface App {
      */
     addEventListener(name: 'change', listener: () => void): void;
   }
+
+  selectedTertiaryBonds: {
+    [Symbol.iterator](): Iterator<TertiaryBond>;
+
+    addEventListener(name: 'change', listener: () => void): void;
+  }
 }
 
 /**
@@ -147,4 +162,5 @@ type DrawingElement = (
   | NumberingLine
   | PrimaryBond
   | SecondaryBond
+  | TertiaryBond
 );
