@@ -167,7 +167,7 @@ export class PrimaryBondsSelectionTools {
       this.#buttons['Between'].tooltip.textContent = 'All primary bonds between the selected bases are already selected.';
     } else {
       this.#buttons['Between'].enable();
-      this.#buttons['Between'].tooltip.textContent = 'Select primary bonds between the selected bases.';
+      this.#buttons['Between'].tooltip.textContent = 'Select all primary bonds between the selected bases.';
     }
 
     let connectingPrimaryBonds = (
@@ -185,7 +185,7 @@ export class PrimaryBondsSelectionTools {
       this.#buttons['Connecting'].tooltip.textContent = 'All primary bonds connecting the selected bases are already selected.';
     } else {
       this.#buttons['Connecting'].enable();
-      this.#buttons['Connecting'].tooltip.textContent = 'Select primary bonds connecting the selected bases.';
+      this.#buttons['Connecting'].tooltip.textContent = 'Select all primary bonds connecting the selected bases.';
     }
   }
 }

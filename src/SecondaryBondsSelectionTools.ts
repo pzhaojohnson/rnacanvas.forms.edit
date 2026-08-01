@@ -201,7 +201,7 @@ export class SecondaryBondsSelectionTools {
       this.#buttons['Between'].tooltip.textContent = 'All secondary bonds between the selected bases are already selected.';
     } else {
       this.#buttons['Between'].enable();
-      this.#buttons['Between'].tooltip.textContent = 'Select secondary bonds between the selected bases.';
+      this.#buttons['Between'].tooltip.textContent = 'Select all secondary bonds between the selected bases.';
     }
 
     let connectingSecondaryBonds = (
@@ -219,7 +219,7 @@ export class SecondaryBondsSelectionTools {
       this.#buttons['Connecting'].tooltip.textContent = 'All secondary bonds connecting the selected bases are already selected.';
     } else {
       this.#buttons['Connecting'].enable();
-      this.#buttons['Connecting'].tooltip.textContent = 'Select secondary bonds connecting the selected bases.';
+      this.#buttons['Connecting'].tooltip.textContent = 'Select all secondary bonds connecting the selected bases.';
     }
 
     ([

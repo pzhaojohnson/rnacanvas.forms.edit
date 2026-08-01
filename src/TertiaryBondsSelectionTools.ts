@@ -201,7 +201,7 @@ export class TertiaryBondsSelectionTools {
       this.#buttons['Between'].tooltip.textContent = 'All tertiary bonds between the selected bases are already selected.';
     } else {
       this.#buttons['Between'].enable();
-      this.#buttons['Between'].tooltip.textContent = 'Select tertiary bonds between the selected bases.';
+      this.#buttons['Between'].tooltip.textContent = 'Select all tertiary bonds between the selected bases.';
     }
 
     let connectingTertiaryBonds = (
@@ -219,7 +219,7 @@ export class TertiaryBondsSelectionTools {
       this.#buttons['Connecting'].tooltip.textContent = 'All tertiary bonds connecting the selected bases are already selected.';
     } else {
       this.#buttons['Connecting'].enable();
-      this.#buttons['Connecting'].tooltip.textContent = 'Select tertiary bonds connecting the selected bases.';
+      this.#buttons['Connecting'].tooltip.textContent = 'Select all tertiary bonds connecting the selected bases.';
     }
 
     ([
