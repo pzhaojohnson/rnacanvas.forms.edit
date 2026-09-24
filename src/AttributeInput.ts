@@ -56,7 +56,9 @@ export class AttributeInput {
 
   refresh(): void {
     try {
-      this.#input.domNode.value = consensusValue([...this.#targetElements].map(ele => ele.domNode.getAttribute(this.#attributeName) ?? ''));
+      let targetElements = this.#targetElements.toArray ? this.#targetElements.toArray() : [...this.#targetElements];
+
+      this.#input.domNode.value = consensusValue(targetElements.map(ele => ele.domNode.getAttribute(this.#attributeName) ?? ''));
     } catch {
       this.#input.domNode.value = '';
     }
@@ -65,7 +67,7 @@ export class AttributeInput {
   #submit() {
     let value = this.#input.domNode.value;
 
-    let targetElements = [...this.#targetElements];
+    let targetElements = this.#targetElements.toArray ? this.#targetElements.toArray() : [...this.#targetElements];
 
     if (targetElements.length == 0) {
       this.refresh();

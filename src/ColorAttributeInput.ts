@@ -80,7 +80,7 @@ export class ColorAttributeInput {
       return;
     }
 
-    let targetElements = [...this.#targetElements];
+    let targetElements = this.#targetElements.toArray ? this.#targetElements.toArray() : [...this.#targetElements];
 
     if (targetElements.length == 0) {
       this.refresh();
@@ -102,7 +102,7 @@ export class ColorAttributeInput {
   }
 
   refresh(): void {
-    let targetElements = [...this.#targetElements];
+    let targetElements = this.#targetElements.toArray ? this.#targetElements.toArray() : [...this.#targetElements];
 
     if (targetElements.length == 0) {
       this.#input.domNode.value = '#000000';

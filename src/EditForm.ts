@@ -16,6 +16,8 @@ import { SecondaryBondsSection } from './SecondaryBondsSection';
 
 import { TertiaryBondsSection } from './TertiaryBondsSection';
 
+import { StrungElementsSection } from './StrungElementsSection';
+
 import { DrawingSection } from './DrawingSection';
 
 import { CloseButton } from './CloseButton';
@@ -37,6 +39,8 @@ export class EditForm {
   readonly #primaryBondsSection;
   readonly #secondaryBondsSection;
   readonly #tertiaryBondsSection;
+
+  readonly #strungElementsSection;
 
   readonly #drawingSection;
 
@@ -77,6 +81,9 @@ export class EditForm {
     this.#tertiaryBondsSection = new TertiaryBondsSection(targetApp);
     contentContainer.append(this.#tertiaryBondsSection.domNode);
 
+    this.#strungElementsSection = new StrungElementsSection(targetApp);
+    contentContainer.append(this.#strungElementsSection.domNode);
+
     this.#drawingSection = new DrawingSection(targetApp);
     contentContainer.append(this.#drawingSection.domNode);
 
@@ -109,6 +116,7 @@ export class EditForm {
       this.#primaryBondsSection,
       this.#secondaryBondsSection,
       this.#tertiaryBondsSection,
+      this.#strungElementsSection,
       this.#drawingSection,
     ];
   }

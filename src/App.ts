@@ -6,11 +6,15 @@ import type { Numbering } from './Numbering';
 
 import type { NumberingLine } from './NumberingLine';
 
+import type { Bond } from './Bond';
+
 import type { PrimaryBond } from './PrimaryBond';
 
 import type { SecondaryBond } from './SecondaryBond';
 
 import type { TertiaryBond } from './TertiaryBond';
+
+import type { StrungElement } from './StrungElement';
 
 /**
  * The app interface used by the Editing form.
@@ -70,6 +74,12 @@ export interface App {
     tertiaryBonds: Iterable<TertiaryBond>;
 
     addTertiaryBond(base1: Nucleobase, base2: Nucleobase): TertiaryBond;
+
+    strungElements: {
+      toArray(): StrungElement[];
+    };
+
+    addStrungElement(type: 'text' | 'circle' | 'rectangle' | 'triangle', owner: Bond): StrungElement;
   }
 
   pushUndoStack(): void;
@@ -88,6 +98,10 @@ export interface App {
   addToSelected(eles: DrawingElement[]): void;
 
   removeFromSelected(eles: DrawingElement[]): void;
+
+  selectedSVGElements: {
+    include(ele: SVGGraphicsElement): boolean;
+  }
 
   readonly selectedBases: {
     [Symbol.iterator](): Iterator<Nucleobase>;
@@ -148,6 +162,14 @@ export interface App {
 
     addEventListener(name: 'change', listener: () => void): void;
   }
+
+  selectedStrungElements: {
+    [Symbol.iterator](): Iterator<StrungElement>;
+
+    toArray(): StrungElement[];
+
+    addEventListener(name: 'change', listener: () => void): void;
+  }
 }
 
 /**
@@ -163,4 +185,5 @@ type DrawingElement = (
   | PrimaryBond
   | SecondaryBond
   | TertiaryBond
+  | StrungElement
 );

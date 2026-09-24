@@ -4,5 +4,7 @@
 export interface LiveCollection<T> {
   [Symbol.iterator](): Iterator<T>;
 
+  toArray?(): T[];
+
   addEventListener(name: 'change', listener: () => void): void;
 }
