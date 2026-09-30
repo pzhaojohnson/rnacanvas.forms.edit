@@ -14,6 +14,16 @@ import { StrungElementsNumSelected } from './StrungElementsNumSelected';
 
 import { StrungElementsSelectionTools } from './StrungElementsSelectionTools';
 
+import { StrungElementsRotationField } from './StrungElementsRotationField';
+
+import { StrungElementsWidthField } from './StrungElementsWidthField';
+
+import { StrungElementsHeightField } from './StrungElementsHeightField';
+
+import { StrungElementsCornerRadiusField } from './StrungElementsCornerRadiusField';
+
+import { StrungElementsTailsHeightField } from './StrungElementsTailsHeightField';
+
 import { StrungElementsStrokeField } from './StrungElementsStrokeField';
 
 import { StrungElementsStrokeWidthField } from './StrungElementsStrokeWidthField';
@@ -131,6 +141,14 @@ class LowerContent {
 
   readonly #zTools;
 
+  readonly #customPropertyFieldsContainer = document.createElement('div');
+
+  readonly #rotationField;
+  readonly #widthField;
+  readonly #heightField;
+  readonly #cornerRadiusField;
+  readonly #tailsHeightField;
+
   readonly #strokeFieldsContainer = document.createElement('div');
 
   readonly #strokeField;
@@ -168,6 +186,26 @@ class LowerContent {
 
     this.#zTools = new StrungElementsZTools(targetApp);
     this.domNode.append(this.#zTools.domNode);
+
+    this.#customPropertyFieldsContainer.style.display = 'flex';
+    this.#customPropertyFieldsContainer.style.flexDirection = 'column';
+
+    this.domNode.append(this.#customPropertyFieldsContainer);
+
+    this.#rotationField = new StrungElementsRotationField(targetApp);
+    this.#customPropertyFieldsContainer.append(this.#rotationField.domNode);
+
+    this.#widthField = new StrungElementsWidthField(targetApp);
+    this.#customPropertyFieldsContainer.append(this.#widthField.domNode);
+
+    this.#heightField = new StrungElementsHeightField(targetApp);
+    this.#customPropertyFieldsContainer.append(this.#heightField.domNode);
+
+    this.#cornerRadiusField = new StrungElementsCornerRadiusField(targetApp);
+    this.#customPropertyFieldsContainer.append(this.#cornerRadiusField.domNode);
+
+    this.#tailsHeightField = new StrungElementsTailsHeightField(targetApp);
+    this.#customPropertyFieldsContainer.append(this.#tailsHeightField.domNode);
 
     this.#strokeFieldsContainer.style.display = 'flex';
     this.#strokeFieldsContainer.style.flexDirection = 'column';
@@ -244,11 +282,21 @@ class LowerContent {
 
     selectedStrungElements.length == 0 ? this.hide() : this.show();
 
-    let selectedStrungTextElements = selectedStrungElements.filter(ele => ele.domNode.localName == 'text');
+    let selectedStrungTexts = selectedStrungElements.filter(ele => ele.domNode.localName == 'text');
 
-    this.#strokeFieldsContainer.style.display = selectedStrungTextElements.length == selectedStrungElements.length ? 'none' : 'flex';
+    let selectedStrungRectangles = selectedStrungElements.filter(ele => 'cornerRadius' in ele);
 
-    this.#textFieldsContainer.style.display = selectedStrungTextElements.length == 0 ? 'none' : 'flex';
+    let selectedStrungTriangles = selectedStrungElements.filter(ele => 'tailsHeight' in ele);
+
+    this.#customPropertyFieldsContainer.style.display = selectedStrungRectangles.length + selectedStrungTriangles.length == 0 ? 'none' : 'flex';
+
+    this.#cornerRadiusField.domNode.style.display = selectedStrungRectangles.length == 0 ? 'none' : 'flex';
+
+    this.#tailsHeightField.domNode.style.display = selectedStrungTriangles.length == 0 ? 'none' : 'flex';
+
+    this.#strokeFieldsContainer.style.display = selectedStrungTexts.length == selectedStrungElements.length ? 'none' : 'flex';
+
+    this.#textFieldsContainer.style.display = selectedStrungTexts.length == 0 ? 'none' : 'flex';
 
     this.#refreshableComponents.forEach(component => component.refresh());
   }
@@ -256,6 +304,11 @@ class LowerContent {
   get #refreshableComponents() {
     return [
       this.#zTools,
+      this.#rotationField,
+      this.#widthField,
+      this.#heightField,
+      this.#cornerRadiusField,
+      this.#tailsHeightField,
       this.#strokeField,
       this.#strokeColorField,
       this.#strokeOpacityField,
