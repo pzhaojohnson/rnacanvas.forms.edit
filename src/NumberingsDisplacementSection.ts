@@ -18,10 +18,10 @@ export class NumberingsDisplacementSection {
   readonly #label = document.createElement('p');
 
   readonly #inputs = {
-    'x': new TextInput({ onSubmit: () => this.#submit('x') }),
-    'y': new TextInput({ onSubmit: () => this.#submit('y') }),
     'magnitude': new TextInput({ onSubmit: () => this.#submit('magnitude') }),
     'direction': new TextInput({ onSubmit: () => this.#submit('direction') }),
+    'x': new TextInput({ onSubmit: () => this.#submit('x') }),
+    'y': new TextInput({ onSubmit: () => this.#submit('y') }),
   } as const;
 
   readonly #fields;
@@ -36,21 +36,21 @@ export class NumberingsDisplacementSection {
     this.domNode.append(this.#label);
 
     this.#fields = {
-      'x': new TextInputField('X', this.#inputs['x'].domNode),
-      'y': new TextInputField('Y', this.#inputs['y'].domNode),
       'magnitude': new TextInputField('Magnitude', this.#inputs['magnitude'].domNode),
       'direction': new TextInputField('Direction', this.#inputs['direction'].domNode),
+      'x': new TextInputField('X', this.#inputs['x'].domNode),
+      'y': new TextInputField('Y', this.#inputs['y'].domNode),
     };
 
-    displacementParameterNames.forEach(parameterName => {
+    parameterNames.forEach(parameterName => {
       this.#fields[parameterName].domNode.style.marginTop = '10px';
       this.#fields[parameterName].domNode.style.marginLeft = '8px';
       this.#fields[parameterName].domNode.style.alignSelf = 'start';
     });
 
-    this.#fields['x'].domNode.style.marginTop = '0px';
+    this.#fields['magnitude'].domNode.style.marginTop = '0px';
 
-    this.domNode.append(...displacementParameterNames.map(parameterName => this.#fields[parameterName].domNode));
+    this.domNode.append(...parameterNames.map(parameterName => this.#fields[parameterName].domNode));
 
     // only refresh when necessary
     this.#targetApp.selectedNumberings.addEventListener('change', () => {
@@ -68,7 +68,7 @@ export class NumberingsDisplacementSection {
     this.refresh();
   }
 
-  #submit(parameterName: DisplacementParameterName) {
+  #submit(parameterName: ParameterName) {
     let value = Number.parseFloat(this.#inputs[parameterName].domNode.value);
 
     // ignore inputs that are not finite numbers
@@ -102,7 +102,7 @@ export class NumberingsDisplacementSection {
   refresh(): void {
     let selectedNumberings = [...this.#targetApp.selectedNumberings];
 
-    displacementParameterNames.forEach(parameterName => {
+    parameterNames.forEach(parameterName => {
       try {
         this.#inputs[parameterName].domNode.value = `${consensusValue(selectedNumberings.map(n => n.displacement[parameterName]))}`;
       } catch {
@@ -112,6 +112,6 @@ export class NumberingsDisplacementSection {
   }
 }
 
-const displacementParameterNames = ['x', 'y', 'magnitude', 'direction'] as const;
+const parameterNames = ['magnitude', 'direction', 'x', 'y'] as const;
 
-type DisplacementParameterName = typeof displacementParameterNames[number];
+type ParameterName = typeof parameterNames[number];
