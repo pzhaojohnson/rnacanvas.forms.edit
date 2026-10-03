@@ -8,6 +8,8 @@ import { isUnderlined } from './isUnderlined';
 
 import { isNotUnderlined } from './isNotUnderlined';
 
+import { CenterPoint } from '@rnacanvas/draw.svg.text';
+
 export class StrungElementsUnderlinedField {
   readonly #targetApp;
 
@@ -59,10 +61,22 @@ export class StrungElementsUnderlinedField {
     this.#targetApp.pushUndoStack();
 
     selectedStrungElements.forEach(ele => {
+      // (only strung text elements need to be recentered)
+      let centerPoint = ele.domNode instanceof SVGTextElement ? new CenterPoint(ele.domNode) : undefined;
+
+      // cache center point
+      let cachedCenterPoint = centerPoint ? { x: centerPoint.x, y: centerPoint.y } : undefined;
+
       if (this.#checkbox.domNode.checked && isNotUnderlined(ele)) {
         ele.domNode.setAttribute('text-decoration', 'underline');
       } else if (!this.#checkbox.domNode.checked && isUnderlined(ele)) {
         ele.domNode.setAttribute('text-decoration', '');
+      }
+
+      // restore center point
+      if (centerPoint && cachedCenterPoint) {
+        centerPoint.x = cachedCenterPoint.x;
+        centerPoint.y = cachedCenterPoint.y;
       }
     });
 

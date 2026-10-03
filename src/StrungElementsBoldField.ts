@@ -8,6 +8,8 @@ import { isBold } from './isBold';
 
 import { isNotBold } from './isNotBold';
 
+import { CenterPoint } from '@rnacanvas/draw.svg.text';
+
 export class StrungElementsBoldField {
   readonly #targetApp;
 
@@ -59,10 +61,22 @@ export class StrungElementsBoldField {
     this.#targetApp.pushUndoStack();
 
     selectedStrungElements.forEach(strungElement => {
+      // (only strung text elements need to be recentered)
+      let centerPoint = strungElement.domNode instanceof SVGTextElement ? new CenterPoint(strungElement.domNode) : undefined;
+
+      // cache center point
+      let cachedCenterPoint = centerPoint ? { x: centerPoint.x, y: centerPoint.y } : undefined;
+
       if (this.#checkbox.domNode.checked && isNotBold(strungElement)) {
         strungElement.domNode.setAttribute('font-weight', '700');
       } else if (!this.#checkbox.domNode.checked && isBold(strungElement)) {
         strungElement.domNode.setAttribute('font-weight', '400');
+      }
+
+      // restore center point
+      if (centerPoint && cachedCenterPoint) {
+        centerPoint.x = cachedCenterPoint.x;
+        centerPoint.y = cachedCenterPoint.y;
       }
     });
 

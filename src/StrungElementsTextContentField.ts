@@ -6,6 +6,8 @@ import { TextInputField } from './TextInputField';
 
 import { consensusValue } from '@rnacanvas/consensize';
 
+import { CenterPoint } from '@rnacanvas/draw.svg.text';
+
 export class StrungElementsTextContentField {
   readonly #targetApp;
 
@@ -65,7 +67,19 @@ export class StrungElementsTextContentField {
 
     this.#targetApp.pushUndoStack();
 
-    selectedStrungTexts.forEach(ele => ele.domNode.textContent = textContent);
+    selectedStrungTexts.forEach(ele => {
+      // type check just for TypeScript compiler
+      let centerPoint = ele.domNode instanceof SVGTextElement ? new CenterPoint(ele.domNode) : { x: 0, y: 0 };
+
+      // cache center point
+      let { x, y } = centerPoint;
+
+      ele.domNode.textContent = textContent;
+
+      // restore center point
+      centerPoint.x = x;
+      centerPoint.y = y;
+    });
 
     this.refresh();
   }
