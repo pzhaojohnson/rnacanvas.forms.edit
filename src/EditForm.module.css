@@ -32,12 +32,6 @@
 .content-container {
   margin: 27px 0px 0px 24px;
 
-  /**
-   * Prevents unwanted movement of the vertical scrollbar
-   * when elements are deselected and reselected.
-   */
-  min-height: 2200px;
-
   display: flex;
   flex-direction: column;
   align-items: start;
