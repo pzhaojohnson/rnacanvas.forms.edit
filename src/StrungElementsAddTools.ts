@@ -76,7 +76,9 @@ export class StrungElementsAddTools {
 
     this.#targetApp.pushUndoStack();
 
-    selectedBonds.forEach(bond => this.#targetApp.drawing.addStrungElement(type, bond));
+    let strungElements = [...selectedBonds].map(bond => this.#targetApp.drawing.addStrungElement(type, bond));
+
+    this.#targetApp.addToSelected(strungElements);
   }
 }
 
@@ -219,5 +221,9 @@ class AppWrapper {
 
   pushUndoStack() {
     this.#targetApp.pushUndoStack();
+  }
+
+  addToSelected(eles: Parameters<App['addToSelected']>[0]) {
+    this.#targetApp.addToSelected(eles);
   }
 }
