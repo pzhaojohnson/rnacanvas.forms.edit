@@ -58,6 +58,10 @@ import { StrungElementsUnderlinedField } from './StrungElementsUnderlinedField';
 
 import { StrungElementsTextContentField } from './StrungElementsTextContentField';
 
+import { StrungElementsLineXField } from './StrungElementsLineXField';
+
+import { StrungElementsDisplacementSection } from './StrungElementsDisplacementSection';
+
 export class StrungElementsSection {
   readonly domNode = document.createElement('div');
 
@@ -173,6 +177,10 @@ class LowerContent {
   readonly #underlinedField;
   readonly #textContentField;
 
+  readonly #lineXField;
+
+  readonly #displacementSection;
+
   constructor(targetApp: App) {
     this.#targetApp = targetApp;
 
@@ -267,6 +275,12 @@ class LowerContent {
 
     this.#textContentField = new StrungElementsTextContentField(targetApp);
     this.#textFieldsContainer.append(this.#textContentField.domNode);
+
+    this.#lineXField = new StrungElementsLineXField(targetApp);
+    this.domNode.append(this.#lineXField.domNode);
+
+    this.#displacementSection = new StrungElementsDisplacementSection(targetApp);
+    this.domNode.append(this.#displacementSection.domNode);
   }
 
   show(): void {
@@ -326,6 +340,8 @@ class LowerContent {
       this.#textDecorationField,
       this.#underlinedField,
       this.#textContentField,
+      this.#lineXField,
+      this.#displacementSection,
     ];
   }
 }
