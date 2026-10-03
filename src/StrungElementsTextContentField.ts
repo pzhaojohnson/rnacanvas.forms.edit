@@ -40,10 +40,10 @@ export class StrungElementsTextContentField {
   }
 
   refresh(): void {
-    let selectedStrungElements = this.#targetApp.selectedStrungElements.toArray();
+    let selectedStrungTexts = this.#targetApp.selectedStrungElements.toArray().filter(ele => ele.domNode instanceof SVGTextElement);
 
     try {
-      this.#input.domNode.value = consensusValue(selectedStrungElements.map(ele => ele.domNode.textContent ?? ''));
+      this.#input.domNode.value = consensusValue(selectedStrungTexts.map(ele => ele.domNode.textContent));
     } catch {
       this.#input.domNode.value = '';
     }
@@ -52,12 +52,12 @@ export class StrungElementsTextContentField {
   #submit(): void {
     let textContent = this.#input.domNode.value.trim();
 
-    let selectedStrungElements = this.#targetApp.selectedStrungElements.toArray();
+    let selectedStrungTexts = this.#targetApp.selectedStrungElements.toArray().filter(ele => ele.domNode instanceof SVGTextElement);
 
     if (
       !textContent
-      || selectedStrungElements.length == 0
-      || selectedStrungElements.every(ele => ele.domNode.textContent === textContent)
+      || selectedStrungTexts.length == 0
+      || selectedStrungTexts.every(ele => ele.domNode.textContent === textContent)
     ) {
       this.refresh();
       return;
@@ -65,7 +65,7 @@ export class StrungElementsTextContentField {
 
     this.#targetApp.pushUndoStack();
 
-    selectedStrungElements.forEach(ele => ele.domNode.textContent = textContent);
+    selectedStrungTexts.forEach(ele => ele.domNode.textContent = textContent);
 
     this.refresh();
   }
