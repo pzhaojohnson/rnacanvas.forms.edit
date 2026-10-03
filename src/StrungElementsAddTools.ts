@@ -25,6 +25,9 @@ export class StrungElementsAddTools {
 
     this.domNode.append(Label());
 
+    // might be set to `start` by default
+    this.#buttons['text'].domNode.style.alignSelf = '';
+
     this.#buttons['circle'].domNode.addEventListener('click', () => this.#add('circle'));
     this.#buttons['rectangle'].domNode.addEventListener('click', () => this.#add('rectangle'));
     this.#buttons['triangle'].domNode.addEventListener('click', () => this.#add('triangle'));

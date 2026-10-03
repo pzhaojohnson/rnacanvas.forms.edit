@@ -1,9 +1,9 @@
 .strung-elements-add-tools {
-  margin-top: 29px;
+  margin-top: 27px;
 
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 14px;
 }
 
 .label {
