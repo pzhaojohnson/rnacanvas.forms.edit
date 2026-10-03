@@ -21,6 +21,8 @@
 }
 
 .icon-button {
+  display: flex;
+
   cursor: pointer;
 
   user-select: none;
