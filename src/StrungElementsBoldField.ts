@@ -45,27 +45,27 @@ export class StrungElementsBoldField {
   }
 
   refresh(): void {
-    let selectedStrungElements = this.#targetApp.selectedStrungElements.toArray();
+    let selectedStrungTexts = this.#targetApp.selectedStrungElements.toArray().filter(ele => ele.domNode instanceof SVGTextElement);
 
-    this.#checkbox.domNode.checked = selectedStrungElements.length > 0 && selectedStrungElements.every(isBold);
+    this.#checkbox.domNode.checked = selectedStrungTexts.length > 0 && selectedStrungTexts.every(isBold);
   }
 
   #handleChange(): void {
-    let selectedStrungElements = this.#targetApp.selectedStrungElements.toArray();
+    let selectedStrungTexts = this.#targetApp.selectedStrungElements.toArray().filter(ele => ele.domNode instanceof SVGTextElement);
 
-    if (selectedStrungElements.length == 0) {
+    if (selectedStrungTexts.length == 0) {
       this.refresh();
       return;
     }
 
     this.#targetApp.pushUndoStack();
 
-    selectedStrungElements.forEach(strungElement => {
-      // (only strung text elements need to be recentered)
-      let centerPoint = strungElement.domNode instanceof SVGTextElement ? new CenterPoint(strungElement.domNode) : undefined;
+    selectedStrungTexts.forEach(strungElement => {
+      // type check just for TypeScript compiler
+      let centerPoint = strungElement.domNode instanceof SVGTextElement ? new CenterPoint(strungElement.domNode) : { x: 0, y: 0 };
 
       // cache center point
-      let cachedCenterPoint = centerPoint ? { x: centerPoint.x, y: centerPoint.y } : undefined;
+      let { x, y } = centerPoint;
 
       if (this.#checkbox.domNode.checked && isNotBold(strungElement)) {
         strungElement.domNode.setAttribute('font-weight', '700');
@@ -74,10 +74,8 @@ export class StrungElementsBoldField {
       }
 
       // restore center point
-      if (centerPoint && cachedCenterPoint) {
-        centerPoint.x = cachedCenterPoint.x;
-        centerPoint.y = cachedCenterPoint.y;
-      }
+      centerPoint.x = x;
+      centerPoint.y = y;
     });
 
     this.refresh();
