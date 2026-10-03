@@ -2,7 +2,7 @@ import type { App } from './App';
 
 import * as styles from './StrungElementsAddTools.module.css';
 
-import { LightSolidButton } from './LightSolidButton';
+import { TextButton } from './TextButton';
 
 import { Tooltip } from '@rnacanvas/tooltips';
 
@@ -12,7 +12,7 @@ export class StrungElementsAddTools {
   readonly domNode = document.createElement('div');
 
   readonly #buttons = {
-    'text': new LightSolidButton('Text'),
+    'text': new TextButton('Text', () => this.#add('text')),
     'circle': CircleButton(),
     'rectangle': RectangleButton(),
     'triangle': TriangleButton(),
@@ -25,7 +25,6 @@ export class StrungElementsAddTools {
 
     this.domNode.append(Label());
 
-    this.#buttons['text'].onClick = () => this.#add('text');
     this.#buttons['circle'].domNode.addEventListener('click', () => this.#add('circle'));
     this.#buttons['rectangle'].domNode.addEventListener('click', () => this.#add('rectangle'));
     this.#buttons['triangle'].domNode.addEventListener('click', () => this.#add('triangle'));
