@@ -25,15 +25,20 @@
 
   cursor: pointer;
 
+  pointer-events: auto;
+
   user-select: none;
   -webkit-user-select: none;
 
   text-decoration: none;
+
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent;
 }
 
 .icon-button:hover {
-  text-decoration: underline;
-  text-underline-offset: 4px;
+  border-color: transparent transparent cyan transparent;
 }
 
 .icon-button:focus {
@@ -42,6 +47,8 @@
 
 .disabled .icon-button {
   cursor: default;
+
+  border-color: transparent;
 }
 
 .disabled .icon-button circle,

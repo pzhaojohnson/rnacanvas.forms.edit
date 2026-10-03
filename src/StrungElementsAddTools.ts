@@ -98,6 +98,8 @@ function CircleButton() {
 
   circleIcon.setAttribute('aria-label', 'Circle');
 
+  circleIcon.style.pointerEvents = 'auto';
+
   circleIcon.innerHTML = `
     <circle
       r="5.5" cx="8" cy="8"
@@ -128,6 +130,8 @@ function RectangleButton() {
 
   rectangleIcon.setAttribute('aria-label', 'Rectangle');
 
+  rectangleIcon.style.pointerEvents = 'auto';
+
   rectangleIcon.innerHTML = `
     <rect
       x="2.5" y="2.5" width="11" height="11"
@@ -157,6 +161,8 @@ function TriangleButton() {
   triangleIcon.setAttribute('viewBox', '0 0 16 16');
 
   triangleIcon.setAttribute('aria-label', 'Triangle');
+
+  triangleIcon.style.pointerEvents = 'auto';
 
   triangleIcon.innerHTML = `
     <polygon
