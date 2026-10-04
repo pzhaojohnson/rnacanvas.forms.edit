@@ -1,5 +1,7 @@
 import type { App } from './App';
 
+import type { Numbering } from './Numbering';
+
 import * as styles from './NumberingsDisplacementSection.module.css';
 
 import { TextInput } from './TextInput';
@@ -9,6 +11,8 @@ import { TextInputField } from './TextInputField';
 import { isFiniteNumber } from '@rnacanvas/value-check';
 
 import { consensusValue } from '@rnacanvas/consensize';
+
+import { degrees, radians } from '@rnacanvas/math';
 
 export class NumberingsDisplacementSection {
   readonly #targetApp;
@@ -69,12 +73,11 @@ export class NumberingsDisplacementSection {
   }
 
   #submit(parameterName: ParameterName) {
-    let value = Number.parseFloat(this.#inputs[parameterName].domNode.value);
+    let displayedValue = Number.parseFloat(this.#inputs[parameterName].domNode.value);
 
     // ignore inputs that are not finite numbers
-    if (!isFiniteNumber(value)) {
+    if (!isFiniteNumber(displayedValue)) {
       this.refresh();
-
       return;
     }
 
@@ -82,17 +85,19 @@ export class NumberingsDisplacementSection {
 
     if (selectedNumberings.length == 0) {
       this.refresh();
-
       return;
     }
 
-    if (selectedNumberings.every(n => n.displacement[parameterName] === value)) {
+    // compare displayed values (since converting to radians could introduce floating point error)
+    if (selectedNumberings.every(n => new DisplacementParameter(parameterName, n).displayedValue === displayedValue)) {
       this.refresh();
-
       return;
     }
 
     this.#targetApp.pushUndoStack();
+
+    // direction is shown in degrees but stored in radians
+    let value = parameterName == 'direction' ? radians(displayedValue) : displayedValue;
 
     selectedNumberings.forEach(n => n.displacement[parameterName] = value);
 
@@ -104,7 +109,9 @@ export class NumberingsDisplacementSection {
 
     parameterNames.forEach(parameterName => {
       try {
-        this.#inputs[parameterName].domNode.value = `${consensusValue(selectedNumberings.map(n => n.displacement[parameterName]))}`;
+        let displayedValue = consensusValue(selectedNumberings.map(n => new DisplacementParameter(parameterName, n).displayedValue));
+
+        this.#inputs[parameterName].domNode.value = parameterName == 'direction' ? `${displayedValue}°` : `${displayedValue}`;
       } catch {
         this.#inputs[parameterName].domNode.value = '';
       }
@@ -115,3 +122,27 @@ export class NumberingsDisplacementSection {
 const parameterNames = ['magnitude', 'direction', 'x', 'y'] as const;
 
 type ParameterName = typeof parameterNames[number];
+
+class DisplacementParameter {
+  readonly #name;
+
+  readonly #targetElement;
+
+  constructor(name: ParameterName, targetElement: Numbering) {
+    this.#name = name;
+
+    this.#targetElement = targetElement;
+  }
+
+  get value() {
+    return this.#targetElement.displacement[this.#name];
+  }
+
+  get storedValue() {
+    return this.value;
+  }
+
+  get displayedValue() {
+    return this.#name == 'direction' ? degrees(this.value) : this.value;
+  }
+}

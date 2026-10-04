@@ -8,6 +8,8 @@ import { isFiniteNumber } from '@rnacanvas/value-check';
 
 import { consensusValue } from '@rnacanvas/consensize';
 
+import { degrees, radians } from '@rnacanvas/math';
+
 export class StrungElementsRotationField {
   readonly #targetApp;
 
@@ -67,21 +69,22 @@ export class StrungElementsRotationField {
       return;
     }
 
-    if (targetElements.every(ele => ele.rotation === value)) {
+    // compare in degrees (since converting to radians could introduce floating point error)
+    if (targetElements.every(ele => degrees(ele.rotation) === value)) {
       this.refresh();
       return;
     }
 
     this.#targetApp.pushUndoStack();
 
-    targetElements.forEach(ele => ele.rotation = value);
+    targetElements.forEach(ele => ele.rotation = radians(value));
 
     this.refresh();
   }
 
   refresh(): void {
     try {
-      this.#input.domNode.value = `${consensusValue(this.#targetElements.map(ele => ele.rotation))}`;
+      this.#input.domNode.value = `${consensusValue(this.#targetElements.map(ele => degrees(ele.rotation)))}°`;
     } catch {
       this.#input.domNode.value = '';
     }

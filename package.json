@@ -1,6 +1,6 @@
 {
   "name": "@rnacanvas/forms.edit",
-  "version": "22.0.4",
+  "version": "22.0.5",
   "description": "The Edit form",
   "repository": {
     "type": "git",
@@ -35,6 +35,7 @@
     "@rnacanvas/draw.svg": "^3.6.0",
     "@rnacanvas/draw.svg.text": "^1.3.0",
     "@rnacanvas/forms": "^4.0.1",
+    "@rnacanvas/math": "^1.21.0",
     "@rnacanvas/tooltips": "^1.2.0",
     "@rnacanvas/value-check": "^2.7.0",
     "@svgdotjs/svg.js": "^3.2.4",
