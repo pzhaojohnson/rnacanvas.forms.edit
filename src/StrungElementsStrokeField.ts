@@ -18,7 +18,7 @@ export class StrungElementsStrokeField {
 
     this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/stroke';
 
-    this.domNode.style.marginTop = '22px';
+    this.domNode.style.marginTop = '24px';
     this.domNode.style.alignSelf = 'start';
 
     this.refresh();

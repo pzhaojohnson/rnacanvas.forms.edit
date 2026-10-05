@@ -18,7 +18,7 @@ export class StrungElementsFillField {
 
     this.#field.infoLink = 'https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/fill';
 
-    this.domNode.style.marginTop = '10px';
+    this.domNode.style.marginTop = '24px';
     this.domNode.style.alignSelf = 'start';
 
     this.refresh();
