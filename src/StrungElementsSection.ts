@@ -134,7 +134,17 @@ export class StrungElementsSection {
   }
 
   refresh(): void {
-    this.#lowerContent.refresh();
+    this.#refreshableComponents.forEach(component => component.refresh());
+  }
+
+  get #refreshableComponents() {
+    return [
+      this.#numSelected,
+      this.#selectionTools,
+      this.#addTools,
+      this.#removeButton,
+      this.#lowerContent,
+    ];
   }
 }
 
