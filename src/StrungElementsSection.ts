@@ -4,15 +4,17 @@ import * as styles from './StrungElementsSection.module.css';
 
 import { SectionToggle } from './SectionToggle';
 
-import { StrungElementsZTools } from './StrungElementsZTools';
+import { StrungElementsNumSelected } from './StrungElementsNumSelected';
+
+import { StrungElementsSelectionTools } from './StrungElementsSelectionTools';
 
 import { StrungElementsAddTools } from './StrungElementsAddTools';
 
 import { StrungElementsRemoveButton } from './StrungElementsRemoveButton';
 
-import { StrungElementsNumSelected } from './StrungElementsNumSelected';
+import { StrungElementsZTools } from './StrungElementsZTools';
 
-import { StrungElementsSelectionTools } from './StrungElementsSelectionTools';
+import { StrungElementsRField } from './StrungElementsRField';
 
 import { StrungElementsRotationField } from './StrungElementsRotationField';
 
@@ -155,6 +157,8 @@ class LowerContent {
 
   readonly #zTools;
 
+  readonly #rField;
+
   readonly #customPropertyFieldsContainer = document.createElement('div');
 
   readonly #rotationField;
@@ -204,6 +208,9 @@ class LowerContent {
 
     this.#zTools = new StrungElementsZTools(targetApp);
     this.domNode.append(this.#zTools.domNode);
+
+    this.#rField = new StrungElementsRField(targetApp);
+    this.domNode.append(this.#rField.domNode);
 
     this.#customPropertyFieldsContainer.style.display = 'flex';
     this.#customPropertyFieldsContainer.style.flexDirection = 'column';
@@ -308,9 +315,13 @@ class LowerContent {
 
     let selectedStrungTexts = selectedStrungElements.filter(ele => ele.domNode.localName == 'text');
 
+    let selectedStrungCircles = selectedStrungElements.filter(ele => ele.domNode.localName == 'circle');
+
     let selectedStrungRectangles = selectedStrungElements.filter(ele => 'cornerRadius' in ele);
 
     let selectedStrungTriangles = selectedStrungElements.filter(ele => 'tailsHeight' in ele);
+
+    this.#rField.domNode.style.display = selectedStrungCircles.length == 0 ? 'none' : 'flex';
 
     this.#customPropertyFieldsContainer.style.display = selectedStrungRectangles.length + selectedStrungTriangles.length == 0 ? 'none' : 'flex';
 
@@ -328,6 +339,7 @@ class LowerContent {
   get #refreshableComponents() {
     return [
       this.#zTools,
+      this.#rField,
       this.#rotationField,
       this.#widthField,
       this.#heightField,
