@@ -12,7 +12,18 @@ export class StrungElementsStrokeColorField {
   #previousState: unknown = {};
 
   constructor(targetApp: App) {
-    this.#input = new ColorAttributeInput('stroke', targetApp.selectedStrungElements, targetApp.drawing);
+    let selectedStrungElements = targetApp.selectedStrungElements;
+
+    // stroke does not apply to strung text elements
+    let targetElements = {
+      [Symbol.iterator]: () => selectedStrungElements.toArray().filter(ele => ele.domNode.localName != 'text')[Symbol.iterator](),
+
+      toArray: () => selectedStrungElements.toArray().filter(ele => ele.domNode.localName != 'text'),
+
+      addEventListener: (name: 'change', listener: () => void) => selectedStrungElements.addEventListener(name, listener),
+    };
+
+    this.#input = new ColorAttributeInput('stroke', targetElements, targetApp.drawing);
 
     this.#input.onBeforeEdit = () => {
       if (targetApp.undoStack.isEmpty() || targetApp.undoStack.peek() !== this.#previousState) {

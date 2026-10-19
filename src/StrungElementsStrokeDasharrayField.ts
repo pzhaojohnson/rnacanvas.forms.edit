@@ -10,7 +10,18 @@ export class StrungElementsStrokeDasharrayField {
   readonly #field;
 
   constructor(targetApp: App) {
-    this.#input = new AttributeInput('stroke-dasharray', targetApp.selectedStrungElements, targetApp.drawing);
+    let selectedStrungElements = targetApp.selectedStrungElements;
+
+    // stroke does not apply to strung text elements
+    let targetElements = {
+      [Symbol.iterator]: () => selectedStrungElements.toArray().filter(ele => ele.domNode.localName != 'text')[Symbol.iterator](),
+
+      toArray: () => selectedStrungElements.toArray().filter(ele => ele.domNode.localName != 'text'),
+
+      addEventListener: (name: 'change', listener: () => void) => selectedStrungElements.addEventListener(name, listener),
+    };
+
+    this.#input = new AttributeInput('stroke-dasharray', targetElements, targetApp.drawing);
 
     this.#input.onBeforeEdit = () => targetApp.pushUndoStack();
 
