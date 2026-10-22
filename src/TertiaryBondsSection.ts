@@ -26,6 +26,8 @@ import { TertiaryBondsStrokeLinecapField } from './TertiaryBondsStrokeLinecapFie
 
 import { TertiaryBondsStrokeDasharrayField } from './TertiaryBondsStrokeDasharrayField';
 
+import { TertiaryBondsBasePaddingSection } from './TertiaryBondsBasePaddingSection';
+
 export class TertiaryBondsSection {
   readonly #targetApp;
 
@@ -133,6 +135,9 @@ class LowerContent {
   readonly #strokeLinecapField;
   readonly #strokeDasharrayField;
 
+  readonly #basePadding1Section;
+  readonly #basePadding2Section;
+
   constructor(targetApp: App) {
     this.#targetApp = targetApp;
 
@@ -159,6 +164,11 @@ class LowerContent {
     this.#strokeDasharrayField = new TertiaryBondsStrokeDasharrayField(targetApp);
     this.domNode.append(this.#strokeDasharrayField.domNode);
 
+    this.#basePadding1Section = new TertiaryBondsBasePaddingSection(targetApp, 1);
+    this.domNode.append(this.#basePadding1Section.domNode);
+
+    this.#basePadding2Section = new TertiaryBondsBasePaddingSection(targetApp, 2);
+    this.domNode.append(this.#basePadding2Section.domNode);
   }
 
   show(): void {
@@ -182,6 +192,8 @@ class LowerContent {
       this.#strokeWidthField,
       this.#strokeLinecapField,
       this.#strokeDasharrayField,
+      this.#basePadding1Section,
+      this.#basePadding2Section,
     ];
   }
 }
